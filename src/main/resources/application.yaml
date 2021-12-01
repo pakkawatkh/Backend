@@ -1,0 +1,15 @@
+
+
+spring:
+  datasource:
+    #    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/backendapi
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      jdbc:
+        time_zone: ICT
+    generate-ddl: true
+    show-sql: true
