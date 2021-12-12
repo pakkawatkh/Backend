@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.example.backend.entity.Base.RandomID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,31 +15,40 @@ import java.util.List;
 @Entity
 public class User extends RandomID {
 
-    public enum Role {
-        ADMIN, USER;
-    }
-
     @Column(nullable = false, length = 120)
     private String name;
 
     @Column(nullable = false, length = 120, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 120)
     private String password;
 
     @Column(nullable = false, length = 15)
     private String phone;
 
+    @Column(length = 10, columnDefinition = "varchar(10) default 'USER'",nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(nullable = false,columnDefinition = "boolean default true")
+    private boolean active;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private Date date;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-    private List<Product> product;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Orders> order;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private Shop shop;
+
+    public enum Role {
+        ADMIN, USER
+    }
 
 }
 

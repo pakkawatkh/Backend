@@ -1,7 +1,6 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,7 +12,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class Product extends AutoID {
+public class RecycleList extends AutoID {
 
     @Column(nullable = false, length = 60)
     private String name;
@@ -25,13 +24,9 @@ public class Product extends AutoID {
     @Column(nullable = false)
     private Date date;
 
+//    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "type_product_id", nullable = false)
-    private TypeProduct typeProduct;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Orders orders;
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
 
 }

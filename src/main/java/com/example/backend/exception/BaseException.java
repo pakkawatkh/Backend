@@ -5,7 +5,7 @@ import java.io.IOException;
 
 @MappedSuperclass
 public abstract class BaseException extends IOException {
-    public BaseException(String code){
+    public BaseException(String code) {
         super(code);
     }
 }

@@ -1,8 +1,16 @@
 package com.example.backend.repository;
 
 import com.example.backend.entity.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends CrudRepository<User, String> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    Optional<User> findById(String id);
+
+    boolean existsById(String id);
 }

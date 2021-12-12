@@ -5,6 +5,6 @@ import com.example.backend.model.userModel.MUserResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
-    MUserResponse toMUserResponse(User user);
+public interface OrderMapper {
+//    MUserResponse toMUserResponse(User user);
 }

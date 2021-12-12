@@ -1,10 +1,12 @@
-package com.example.backend.entity;
+package com.example.backend.entity.Base;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @Data
 @MappedSuperclass
