@@ -17,6 +17,9 @@ public class TypeProduct extends AutoID {
     @Column(nullable = false, length = 60)
     private String name;
 
+    @Column(nullable = false,length = 5)
+    private  float price;
+
     @JsonIgnore
     @OneToMany(mappedBy = "typeProduct", fetch = FetchType.EAGER)
     private List<Product> product;

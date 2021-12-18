@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.backend.entity.User;
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.UserException;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -58,14 +60,14 @@ public class TokenService {
         return Algorithm.HMAC256(secret);
     }
 
-    public User getUserByToken() {
+    public User getUserByToken() throws BaseException {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String userId = (String) authentication.getPrincipal();
 
         Optional<User> opt = userRepository.findById(userId);
         if (opt.isEmpty()) {
-            //throw error not user
+            throw UserException.notFound();
         }
         User user = opt.get();
         return user;

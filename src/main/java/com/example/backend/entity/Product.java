@@ -25,6 +25,9 @@ public class Product extends AutoID {
     @Column(nullable = false)
     private Date date;
 
+    @Column(length = 10,nullable = true)
+    private float weight;
+
     @ManyToOne
     @JoinColumn(name = "type_product_id", nullable = false)
     private TypeProduct typeProduct;

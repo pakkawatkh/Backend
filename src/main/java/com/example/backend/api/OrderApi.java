@@ -2,6 +2,8 @@ package com.example.backend.api;
 
 import com.example.backend.entity.Orders;
 import com.example.backend.entity.User;
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.UserException;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.repository.OrdersRepository;
 import com.example.backend.repository.UserRepository;
@@ -41,16 +43,11 @@ public class OrderApi {
 //    }
 
     @PostMapping("/create")
-    public Optional<Orders> createOrder(@RequestBody OrderReq order) {
+    public Optional<Orders> createOrder(@RequestBody OrderReq req) throws BaseException {
         //GET USER FROM TOKEN (TYPE IS OBJECT)
         User user = tokenService.getUserByToken();
-
-        Optional<Orders> order1 = orderService.createOrder(user, order.getStatus(), new Date(), order.getProduct());
-
-//        Optional<Orders> orders = getOrders(order1.get().getId());
-        return order1;
-
-//        return order.getProduct().size();
+        Optional<Orders> order = orderService.createOrder(user, req.getStatus(), new Date(), req.getProduct());
+        return order;
     }
 
 
