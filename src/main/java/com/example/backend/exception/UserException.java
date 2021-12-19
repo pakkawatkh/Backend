@@ -16,6 +16,9 @@ public class UserException extends BaseException {
     public static UserException createEmailDuplicated() {
         return new UserException("register.email.duplicated");
     }
+    public static UserException createPhoneDuplicated() {
+        return new UserException("register.phone.duplicated");
+    }
 
     public static UserException createEmailNull() {
         return new UserException("register.email.null");

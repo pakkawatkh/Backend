@@ -15,17 +15,20 @@ import java.util.List;
 @Entity
 public class User extends RandomID {
 
-    @Column(nullable = false, length = 120)
-    private String name;
+    @Column(nullable = false, length = 50)
+    private String firstname;
 
-    @Column(nullable = false, length = 120, unique = true)
+    @Column(nullable = false, length = 50)
+    private String lastname;
+
+    @Column(length = 120, unique = true)
     private String email;
 
     @JsonIgnore
     @Column(nullable = false, length = 120)
     private String password;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 15, unique = true)
     private String phone;
 
     @Column(length = 10, columnDefinition = "varchar(10) default 'USER'",nullable = false)
@@ -35,9 +38,23 @@ public class User extends RandomID {
     @Column(nullable = false,columnDefinition = "boolean default true")
     private boolean active;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private Date date;
+
+    @Column(length = 50)
+    private String facebook;
+
+    @Column(length = 50)
+    private String line;
+
+    @Column(length = 50)
+    private String latitude ;
+
+    @Column(length = 50)
+    private String longitude ;
+
+    @Column(length = 200)
+    private String address;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)

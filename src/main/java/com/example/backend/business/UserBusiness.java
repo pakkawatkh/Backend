@@ -34,7 +34,7 @@ public class UserBusiness {
     }
 
     public MUserResponse register(RegisterReq req) throws BaseException {
-        User user = userService.createUser(req.getName(), req.getEmail(), req.getPassword(), req.getPhone());
+        User user = userService.createUser(req.getFirstname(),req.getLastname(), req.getPassword(), req.getPhone());
         return mapper.toMUserResponse(user);
     }
 

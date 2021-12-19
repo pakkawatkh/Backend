@@ -13,8 +13,6 @@ spring:
         time_zone: ICT
     generate-ddl: true
     show-sql: true
-
-#  main: web-application-type=none
 app:
   token:
     secret: m#MySecret

@@ -1,14 +1,19 @@
 package com.example.backend.model.orderModel;
 
-import com.example.backend.model.productModel.ProductReq;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class OrderReq {
 
-    private Integer status;
+    private Float weight;
 
-    private List<ProductReq> product;
+    private Integer type;
+
+    private String picture;
+
+
+//    private List<>
+
 }

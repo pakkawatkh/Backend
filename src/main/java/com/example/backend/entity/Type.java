@@ -6,23 +6,19 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
 @Data
 @Entity
-public class TypeProduct extends AutoID {
+public class Type extends AutoID {
 
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, length = 60, unique = true)
     private String name;
 
-    @Column(nullable = false,length = 5)
-    private  float price;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "typeProduct", fetch = FetchType.EAGER)
-    private List<Product> product;
+    @OneToMany(mappedBy = "type")
+    private List<Orders> orders;
 
 }
 

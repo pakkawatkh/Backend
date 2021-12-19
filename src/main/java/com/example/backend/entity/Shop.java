@@ -16,7 +16,11 @@ public class Shop extends AutoID {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(length = 60)
     private String number;
+
+    @Column(length = 60)
+    private String name;
 
     @Column(nullable = false,columnDefinition = "boolean default true")
     private boolean active;
@@ -25,16 +29,9 @@ public class Shop extends AutoID {
     private Date date;
 
     //    @JsonIgnore
-    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
-    private List<Product> products;
-
-    //    @JsonIgnore
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
     private List<RecycleList> recycledLists;
 
-    private Date dateStart;
-
-    private Date dateEnd;
 }
 
 
