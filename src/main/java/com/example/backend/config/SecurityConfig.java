@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers("/user/register", "/user/login", "/order/getByUId")
+                .antMatchers("/user/register", "/user/login", "/order/getByUId","/order/upload/file")
                 .anonymous().anyRequest().authenticated()
                 .and().apply(new TokenFilterConfigurer(tokenService));
     }
