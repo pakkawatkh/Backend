@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Data
-public class OPT extends AutoID {
+public class OTP extends AutoID {
 
     private Integer ip;
 

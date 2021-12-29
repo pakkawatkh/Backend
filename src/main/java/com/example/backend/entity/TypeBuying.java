@@ -12,19 +12,19 @@ import java.util.Date;
 
 @Data
 @Entity
-public class RecycleList extends AutoID {
+public class TypeBuying extends AutoID {
 
     @Column(nullable = false, length = 60)
     private String name;
 
     @Column(nullable = false, length = 10)
-    private float price;
+    private Float price;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private Date date;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;

@@ -2,7 +2,7 @@ package com.example.backend.exception;
 
 public class TypeException extends BaseException {
     public TypeException(String code) {
-        super("user." + code);
+        super("type." + code);
     }
 
     public static TypeException nameDuplicated() {
@@ -12,8 +12,8 @@ public class TypeException extends BaseException {
         return new TypeException("not.found.id");
     }
 
-    public static TypeException noAccess(){
-        return new TypeException("no.access");
+    public static TypeException accessDenied(){
+        return new TypeException("access.denied");
     }
 
 }

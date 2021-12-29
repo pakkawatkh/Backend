@@ -47,12 +47,6 @@ public class User extends RandomID {
     @Column(length = 50)
     private String line;
 
-    @Column(length = 50)
-    private String latitude ;
-
-    @Column(length = 50)
-    private String longitude ;
-
     @Column(length = 200)
     private String address;
 
@@ -64,7 +58,7 @@ public class User extends RandomID {
     private Shop shop;
 
     public enum Role {
-        ADMIN, USER
+        ADMIN, USER, SHOP
     }
 
 }

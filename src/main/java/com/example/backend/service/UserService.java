@@ -3,7 +3,9 @@ package com.example.backend.service;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
+import com.example.backend.model.Response;
 import com.example.backend.model.userModel.AdminReq;
+import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,17 +25,19 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
 
 
-
         this.createAdmin();
     }
 
-    public User createUser(String firstname, String lastname, String password, String phone) throws BaseException {
+    public Object createUser(String firstname, String lastname, String password, String phone, String email) throws BaseException {
 
         if (Objects.isNull(password) || Objects.isNull(firstname) || Objects.isNull(lastname)) {
             throw UserException.requestInvalid();
         }
         if (repository.existsByPhone(phone)) {
             throw UserException.createPhoneDuplicated();
+        }
+        if (repository.existsByEmail(email)){
+            throw UserException.createEmailDuplicated();
         }
 
         //save data to table user
@@ -46,8 +50,10 @@ public class UserService {
         entity.setRole(User.Role.USER);
         entity.setActive(true);
         entity.setDate(new Date());
+        entity.setEmail(email);
 
-        return repository.save(entity);
+        repository.save(entity);
+        return new Response().success("register success",null,null);
 
     }
 
@@ -95,5 +101,50 @@ public class UserService {
         repository.save(entity);
 
     }
+
+    public Object editUserById(User user, UserEditReq req) {
+
+        user.setFirstname(req.getFirstname());
+        user.setLastname(req.getLastname());
+        user.setFacebook(req.getFacebook());
+        user.setLine(req.getLine());
+
+        repository.save(user);
+
+        return new Response().success("edit profile success", null, null);
+    }
+
+//    public Object editAddressById(User user, UserEditReq req) throws BaseException {
+//
+//        if (req.getLatitude() == null || req.getLongitude() == null || req.getAddress() == null) {
+//
+//            throw UserException.requestInvalid();
+//        }
+//
+//        user.setLatitude(req.getLatitude());
+//        user.setLongitude(req.getLongitude());
+//        user.setAddress(req.getAddress());
+//
+//
+//        repository.save(user);
+//
+//        return new Response().success("edit address success", null, null);
+//    }
+
+    public Object editPhoneById(User user, UserEditReq req) throws BaseException {
+        if (req.getPhone() == null) {
+            throw UserException.requestInvalid();
+        }
+        user.setPhone(req.getPhone());
+        repository.save(user);
+
+        return new Response().success("edit phone success", null, null);
+    }
+
+    public void updateRole(User user,User.Role role){
+        user.setRole(role);
+        repository.save(user);
+    }
+
 
 }

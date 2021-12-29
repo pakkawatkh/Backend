@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,24 +11,35 @@ import java.util.Map;
 public class Response {
 
     private final LocalDateTime timestamp = LocalDateTime.now();
-    public Object success(String message) {
+
+    public Object success(String message, String key, Object value) {
 
         Map<Object, Object> res = new HashMap<>();
 
-        res.put("timestamp",timestamp);
-        res.put("status", 1);
+        res.put("timestamp", timestamp);
+        res.put("status", HttpStatus.OK.value());
         res.put("message", message);
+
+        if (key != null) {
+
+            Map<Object, Object> data = new HashMap<>();
+
+            data.put(key, value);
+            res.put("data", data);
+
+        }
 
         return res;
 
 
     }
 
-    public Object failed(String message){
+    public Object failed(String message) {
 
         Map<Object, Object> res = new HashMap<>();
-        res.put("timestamp",timestamp);
-        res.put("status", 0);
+
+        res.put("timestamp", timestamp);
+        res.put("status", HttpStatus.EXPECTATION_FAILED.value());
         res.put("message", message);
 
         return res;

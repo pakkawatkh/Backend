@@ -2,7 +2,6 @@ package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,9 +11,7 @@ import java.util.List;
 @Entity
 public class Shop extends AutoID {
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+
 
     @Column(length = 60)
     private String number;
@@ -23,14 +20,24 @@ public class Shop extends AutoID {
     private String name;
 
     @Column(nullable = false,columnDefinition = "boolean default true")
-    private boolean active;
+    private Boolean active;
 
     @Column(nullable = false)
     private Date date;
 
+    @Column(nullable = false)
+    private Long latitude ;
+
+    @Column(nullable = false)
+    private Long longitude ;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     //    @JsonIgnore
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
-    private List<RecycleList> recycledLists;
+    private List<TypeBuying> buying;
 
 }
 

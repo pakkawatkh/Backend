@@ -4,6 +4,7 @@ import com.example.backend.business.TypeBusiness;
 import com.example.backend.entity.Type;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.typeModel.TypeReq;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +19,12 @@ public class TypeApi {
         this.business = business;
     }
 
-    @GetMapping("/list")
-    public List<Type> list() {
+    @PostMapping("/list")
+    public ResponseEntity<List<Type>> list() {
 
-        return business.list();
+        List<Type> list = this.business.list();
+
+        return ResponseEntity.ok(list);
     }
-
-    @PostMapping("/save")
-    public Object save(@RequestBody TypeReq req) throws BaseException {
-
-        Object res = business.save(req);
-        return res;
-    }
-
 
 }

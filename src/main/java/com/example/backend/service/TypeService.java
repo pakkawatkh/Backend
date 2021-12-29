@@ -51,7 +51,7 @@ public class TypeService {
 
         repository.save(entity);
 
-        return new Response().success("create success");
+        return new Response().success("create success",null,null);
 
     }
 
@@ -63,11 +63,16 @@ public class TypeService {
         }
         Type entity = type.get();
 
+        if (entity.getName()==name){
+            return new Response().success("edit success",null,null);
+        }
+        if (repository.existsByName(name)) {
+            throw TypeException.nameDuplicated();
+        }
         entity.setName(name);
 
         repository.save(entity);
-
-        return new Response().success("edit success");
+        return new Response().success("edit success",null,null);
 
     }
 
@@ -82,6 +87,6 @@ public class TypeService {
 
         repository.deleteById(entity.getId());
 
-        return new Response().success("delete success");
+        return new Response().success("delete success",null,null);
     }
 }

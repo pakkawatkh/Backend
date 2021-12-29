@@ -13,6 +13,10 @@ public class OrderReq {
 
     private String picture;
 
+    private Long latitude;
+
+    private Long longitude;
+
 
 //    private List<>
 

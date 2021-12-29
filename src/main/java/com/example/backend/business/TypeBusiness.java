@@ -1,7 +1,9 @@
 package com.example.backend.business;
 
 import com.example.backend.entity.Type;
+import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
+import com.example.backend.exception.TypeException;
 import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.service.TypeService;
 import com.example.backend.service.token.TokenService;
@@ -24,11 +26,13 @@ public class TypeBusiness {
     }
 
     public Object save(TypeReq req) throws BaseException {
-//        User user = tokenService.getUserByToken();
-//
-//        if (user.getRole()!= User.Role.ADMIN){
-//            throw TypeException.noAccess();
-//        }
+
+        User user = tokenService.getUserByToken();
+
+        if (user.getRole()!= User.Role.ADMIN){
+            throw TypeException.accessDenied();
+        }
+
         Object res;
         if (req.getId() == null) {
             res = service.create(req.getName());

@@ -16,7 +16,7 @@ public class ErrorAdviser {
     public ResponseEntity<ErrorResponse> handleBaseException(BaseException e) {
 
         ErrorResponse response = new ErrorResponse();
-        response.setError(e.getMessage());
+        response.setMessage(e.getMessage());
         response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
         return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
     }
@@ -25,7 +25,7 @@ public class ErrorAdviser {
     public static class ErrorResponse {
         private LocalDateTime timestamp = LocalDateTime.now();
         private int status;
-        private String error;
+        private String message;
     }
 
 }

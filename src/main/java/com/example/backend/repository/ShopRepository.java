@@ -9,4 +9,11 @@ import java.util.Optional;
 public interface ShopRepository extends JpaRepository<Shop, Integer> {
 
     Optional<Shop> findByUser(User user);
+
+    Optional<Shop> findByIdAndUser(Integer integer,User user);
+
+    boolean existsByNumber(String number);
+
+
+    boolean existsByUser(User user);
 }

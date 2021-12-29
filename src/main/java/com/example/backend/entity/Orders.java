@@ -28,6 +28,12 @@ public class Orders extends AutoID {
     @JoinColumn(name = "type_id", nullable = false)
     private Type type;
 
+    @Column(nullable = false)
+    private Long latitude ;
+
+    @Column(nullable = false)
+    private Long longitude ;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -36,9 +42,6 @@ public class Orders extends AutoID {
     public enum Status{
         BUY,CANCEL,SUCCESS
     }
-
-
-
 }
 
 

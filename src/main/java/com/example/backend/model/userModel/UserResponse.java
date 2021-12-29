@@ -4,7 +4,7 @@ import com.example.backend.entity.User;
 import lombok.Data;
 
 @Data
-public class MUserResponse {
+public class UserResponse {
 
     private String firstname;
 
@@ -15,5 +15,12 @@ public class MUserResponse {
     private String phone;
 
     private User.Role role;
+
+    private String facebook;
+
+    private String line;
+
+    private String address;
+
 
 }

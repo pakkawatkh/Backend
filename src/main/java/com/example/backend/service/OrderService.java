@@ -1,14 +1,18 @@
 package com.example.backend.service;
 
 import com.example.backend.entity.Orders;
+import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.OrderException;
+import com.example.backend.exception.TypeException;
 import com.example.backend.model.Response;
 import com.example.backend.repository.OrdersRepository;
 import com.example.backend.repository.TypeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,25 +26,29 @@ public class OrderService {
         this.typeProductRepository = typeProductRepository;
     }
 
-//    public Optional<Orders> createOrder(User user, Integer status, Date date){
-//
-//        Orders order = new Orders();
-//        order.setDate(date);
-//        order.setStatus(Orders.Status.BUY);
-//        order.setUser(user);
-//        repository.save(order);
-//
-//        Optional<Type> typeId = typeProductRepository.findById(1);
-//
-//
-//        Optional<Orders> orderById = repository.findById(order.getId());
-//
-//        HashMap<Orders, Object> data = new HashMap<>();
-//
-////        orderById.map(orders -> oneProduct);
-//        return orderById;
-//
-//    }
+    public Object createOrder(User user, Integer type, Float weight, String picture,Long latitude,Long longitude) throws BaseException {
+
+        Optional<Type> typeId = typeProductRepository.findById(type);
+        if (typeId.isEmpty()){
+            throw TypeException.notFoundId();
+        }
+
+        Orders entity = new Orders();
+
+        entity.setDate(new Date());
+        entity.setStatus(Orders.Status.BUY);
+        entity.setUser(user);
+        entity.setType(typeId.get());
+        entity.setPicture(picture);
+        entity.setWeight(weight);
+        entity.setLatitude(latitude);
+        entity.setLongitude(longitude);
+        repository.save(entity);
+
+
+        return new Response().success("create success",null,null);
+
+    }
 
     public Object changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
 
@@ -54,6 +62,11 @@ public class OrderService {
 
         repository.save(entity);
 
-        return new Response().success(status+" Success");
+        return new Response().success("success",null,null);
+    }
+
+    public Object getOrderByUser(User user){
+        List<Orders> orders = repository.findByUser(user);
+        return new Response().success("success","product",orders);
     }
 }

@@ -35,7 +35,7 @@ public class TokenService {
     public String tokenize(User user) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 60 * 24);
+        calendar.add(Calendar.MINUTE, 60 * 24*7);
         Date expiresAt = calendar.getTime();
 
         String token = JWT.create().withIssuer(issuer).withClaim("principal", user.getId()).withClaim("role", user.getRole().toString()).withExpiresAt(expiresAt).sign(algorithm());
@@ -72,4 +72,5 @@ public class TokenService {
         User user = opt.get();
         return user;
     }
+
 }
