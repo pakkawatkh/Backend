@@ -10,6 +10,7 @@ import com.example.backend.repository.ShopRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,7 @@ public class ShopService {
         this.repository = repository;
     }
 
-    public Object saveShop(User user, String name, Long latitude, Long longitude) {
+    public void saveShop(User user, String name, Long latitude, Long longitude) {
 
         String randomString = new RandomString().number();
 
@@ -40,10 +41,9 @@ public class ShopService {
         entity.setName(name);
 
         repository.save(entity);
-        return new Response().success("create success", null, null);
     }
 
-    public Object edit(User user, Integer id, String name, Long latitude, Long longitude) throws BaseException {
+    public void edit(User user, Integer id, String name, Long latitude, Long longitude) throws BaseException {
 
         Shop shop = this.checkShop(user, id);
 
@@ -53,7 +53,6 @@ public class ShopService {
 
         repository.save(shop);
 
-        return new Response().success("edit success", null, null);
     }
 
     public Shop checkShop(User user, Integer id) throws BaseException {
@@ -67,7 +66,7 @@ public class ShopService {
         return shop.get();
     }
 
-    public Object changStatus(Integer id, Boolean status) throws BaseException {
+    public void changStatus(Integer id, Boolean status) throws BaseException {
 
 
         Shop shop = this.findById(id);
@@ -76,7 +75,6 @@ public class ShopService {
 
         repository.save(shop);
 
-        return new Response().success("chang status success", null, null);
     }
 
 
@@ -97,6 +95,28 @@ public class ShopService {
         if (shop) {
             throw ShopException.registerError();
         }
+    }
+
+    public void existsByName(String name) throws BaseException {
+        boolean existsByName = repository.existsByName(name);
+
+        if (existsByName){
+            throw ShopException.nameDuplicate();
+        }
+    }
+
+    public List<Shop> findAllByActive(){
+        List<Shop> all = repository.findAllByActive(true);
+        return all;
+    }
+
+    public Shop findByIdAndActive(Integer id) throws BaseException {
+        Optional<Shop> shop = repository.findByIdAndActive(id,true);
+
+        if (shop.isEmpty()){
+            throw ShopException.notId();
+        }
+        return shop.get();
     }
 
 }

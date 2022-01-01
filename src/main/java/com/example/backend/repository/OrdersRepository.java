@@ -15,5 +15,5 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
    Optional<Orders> findByIdAndUser(Integer integer, User user);
 
-
+    List<Orders> findAllByUser(User user);
 }

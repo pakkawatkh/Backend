@@ -35,10 +35,14 @@ public class TokenService {
     public String tokenize(User user) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 60 * 24*7);
+        calendar.add(Calendar.MINUTE, 60 * 24 * 7);
         Date expiresAt = calendar.getTime();
 
-        String token = JWT.create().withIssuer(issuer).withClaim("principal", user.getId()).withClaim("role", user.getRole().toString()).withExpiresAt(expiresAt).sign(algorithm());
+        String token = JWT.create().withIssuer(issuer)
+                .withClaim("principal", user.getId())
+                .withClaim("role", user.getRole().toString())
+                .withExpiresAt(expiresAt)
+                .sign(algorithm());
 
         //return token type String
         return token;
@@ -61,16 +65,39 @@ public class TokenService {
     }
 
     public User getUserByToken() throws BaseException {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-        String userId = (String) authentication.getPrincipal();
+        String userId = this.userId();
 
         Optional<User> opt = userRepository.findById(userId);
         if (opt.isEmpty()) {
             throw UserException.notFound();
         }
+        if (!opt.get().getActive()) {
+            throw UserException.accessDenied();
+        }
         User user = opt.get();
         return user;
+    }
+
+    public void checkAdminByToken() throws BaseException {
+        String userId = this.userId();
+
+        Optional<User> opt = userRepository.findById(userId);
+        if (opt.isEmpty()) {
+            throw UserException.notFound();
+        }
+        if (!opt.get().getActive()) {
+            throw UserException.accessDenied();
+        }
+        if (opt.get().getRole()!= User.Role.ADMIN){
+            throw UserException.accessDenied();
+        }
+    }
+
+    public String userId(){
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String userId = (String) authentication.getPrincipal();
+        return userId;
     }
 
 }

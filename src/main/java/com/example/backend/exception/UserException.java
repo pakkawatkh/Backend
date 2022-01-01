@@ -36,4 +36,11 @@ public class UserException extends BaseException {
         return new UserException("request.invalid ");
     }
 
+    public static UserException accessDenied() {
+        return new UserException("access.denied");
+    }
+    public static UserException passwordIncorrect () {
+        return new UserException("password.incorrect");
+    }
+
 }

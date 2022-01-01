@@ -3,7 +3,6 @@ package com.example.backend.api;
 import com.example.backend.business.ShopBusiness;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.shopModel.ShopReq;
-import com.example.backend.model.shopModel.ShopResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,10 +35,24 @@ public class ShopApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("profile")
-    public ResponseEntity<ShopResponse> profile() throws BaseException {
-        ShopResponse profile = business.profile();
+    @PostMapping("/profile")
+    public ResponseEntity<Object> profile() throws BaseException {
+        Object profile = business.profile();
         return ResponseEntity.ok(profile);
     }
+
+    @PostMapping("/list")
+    public ResponseEntity<Object> list() throws BaseException {
+        Object list = business.list();
+        return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("/byId")
+    public ResponseEntity<Object> byId(@RequestBody ShopReq req) throws BaseException {
+        Object shopResponse = business.byId(req);
+        return ResponseEntity.ok(shopResponse);
+
+    }
+
 
 }

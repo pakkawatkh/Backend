@@ -36,7 +36,7 @@ public class User extends RandomID {
     private Role role;
 
     @Column(nullable = false,columnDefinition = "boolean default true")
-    private boolean active;
+    private Boolean active;
 
     @Column(nullable = false)
     private Date date;
@@ -50,10 +50,12 @@ public class User extends RandomID {
     @Column(length = 200)
     private String address;
 
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Orders> order;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Shop shop;
 

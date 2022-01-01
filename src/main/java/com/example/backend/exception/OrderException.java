@@ -9,6 +9,12 @@ public class OrderException extends BaseException{
         return new OrderException("order.not.found");
     }
 
+    public static OrderException accessDenied () {
+        return new OrderException("access.denied");
+    }
 
+    public static OrderException requestInvalid () {
+        return new OrderException("request.invalid");
+    }
 
 }

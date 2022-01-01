@@ -6,7 +6,6 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.OrderException;
 import com.example.backend.exception.TypeException;
-import com.example.backend.model.Response;
 import com.example.backend.repository.OrdersRepository;
 import com.example.backend.repository.TypeRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class OrderService {
         this.typeProductRepository = typeProductRepository;
     }
 
-    public Object createOrder(User user, Integer type, Float weight, String picture,Long latitude,Long longitude) throws BaseException {
+    public void createOrder(User user, Integer type, Float weight, String picture,Long latitude,Long longitude) throws BaseException {
 
         Optional<Type> typeId = typeProductRepository.findById(type);
         if (typeId.isEmpty()){
@@ -46,11 +45,14 @@ public class OrderService {
         repository.save(entity);
 
 
-        return new Response().success("create success",null,null);
 
     }
 
-    public Object changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
+    public void changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
+
+        if (id==null||status==null){
+            throw OrderException.requestInvalid();
+        }
 
         Optional<Orders> orders = repository.findByIdAndUser(id, user);
         if (orders.isEmpty()) {
@@ -62,11 +64,29 @@ public class OrderService {
 
         repository.save(entity);
 
-        return new Response().success("success",null,null);
     }
 
-    public Object getOrderByUser(User user){
+    public List<Orders> findByUser(User user){
         List<Orders> orders = repository.findByUser(user);
-        return new Response().success("success","product",orders);
+        return orders;
+    }
+
+    public List<Orders> findAll(){
+        List<Orders> all = repository.findAll();
+
+        return all;
+
+    }
+    public Orders findById(Integer id){
+        Optional<Orders> byId = repository.findById(id);
+        return byId.get();
+    }
+
+    public Orders findByIdAndUser(Integer id, User user) throws BaseException {
+        Optional<Orders> byId = repository.findByIdAndUser(id,user);
+        if (byId.isEmpty()){
+            throw OrderException.orderNotFound();
+        }
+        return byId.get();
     }
 }

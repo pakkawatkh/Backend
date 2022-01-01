@@ -17,6 +17,8 @@ public class OrderReq {
 
     private Long longitude;
 
+    private Integer id;
+
 
 //    private List<>
 

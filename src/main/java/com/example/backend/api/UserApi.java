@@ -3,10 +3,7 @@ package com.example.backend.api;
 import com.example.backend.business.UserBusiness;
 import com.example.backend.config.token.TokenFilter;
 import com.example.backend.exception.BaseException;
-import com.example.backend.model.userModel.LoginReq;
-import com.example.backend.model.userModel.RegisterReq;
-import com.example.backend.model.userModel.UserEditReq;
-import com.example.backend.model.userModel.UserResponse;
+import com.example.backend.model.userModel.*;
 import com.example.backend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,8 +39,8 @@ public class UserApi {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<UserResponse> profile() throws BaseException {
-        UserResponse profile = business.profile();
+    public ResponseEntity<Object> profile() throws BaseException {
+        Object profile = business.profile();
         return ResponseEntity.ok(profile);
     }
 
@@ -61,4 +58,17 @@ public class UserApi {
         return ResponseEntity.ok(edit);
     }
 
+    @PostMapping("/changPassword")
+    public ResponseEntity<Object> changPassword(@RequestBody UserPasswordReq req) throws BaseException {
+        Object res = business.changPassword(req);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/forgetPassword")
+    public ResponseEntity<Object> forgetPassword(@RequestBody UserForgetPAsswordReq req) {
+
+
+        return ResponseEntity.ok("a");
+
+    }
 }

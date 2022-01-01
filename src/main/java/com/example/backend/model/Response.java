@@ -12,7 +12,7 @@ public class Response {
 
     private final LocalDateTime timestamp = LocalDateTime.now();
 
-    public Object success(String message, String key, Object value) {
+    public Object ok(String message, String key, Object value) {
 
         Map<Object, Object> res = new HashMap<>();
 
@@ -28,6 +28,20 @@ public class Response {
             res.put("data", data);
 
         }
+
+        return res;
+
+
+    }
+
+    public Object success(String message) {
+
+        Map<Object, Object> res = new HashMap<>();
+
+        res.put("timestamp", timestamp);
+        res.put("status", HttpStatus.OK.value());
+        res.put("message", message);
+
 
         return res;
 

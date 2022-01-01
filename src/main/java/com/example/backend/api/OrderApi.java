@@ -119,9 +119,14 @@ public class OrderApi {
         }
 
 
-        Object res = new Response().success("upload success", "img", imgName);
+        Object res = new Response().ok("upload success", "img", imgName);
         return res;
     }
 
+    @PostMapping("/byId")
+    public ResponseEntity<Object> byId(@RequestBody OrderReq req) throws BaseException {
+        Object order = business.getById(req);
+        return ResponseEntity.ok(order);
+    }
 
 }

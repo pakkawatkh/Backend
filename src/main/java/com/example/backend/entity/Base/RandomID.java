@@ -16,6 +16,6 @@ public abstract class RandomID {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(nullable = false, updatable = false, length = 36, unique = true)
-    @JsonIgnore
+//    @JsonIgnore
     private String id;
 }

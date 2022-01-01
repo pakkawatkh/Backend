@@ -39,7 +39,7 @@ public class TypeService {
         repository.save(entity);
     }
 
-    public Object create(String name) throws BaseException {
+    public void create(String name) throws BaseException {
         boolean type = repository.existsByName(name);
 
         if (type) {
@@ -51,11 +51,10 @@ public class TypeService {
 
         repository.save(entity);
 
-        return new Response().success("create success",null,null);
 
     }
 
-    public Object edit(Integer id, String name) throws BaseException {
+    public void edit(Integer id, String name) throws BaseException {
         Optional<Type> type = repository.findById(id);
 
         if (type.isEmpty()) {
@@ -64,7 +63,7 @@ public class TypeService {
         Type entity = type.get();
 
         if (entity.getName()==name){
-            return new Response().success("edit success",null,null);
+            return;
         }
         if (repository.existsByName(name)) {
             throw TypeException.nameDuplicated();
@@ -72,8 +71,6 @@ public class TypeService {
         entity.setName(name);
 
         repository.save(entity);
-        return new Response().success("edit success",null,null);
-
     }
 
     public Object delete(Integer id) throws BaseException {
@@ -87,6 +84,6 @@ public class TypeService {
 
         repository.deleteById(entity.getId());
 
-        return new Response().success("delete success",null,null);
+        return new Response().success("delete success");
     }
 }

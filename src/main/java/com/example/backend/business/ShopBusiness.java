@@ -5,6 +5,7 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.ShopException;
 import com.example.backend.mapper.ShopMapper;
+import com.example.backend.model.Response;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.shopModel.ShopResponse;
 import com.example.backend.service.ShopService;
@@ -12,8 +13,11 @@ import com.example.backend.service.UserService;
 import com.example.backend.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShopBusiness {
+    private String MS = "OK";
 
     private final ShopService service;
     private final TokenService tokenService;
@@ -35,11 +39,15 @@ public class ShopBusiness {
         }
 
         service.existsByUser(user);
-        Object save = service.saveShop(user, req.getName(), req.getLatitude(), req.getLongitude());
+
+        service.existsByName(req.getName());
+
+        service.saveShop(user, req.getName(), req.getLatitude(), req.getLongitude());
 
         userService.updateRole(user, User.Role.SHOP);
 
-        return save;
+        return new Response().success("create success");
+
     }
 
     public Object edit(ShopReq req) throws BaseException {
@@ -50,29 +58,27 @@ public class ShopBusiness {
             throw ShopException.requestInvalid();
         }
 
-        Object edit = service.edit(user, req.getId(), req.getName(), req.getLatitude(), req.getLongitude());
-        return edit;
+        service.edit(user, req.getId(), req.getName(), req.getLatitude(), req.getLongitude());
+        return new Response().success("edit success");
+
     }
 
     public Object changStatus(ShopReq req) throws BaseException {
 
-        User admin = tokenService.getUserByToken();
-
-        if (admin.getRole() != User.Role.ADMIN) {
-            throw ShopException.accessDenied();
-        }
+        tokenService.checkAdminByToken();
 
         if (req.getActive() == null) {
             throw ShopException.requestInvalid();
         }
 
-        Object changStatus = service.changStatus(req.getId(), req.getActive());
+        service.changStatus(req.getId(), req.getActive());
 
-        return changStatus;
+        return new Response().success("chang status success");
+
 
     }
 
-    public ShopResponse profile() throws BaseException {
+    public Object profile() throws BaseException {
         User user = tokenService.getUserByToken();
 
         if (user.getRole() != User.Role.SHOP) {
@@ -85,8 +91,27 @@ public class ShopBusiness {
             throw ShopException.accessDenied();
         }
 
-        return mapper.toShopResponse(shop);
+        ShopResponse shopResponse = mapper.toShopResponse(shop);
+        return new Response().ok(MS, "profile", shopResponse);
     }
 
+    public Object list() throws BaseException {
+
+        tokenService.getUserByToken();
+        List<Shop> all = service.findAllByActive();
+
+        return new Response().ok(MS,"shop",all);
+    }
+
+    public Object byId(ShopReq req) throws BaseException {
+
+        tokenService.getUserByToken();
+
+        Shop shop = service.findByIdAndActive(req.getId());
+
+        ShopResponse shopResponse = mapper.toShopResponse(shop);
+        return new Response().ok(MS, "profile", shopResponse);
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.business.TypeBuyingBusiness;
+import com.example.backend.entity.Shop;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.TypeBuyingModel.BuyingReq;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,12 @@ public class TypeBuyingApi {
 
         Object res = business.create(req);
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("list/byShop")
+    public ResponseEntity<Object> listByShop(@RequestBody Shop req) throws BaseException {
+
+        Object listByShop = business.getListByShop(req);
+        return ResponseEntity.ok(listByShop);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class UserService {
         this.createAdmin();
     }
 
-    public Object createUser(String firstname, String lastname, String password, String phone, String email) throws BaseException {
+    public void createUser(String firstname, String lastname, String password, String phone, String email) throws BaseException {
 
         if (Objects.isNull(password) || Objects.isNull(firstname) || Objects.isNull(lastname)) {
             throw UserException.requestInvalid();
@@ -53,7 +54,6 @@ public class UserService {
         entity.setEmail(email);
 
         repository.save(entity);
-        return new Response().success("register success",null,null);
 
     }
 
@@ -102,7 +102,7 @@ public class UserService {
 
     }
 
-    public Object editUserById(User user, UserEditReq req) {
+    public void editUserById(User user, UserEditReq req) {
 
         user.setFirstname(req.getFirstname());
         user.setLastname(req.getLastname());
@@ -111,34 +111,15 @@ public class UserService {
 
         repository.save(user);
 
-        return new Response().success("edit profile success", null, null);
     }
 
-//    public Object editAddressById(User user, UserEditReq req) throws BaseException {
-//
-//        if (req.getLatitude() == null || req.getLongitude() == null || req.getAddress() == null) {
-//
-//            throw UserException.requestInvalid();
-//        }
-//
-//        user.setLatitude(req.getLatitude());
-//        user.setLongitude(req.getLongitude());
-//        user.setAddress(req.getAddress());
-//
-//
-//        repository.save(user);
-//
-//        return new Response().success("edit address success", null, null);
-//    }
-
-    public Object editPhoneById(User user, UserEditReq req) throws BaseException {
+    public void editPhoneById(User user, UserEditReq req) throws BaseException {
         if (req.getPhone() == null) {
             throw UserException.requestInvalid();
         }
         user.setPhone(req.getPhone());
         repository.save(user);
 
-        return new Response().success("edit phone success", null, null);
     }
 
     public void updateRole(User user,User.Role role){
@@ -146,5 +127,28 @@ public class UserService {
         repository.save(user);
     }
 
+    public User findById(String id) throws BaseException {
+        Optional<User> user = repository.findById(id);
+
+        if (user.isEmpty()){
+            throw UserException.notFound();
+        }
+        return user.get();
+    }
+
+    public void updateUserActive(User user,Boolean active){
+        user.setActive(active);
+        repository.save(user);
+    }
+
+    public void updatePassword(User user,String password){
+        user.setPassword(passwordEncoder.encode(password));
+        repository.save(user);
+    }
+
+    public List<User> findAll(){
+        List<User> all = repository.findAll();
+        return all;
+    }
 
 }

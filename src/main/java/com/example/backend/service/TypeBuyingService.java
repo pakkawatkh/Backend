@@ -9,6 +9,7 @@ import com.example.backend.repository.TypeBuyingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TypeBuyingService {
@@ -20,7 +21,7 @@ public class TypeBuyingService {
         this.repository = repository;
     }
 
-    public Object saveBuying(Shop shop,String name,Float price) throws BaseException {
+    public void saveBuying(Shop shop,String name,Float price) throws BaseException {
 
         if (repository.existsByShopAndName(shop,name)){
             throw TypeBuyingException.nameDuplicate();
@@ -33,6 +34,11 @@ public class TypeBuyingService {
         entity.setPrice(price);
         entity.setShop(shop);
         repository.save(entity);
-        return new Response().success("create success",null,null);
+    }
+
+    public List<TypeBuying> findByShop(Shop shop){
+        List<TypeBuying> buying = repository.findAllByShop(shop);
+        return buying;
+
     }
 }

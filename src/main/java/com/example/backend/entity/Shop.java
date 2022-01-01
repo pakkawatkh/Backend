@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,31 +12,30 @@ import java.util.List;
 @Entity
 public class Shop extends AutoID {
 
-
-
-    @Column(length = 60)
+    @Column(length = 10)
     private String number;
 
     @Column(length = 60)
     private String name;
 
-    @Column(nullable = false,columnDefinition = "boolean default true")
+    @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean active;
 
     @Column(nullable = false)
     private Date date;
 
     @Column(nullable = false)
-    private Long latitude ;
+    private Long latitude;
 
     @Column(nullable = false)
-    private Long longitude ;
+    private Long longitude;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
     private List<TypeBuying> buying;
 

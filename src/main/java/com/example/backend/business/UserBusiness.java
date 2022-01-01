@@ -5,18 +5,18 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.Response;
-import com.example.backend.model.userModel.LoginReq;
-import com.example.backend.model.userModel.RegisterReq;
-import com.example.backend.model.userModel.UserEditReq;
-import com.example.backend.model.userModel.UserResponse;
-import com.example.backend.service.token.TokenService;
+import com.example.backend.model.adminModel.UserActiveReq;
+import com.example.backend.model.userModel.*;
 import com.example.backend.service.UserService;
+import com.example.backend.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserBusiness {
+private String MS="OK";
 
     private final UserService service;
     private final TokenService tokenService;
@@ -30,8 +30,9 @@ public class UserBusiness {
 
 
     public Object register(RegisterReq req) throws BaseException {
-        Object user = service.createUser(req.getFirstname(),req.getLastname(), req.getPassword(), req.getPhone(),req.getEmail());
-        return user;
+         service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone(), req.getEmail());
+        return new Response().success("register success");
+
     }
 
     public Object login(LoginReq req) throws BaseException {
@@ -42,26 +43,70 @@ public class UserBusiness {
         }
         String token = tokenService.tokenize(user);
 
-        return new Response().success("login success","token",token);
+        return new Response().ok("login success", "token", token);
     }
 
     public Object editProfile(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        Object edit = service.editUserById(user, req);
-        return edit;
+        service.editUserById(user, req);
+        return new Response().ok("edit profile success", null, null);
+
     }
 
     public Object editPhone(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        Object edit = service.editPhoneById(user, req);
-        return edit;
+        service.editPhoneById(user, req);
+        return new Response().ok("edit phone success", null, null);
+
     }
 
-    public UserResponse profile() throws BaseException {
+    public Object profile() throws BaseException {
         User user = tokenService.getUserByToken();
-        return mapper.toUserResponse(user);
+
+        UserResponse userResponse = mapper.toUserResponse(user);
+        return new Response().ok(MS,"profile",userResponse);
 //    return user;
+    }
+
+    public Object updateUserActive(UserActiveReq req) throws BaseException {
+
+        tokenService.checkAdminByToken();
+
+        User user = service.findById(req.getId());
+
+        service.updateUserActive(user, req.getActive());
+
+        return new Response().success("update success");
+
+    }
+
+    public Object changPassword(UserPasswordReq req) throws BaseException {
+
+        User user = tokenService.getUserByToken();
+
+        if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) {
+            throw UserException.passwordIncorrect();
+        }
+
+        service.updatePassword(user, req.getPasswordNew());
+        return new Response().success("update password success");
+    }
+
+    public Object userList() throws BaseException {
+
+        tokenService.checkAdminByToken();
+
+        List<User> all = service.findAll();
+        return new Response().ok(MS,"user",all);
+    }
+
+    public Object userById(User req) throws BaseException {
+
+        tokenService.checkAdminByToken();
+
+        User user = service.findById(req.getId());
+        return new Response().ok(MS,"user",user);
     }
 }

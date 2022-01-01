@@ -19,11 +19,12 @@ public class Orders extends AutoID {
     private Date date;
 
     @Column(length = 10)
-    private float weight;
+    private Float weight;
 
     @Column(length = 100)
     private String picture;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false)
     private Type type;

@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,11 +21,12 @@ public class TypeBuying extends AutoID {
     @Column(nullable = false, length = 10)
     private Float price;
 
+    @JsonIgnore
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private Date date;
 
-    //    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;

@@ -19,4 +19,8 @@ public class ShopException extends BaseException {
     public static ShopException registerError(){
         return new ShopException("register.error");
     }
+
+    public static ShopException nameDuplicate(){
+        return new ShopException("name.duplicate");
+    }
 }
