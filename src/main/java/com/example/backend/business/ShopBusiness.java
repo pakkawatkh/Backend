@@ -125,6 +125,7 @@ public class ShopBusiness {
         Shop shop = service.findByIdAndActive(req.getId());
 
         ShopResponse shopResponse = mapper.toShopResponse(shop);
+
         return new Response().ok(MS, "profile", shopResponse);
 
     }
@@ -135,8 +136,9 @@ public class ShopBusiness {
 
         Shop shop = service.findById(req.getId());
 
-        ShopResponse shopResponse = mapper.toShopResponse(shop);
-        return new Response().ok(MS, "profile", shopResponse);
+//        ShopResponse shopResponse = mapper.toShopResponse(shop);
+
+        return new Response().ok(MS, "profile", shop);
 
     }
 

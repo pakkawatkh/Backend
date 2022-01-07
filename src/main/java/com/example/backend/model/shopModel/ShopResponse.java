@@ -17,4 +17,6 @@ public class ShopResponse {
 
     private String number;
 
+
+
 }

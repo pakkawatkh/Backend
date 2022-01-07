@@ -1,5 +1,6 @@
 package com.example.backend.business;
 
+import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
@@ -90,6 +91,10 @@ private String MS="OK";
 
         User user = service.findById(req.getId());
 
+        if (user.getRole()== User.Role.ADMIN){
+            throw UserException.accessDenied();
+        }
+
         service.updateUserActive(user, req.getActive());
 
         return new Response().success("update success");
@@ -121,6 +126,13 @@ private String MS="OK";
         tokenService.checkAdminByToken();
 
         User user = service.findById(req.getId());
+        return new Response().ok(MS,"user",user);
+    }
+
+    public Object userByShop(Shop req) throws BaseException {
+        tokenService.checkAdminByToken();
+
+        User user = service.findByShop(req.getId());
         return new Response().ok(MS,"user",user);
     }
 }

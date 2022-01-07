@@ -1,9 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
-import com.example.backend.model.Response;
 import com.example.backend.model.userModel.AdminReq;
 import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.repository.UserRepository;
@@ -18,11 +18,13 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository repository;
+    private  final ShopService shopService;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ShopService shopService, PasswordEncoder passwordEncoder) {
         this.repository = userRepository;
+        this.shopService = shopService;
         this.passwordEncoder = passwordEncoder;
 
 
@@ -136,6 +138,16 @@ public class UserService {
             throw UserException.notFound();
         }
         return user.get();
+    }
+
+    public User findByShop(Integer id) throws BaseException {
+        Shop shop = shopService.findById(id);
+//        Optional<User> user = repository.findByShop(shop);
+//
+//        if (user.isEmpty()){
+//            throw UserException.notFound();
+//        }
+        return shop.getUser();
     }
 
     public void updateUserActive(User user,Boolean active){

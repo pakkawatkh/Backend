@@ -43,10 +43,10 @@ public class AdminApi {
 
         Object res = shopBusiness.changStatus(req);
 
-
         return ResponseEntity.ok(res);
 
     }
+
 
     @PostMapping("/shop/list")
     public ResponseEntity<Object> shopList() throws BaseException {
@@ -91,6 +91,12 @@ public class AdminApi {
     public ResponseEntity<Object> userById(@RequestBody User req) throws BaseException {
 
         Object user = userBusiness.userById(req);
+        return ResponseEntity.ok(user);
+    }
+    @PostMapping("/user/profileByShop")
+    public ResponseEntity<Object> userByShop(@RequestBody Shop req) throws BaseException {
+
+        Object user = userBusiness.userByShop(req);
         return ResponseEntity.ok(user);
     }
 
