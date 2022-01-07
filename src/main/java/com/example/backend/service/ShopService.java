@@ -5,7 +5,6 @@ import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.ShopException;
-import com.example.backend.model.Response;
 import com.example.backend.repository.ShopRepository;
 import org.springframework.stereotype.Service;
 
@@ -89,6 +88,7 @@ public class ShopService {
         return shop.get();
     }
 
+
     public void existsByUser(User user) throws BaseException {
         boolean shop = repository.existsByUser(user);
 
@@ -100,23 +100,30 @@ public class ShopService {
     public void existsByName(String name) throws BaseException {
         boolean existsByName = repository.existsByName(name);
 
-        if (existsByName){
+        if (existsByName) {
             throw ShopException.nameDuplicate();
         }
     }
 
-    public List<Shop> findAllByActive(){
+    public List<Shop> findAllByActive() {
         List<Shop> all = repository.findAllByActive(true);
         return all;
     }
 
     public Shop findByIdAndActive(Integer id) throws BaseException {
-        Optional<Shop> shop = repository.findByIdAndActive(id,true);
+        Optional<Shop> shop = repository.findByIdAndActive(id, true);
 
-        if (shop.isEmpty()){
+        if (shop.isEmpty()) {
             throw ShopException.notId();
         }
         return shop.get();
     }
+
+    public List<Shop> findAll() {
+        List<Shop> all = repository.findAll();
+        return all;
+
+    }
+
 
 }

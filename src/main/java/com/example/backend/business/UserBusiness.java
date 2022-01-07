@@ -30,15 +30,29 @@ private String MS="OK";
 
 
     public Object register(RegisterReq req) throws BaseException {
-         service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone(), req.getEmail());
+         service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone());
         return new Response().success("register success");
 
     }
 
     public Object login(LoginReq req) throws BaseException {
-        Optional<User> opt = service.findByEmail(req.getEmail());
+        Optional<User> opt = service.findByPhone(req.getPhone());
         User user = opt.get();
         if (!service.matchPassword(req.getPassword(), user.getPassword())) {
+            throw UserException.notFound();
+        }
+        String token = tokenService.tokenize(user);
+
+        return new Response().ok("login success", "token", token);
+    }
+    public Object loginAdmin(LoginReq req) throws BaseException {
+        Optional<User> opt = service.findByPhone(req.getPhone());
+        User user = opt.get();
+        if (!service.matchPassword(req.getPassword(), user.getPassword())) {
+            throw UserException.notFound();
+        }
+
+        if (user.getRole()!= User.Role.ADMIN){
             throw UserException.notFound();
         }
         String token = tokenService.tokenize(user);

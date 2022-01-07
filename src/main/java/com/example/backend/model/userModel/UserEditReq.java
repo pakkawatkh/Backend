@@ -17,10 +17,6 @@ public class UserEditReq {
 
     private String line;
 
-    private String latitude;
-
-    private String longitude;
-
     private String address;
 
 

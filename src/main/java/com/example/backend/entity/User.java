@@ -21,8 +21,8 @@ public class User extends RandomID {
     @Column(nullable = false, length = 50)
     private String lastname;
 
-    @Column(length = 120, unique = true)
-    private String email;
+//    @Column(length = 120, unique = true)
+//    private String email;
 
     @JsonIgnore
     @Column(nullable = false, length = 120)

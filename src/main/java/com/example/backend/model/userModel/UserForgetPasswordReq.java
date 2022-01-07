@@ -3,8 +3,8 @@ package com.example.backend.model.userModel;
 import lombok.Data;
 
 @Data
-public class UserForgetPAsswordReq {
-    private String Email;
+public class UserForgetPasswordReq {
+
     private String phone;
     private String password;
 }

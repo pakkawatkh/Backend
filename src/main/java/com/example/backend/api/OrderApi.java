@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
-//@CrossOrigin(origins = "*")
 @RequestMapping("/order")
 public class OrderApi {
 
@@ -68,6 +67,7 @@ public class OrderApi {
         return ResponseEntity.ok(res);
     }
 
+
     @PostMapping("/success")
     public ResponseEntity<Object> success(@RequestBody OrderStatusReq req) throws BaseException {
 
@@ -75,12 +75,16 @@ public class OrderApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/file")
-    public Object uploadProfilePicture(MultipartFile file) throws BaseException {
 
-//        if (req.getType()==null){
-//            throw OrderException.orderNotFound();
-//        }
+    @PostMapping("/byId")
+    public ResponseEntity<Object> byId(@RequestBody OrderReq req) throws BaseException {
+        Object order = business.getById(req);
+        return ResponseEntity.ok(order);
+    }
+
+
+    @PostMapping("/file")
+    public Object uploadProfilePicture(MultipartFile file) throws IOException {
 
         String dir = new BaseUrlFile().imageUrl();
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
@@ -118,15 +122,10 @@ public class OrderApi {
             e.printStackTrace();
         }
 
-
         Object res = new Response().ok("upload success", "img", imgName);
         return res;
+
     }
 
-    @PostMapping("/byId")
-    public ResponseEntity<Object> byId(@RequestBody OrderReq req) throws BaseException {
-        Object order = business.getById(req);
-        return ResponseEntity.ok(order);
-    }
 
 }

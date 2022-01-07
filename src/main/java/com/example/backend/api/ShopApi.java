@@ -43,13 +43,13 @@ public class ShopApi {
 
     @PostMapping("/list")
     public ResponseEntity<Object> list() throws BaseException {
-        Object list = business.list();
+        Object list = business.listActive();
         return ResponseEntity.ok(list);
     }
 
     @PostMapping("/byId")
     public ResponseEntity<Object> byId(@RequestBody ShopReq req) throws BaseException {
-        Object shopResponse = business.byId(req);
+        Object shopResponse = business.byIdActive(req);
         return ResponseEntity.ok(shopResponse);
 
     }

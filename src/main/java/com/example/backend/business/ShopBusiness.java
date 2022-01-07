@@ -17,12 +17,11 @@ import java.util.List;
 
 @Service
 public class ShopBusiness {
-    private String MS = "OK";
-
     private final ShopService service;
     private final TokenService tokenService;
     private final ShopMapper mapper;
     private final UserService userService;
+    private String MS = "OK";
 
     public ShopBusiness(ShopService service, TokenService tokenService, ShopMapper mapper, UserService userService) {
         this.service = service;
@@ -67,16 +66,24 @@ public class ShopBusiness {
 
         tokenService.checkAdminByToken();
 
-        if (req.getActive() == null) {
+        if (req.getActive() == null || req.getId() == null) {
             throw ShopException.requestInvalid();
         }
-
+        Shop shop = service.findById(req.getId());
         service.changStatus(req.getId(), req.getActive());
+
+        User.Role user;
+        if (req.getActive() == true) {
+            user = User.Role.SHOP;
+        } else {
+            user = User.Role.USER;
+        }
+        userService.updateRole(shop.getUser(), user);
 
         return new Response().success("chang status success");
 
-
     }
+
 
     public Object profile() throws BaseException {
         User user = tokenService.getUserByToken();
@@ -95,19 +102,38 @@ public class ShopBusiness {
         return new Response().ok(MS, "profile", shopResponse);
     }
 
-    public Object list() throws BaseException {
+    public Object listActive() throws BaseException {
 
         tokenService.getUserByToken();
         List<Shop> all = service.findAllByActive();
 
-        return new Response().ok(MS,"shop",all);
+        return new Response().ok(MS, "shop", all);
+    }
+
+    public Object list() throws BaseException {
+
+        tokenService.getUserByToken();
+        List<Shop> all = service.findAll();
+
+        return new Response().ok(MS, "shop", all);
+    }
+
+    public Object byIdActive(ShopReq req) throws BaseException {
+
+        tokenService.getUserByToken();
+
+        Shop shop = service.findByIdAndActive(req.getId());
+
+        ShopResponse shopResponse = mapper.toShopResponse(shop);
+        return new Response().ok(MS, "profile", shopResponse);
+
     }
 
     public Object byId(ShopReq req) throws BaseException {
 
         tokenService.getUserByToken();
 
-        Shop shop = service.findByIdAndActive(req.getId());
+        Shop shop = service.findById(req.getId());
 
         ShopResponse shopResponse = mapper.toShopResponse(shop);
         return new Response().ok(MS, "profile", shopResponse);

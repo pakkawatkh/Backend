@@ -24,7 +24,7 @@ public class Orders extends AutoID {
     @Column(length = 100)
     private String picture;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false)
     private Type type;

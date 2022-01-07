@@ -65,7 +65,7 @@ public class UserApi {
     }
 
     @PostMapping("/forgetPassword")
-    public ResponseEntity<Object> forgetPassword(@RequestBody UserForgetPAsswordReq req) {
+    public ResponseEntity<Object> forgetPassword(@RequestBody UserForgetPasswordReq req) {
 
 
         return ResponseEntity.ok("a");

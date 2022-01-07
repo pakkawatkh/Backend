@@ -29,7 +29,7 @@ public class UserService {
         this.createAdmin();
     }
 
-    public void createUser(String firstname, String lastname, String password, String phone, String email) throws BaseException {
+    public void createUser(String firstname, String lastname, String password, String phone) throws BaseException {
 
         if (Objects.isNull(password) || Objects.isNull(firstname) || Objects.isNull(lastname)) {
             throw UserException.requestInvalid();
@@ -37,9 +37,7 @@ public class UserService {
         if (repository.existsByPhone(phone)) {
             throw UserException.createPhoneDuplicated();
         }
-        if (repository.existsByEmail(email)){
-            throw UserException.createEmailDuplicated();
-        }
+
 
         //save data to table user
         User entity = new User();
@@ -51,7 +49,7 @@ public class UserService {
         entity.setRole(User.Role.USER);
         entity.setActive(true);
         entity.setDate(new Date());
-        entity.setEmail(email);
+
 
         repository.save(entity);
 
@@ -62,12 +60,17 @@ public class UserService {
             throw UserException.notId();
         }
         User entity = new User();
-        entity.getEmail();
+
         return repository.findById(id).get();
     }
 
-    public Optional<User> findByEmail(String email) {
-        return repository.findByEmail(email);
+
+    public Optional<User> findByPhone(String phone) throws BaseException {
+        Optional<User> byEmail = repository.findByPhone(phone);
+        if (byEmail.isEmpty()){
+            throw UserException.notFound();
+        }
+        return byEmail;
     }
 
     public boolean matchPassword(String rawPassword, String encodedPassword) {
@@ -83,8 +86,8 @@ public class UserService {
         AdminReq req = new AdminReq();
 
         User entity;
-        if (repository.existsByEmail(req.getEmail())) {
-            entity = repository.findByEmail(req.getEmail()).get();
+        if (repository.existsByPhone(req.getPhone())) {
+            entity = repository.findByPhone(req.getPhone()).get();
         } else {
             entity = new User();
         }
@@ -92,7 +95,6 @@ public class UserService {
         entity.setLastname(req.getLastname());
         entity.setFirstname(req.getFirstname());
         entity.setRole(req.getRole());
-        entity.setEmail(req.getEmail());
         entity.setDate(new Date());
         entity.setPassword(passwordEncoder.encode(req.getPassword()));
         entity.setPhone(req.getPhone());

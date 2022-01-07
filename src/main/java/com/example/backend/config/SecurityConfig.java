@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String[] PUBLIC = {
             "/user/register",
             "/user/login",
+            "/admin/login",
             "/order/file"
     };
     private final TokenService tokenService;

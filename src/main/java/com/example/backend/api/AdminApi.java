@@ -6,6 +6,7 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.UserActiveReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.typeModel.TypeReq;
+import com.example.backend.model.userModel.LoginReq;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,14 +30,33 @@ public class AdminApi {
         this.buyingBusiness = buyingBusiness;
     }
 
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
+        Object res = userBusiness.loginAdmin(req);
+        return ResponseEntity.ok(res);
+    }
+
     /*   SHOP    */
     @PostMapping("/shop/active")
     public ResponseEntity<Object> updateStatus(@RequestBody ShopReq req) throws BaseException {
 
         Object res = shopBusiness.changStatus(req);
 
+
         return ResponseEntity.ok(res);
 
+    }
+
+    @PostMapping("/shop/list")
+    public ResponseEntity<Object> shopList() throws BaseException {
+        Object list = shopBusiness.list();
+        return ResponseEntity.ok(list);
+    }
+    @PostMapping("/shop/profile")
+    public ResponseEntity<Object> shopById(@RequestBody ShopReq req) throws BaseException {
+        Object list = shopBusiness.byId(req);
+        return ResponseEntity.ok(list);
     }
 
     /*   ORDER    */
@@ -67,13 +87,12 @@ public class AdminApi {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/user/byId")
+    @PostMapping("/user/profile")
     public ResponseEntity<Object> userById(@RequestBody User req) throws BaseException {
 
         Object user = userBusiness.userById(req);
         return ResponseEntity.ok(user);
     }
-
 
     /*   TYPE    */
     @PostMapping("/type/list")
@@ -93,7 +112,6 @@ public class AdminApi {
     }
 
     /*   BUYING    */
-
     @PostMapping("/buying/listByShop")
     public ResponseEntity<Object> listByShop(@RequestBody Shop req) throws BaseException {
 
