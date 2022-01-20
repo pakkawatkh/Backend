@@ -35,12 +35,12 @@ public class TokenService {
     public String tokenize(User user) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 60 * 24 * 7);
+        calendar.add(Calendar.MINUTE, 60*3);
         Date expiresAt = calendar.getTime();
 
         String token = JWT.create().withIssuer(issuer)
                 .withClaim("principal", user.getId())
-                .withClaim("role", user.getRole().toString())
+                .withClaim("lastpass", user.getLast_password().toString())
                 .withExpiresAt(expiresAt)
                 .sign(algorithm());
 
@@ -50,7 +50,6 @@ public class TokenService {
 
     public DecodedJWT verify(String token) {
         try {
-
             JWTVerifier verifier = JWT.require(algorithm()).withIssuer(issuer).build(); //Reusable verifier instance
             return verifier.verify(token);
 
@@ -66,31 +65,46 @@ public class TokenService {
 
     public User getUserByToken() throws BaseException {
         String userId = this.userId();
+        String date = this.lastPassword();
+
 
         Optional<User> opt = userRepository.findById(userId);
         if (opt.isEmpty()) {
             throw UserException.notFound();
         }
+
+        if (!date.equals("["+opt.get().getLast_password()+"]")){
+            throw UserException.expires();
+        }
+
         if (!opt.get().getActive()) {
             throw UserException.accessDenied();
         }
+
         User user = opt.get();
         return user;
     }
 
     public void checkAdminByToken() throws BaseException {
         String userId = this.userId();
+        String date = this.lastPassword();
 
-        Optional<User> opt = userRepository.findById(userId);
-        if (opt.isEmpty()) {
+        System.out.println(5);
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
             throw UserException.notFound();
         }
-        if (!opt.get().getActive()) {
+        if (!date.equals("["+user.get().getLast_password()+"]")){
+            throw UserException.expires();
+        }
+        if (!user.get().getActive()) {
             throw UserException.accessDenied();
         }
-        if (opt.get().getRole()!= User.Role.ADMIN){
+        if (user.get().getRole()!= User.Role.ADMIN){
             throw UserException.accessDenied();
         }
+
+
     }
 
     public String userId(){
@@ -99,5 +113,13 @@ public class TokenService {
         String userId = (String) authentication.getPrincipal();
         return userId;
     }
+
+    public String lastPassword(){
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String date = authentication.getAuthorities().toString();
+        return date;
+    }
+
 
 }

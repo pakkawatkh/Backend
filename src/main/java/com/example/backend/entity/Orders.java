@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class Orders extends AutoID {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
     private Date date;
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository repository;
-    private  final ShopService shopService;
+    private final ShopService shopService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -51,25 +51,16 @@ public class UserService {
         entity.setRole(User.Role.USER);
         entity.setActive(true);
         entity.setDate(new Date());
+        entity.setLast_password(new Date());
 
 
         repository.save(entity);
 
     }
 
-    public User getUser(String id) throws UserException {
-        if (!repository.existsById(id)) {
-            throw UserException.notId();
-        }
-        User entity = new User();
-
-        return repository.findById(id).get();
-    }
-
-
     public Optional<User> findByPhone(String phone) throws BaseException {
         Optional<User> byEmail = repository.findByPhone(phone);
-        if (byEmail.isEmpty()){
+        if (byEmail.isEmpty()) {
             throw UserException.notFound();
         }
         return byEmail;
@@ -87,22 +78,22 @@ public class UserService {
 
         AdminReq req = new AdminReq();
 
-        User entity;
-        if (repository.existsByPhone(req.getPhone())) {
-            entity = repository.findByPhone(req.getPhone()).get();
-        } else {
-            entity = new User();
-        }
 
-        entity.setLastname(req.getLastname());
-        entity.setFirstname(req.getFirstname());
-        entity.setRole(req.getRole());
-        entity.setDate(new Date());
-        entity.setPassword(passwordEncoder.encode(req.getPassword()));
-        entity.setPhone(req.getPhone());
-        entity.setActive(req.getActive());
+        if (repository.existsByPhone(req.getPhone()))
+            return;
 
-        repository.save(entity);
+        User user = new User();
+
+        user.setLastname(req.getLastname());
+        user.setFirstname(req.getFirstname());
+        user.setRole(req.getRole());
+        user.setDate(new Date());
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setPhone(req.getPhone());
+        user.setActive(req.getActive());
+        user.setLast_password(new Date());
+
+        repository.save(user);
 
     }
 
@@ -126,7 +117,7 @@ public class UserService {
 
     }
 
-    public void updateRole(User user,User.Role role){
+    public void updateRole(User user, User.Role role) {
         user.setRole(role);
         repository.save(user);
     }
@@ -134,7 +125,7 @@ public class UserService {
     public User findById(String id) throws BaseException {
         Optional<User> user = repository.findById(id);
 
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             throw UserException.notFound();
         }
         return user.get();
@@ -150,19 +141,31 @@ public class UserService {
         return shop.getUser();
     }
 
-    public void updateUserActive(User user,Boolean active){
+    public void updateUserActive(User user, Boolean active) {
         user.setActive(active);
         repository.save(user);
     }
 
-    public void updatePassword(User user,String password){
+    public void updatePassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
+        user.setLast_password(new Date());
         repository.save(user);
     }
 
-    public List<User> findAll(){
-        List<User> all = repository.findAll();
+    public List<User> findAll() {
+//        List<User> all = repository.findAll();
+        List<User> all = repository.findAllByRoleIsNot(User.Role.ADMIN);
         return all;
+    }
+
+    public void saveByUser(User user, String firstname, String lastname, String address, String facebook, String line) {
+
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setAddress(address);
+        user.setFacebook(facebook);
+        user.setLine(line);
+        repository.save(user);
     }
 
 }

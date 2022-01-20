@@ -20,6 +20,10 @@ public class RandomString {
         Integer length =5;
         return this.Random(alphabet123,length);
     }
+//    public String dateChange() {
+//        Integer length =5;
+//        return this.Random(alphabet123,length);
+//    }
 
     public String Random(String str, Integer length) {
         StringBuilder sb = new StringBuilder();
@@ -37,6 +41,8 @@ public class RandomString {
 
         return sb.toString();
     }
+
+
 
 
 }

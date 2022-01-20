@@ -1,12 +1,14 @@
 package com.example.backend.api;
 
 import com.example.backend.business.*;
-import com.example.backend.entity.*;
+import com.example.backend.entity.Shop;
+import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.UserActiveReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.model.userModel.LoginReq;
+import com.example.backend.model.userModel.UserEditReq;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +55,7 @@ public class AdminApi {
         Object list = shopBusiness.list();
         return ResponseEntity.ok(list);
     }
+
     @PostMapping("/shop/profile")
     public ResponseEntity<Object> shopById(@RequestBody ShopReq req) throws BaseException {
         Object list = shopBusiness.byId(req);
@@ -93,11 +96,18 @@ public class AdminApi {
         Object user = userBusiness.userById(req);
         return ResponseEntity.ok(user);
     }
+
     @PostMapping("/user/profileByShop")
     public ResponseEntity<Object> userByShop(@RequestBody Shop req) throws BaseException {
 
         Object user = userBusiness.userByShop(req);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/user/save")
+    public ResponseEntity<Object> userEditProfile(@RequestBody UserEditReq req) throws BaseException {
+        Object res = userBusiness.saveUserById(req);
+        return ResponseEntity.ok(res);
     }
 
     /*   TYPE    */

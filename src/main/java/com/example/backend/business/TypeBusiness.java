@@ -31,7 +31,6 @@ public class TypeBusiness {
         String mss;
         tokenService.checkAdminByToken();
 
-        Object res;
         if (req.getId() == null) {
             service.create(req.getName());
             mss = "create";

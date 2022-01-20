@@ -12,9 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @EnableWebSecurity
@@ -23,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/register",
             "/user/login",
             "/admin/login",
-            "/order/file"
+            "/uploads/**"
     };
     private final TokenService tokenService;
 
@@ -51,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    cors.setAllowedOriginPatterns(Collections.singletonList("http://*"));
                     cors.setAllowedOriginPatterns(Collections.singletonList("http://*"));
                     cors.addAllowedHeader("*");
-//                    cors.addAllowedMethod("GET");
+                    cors.addAllowedMethod("GET");
                     cors.addAllowedMethod("POST");
 //                    cors.addAllowedMethod("PUT");
 //                    cors.addAllowedMethod("DELETE");

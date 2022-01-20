@@ -6,6 +6,7 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.OrderException;
 import com.example.backend.exception.TypeException;
+import com.example.backend.model.BaseUrlFile;
 import com.example.backend.repository.OrdersRepository;
 import com.example.backend.repository.TypeRepository;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,10 @@ public class OrderService {
 
     public List<Orders> findByUser(User user){
         List<Orders> orders = repository.findByUser(user);
+
+        for (int i =0;i< orders.size(); i++){
+            orders.get(i).setPicture( new BaseUrlFile().getImageProductUrl() + orders.get(i).getPicture());
+        }
         return orders;
     }
 

@@ -19,6 +19,8 @@ public class UserEditReq {
 
     private String address;
 
+    private String id;
+
 
 
 }

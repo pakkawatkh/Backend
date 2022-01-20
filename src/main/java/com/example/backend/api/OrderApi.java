@@ -31,7 +31,6 @@ import java.util.Date;
 @RequestMapping("/order")
 public class OrderApi {
 
-    public static String uploadDirectory = System.getProperty("user.dir");
     private final OrdersRepository orderRepository;
     private final UserRepository userRepository;
     private final OrderService orderService;
@@ -83,49 +82,7 @@ public class OrderApi {
     }
 
 
-    @PostMapping("/file")
-    public Object uploadProfilePicture(MultipartFile file) throws IOException {
 
-        String dir = new BaseUrlFile().imageUrl();
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-        String imgName = timeStamp + new RandomString().strImage() + ".png";
-
-        //validate file
-        if (file == null) {
-            //throw error
-            throw FileException.fileNull();
-        }
-
-        //validate size
-        if (file.getSize() > 1048576 * 5) {
-            //throw error
-            throw FileException.fileMaxSiza();
-        }
-        String contentType = file.getContentType();
-        if (contentType == null) {
-            //throw  error
-            throw FileException.unsupported();
-        }
-
-        StringBuilder fileNames = new StringBuilder();
-
-        Path fileNameAndPath = Paths.get(uploadDirectory + dir, imgName);
-        fileNames.append(file.getOriginalFilename() + " ");
-        try {
-            Files.write(fileNameAndPath, file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            byte[] bytes = file.getBytes();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Object res = new Response().ok("upload success", "img", imgName);
-        return res;
-
-    }
 
 
 }

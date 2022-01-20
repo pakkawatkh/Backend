@@ -1,10 +1,10 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.RandomID;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,13 +31,14 @@ public class User extends RandomID {
     @Column(nullable = false, length = 15, unique = true)
     private String phone;
 
-    @Column(length = 10, columnDefinition = "varchar(10) default 'USER'",nullable = false)
+    @Column(length = 10, columnDefinition = "varchar(10) default 'USER'", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false,columnDefinition = "boolean default true")
+    @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean active;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false)
     private Date date;
 
@@ -50,6 +51,9 @@ public class User extends RandomID {
     @Column(length = 200)
     private String address;
 
+    @JsonIgnore
+    @Column(nullable = false)
+    private Date last_password;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)

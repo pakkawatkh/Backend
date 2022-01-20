@@ -8,4 +8,5 @@ public abstract class BaseException extends IOException {
     public BaseException(String code) {
         super(code);
     }
+
 }

@@ -135,4 +135,22 @@ private String MS="OK";
         User user = service.findByShop(req.getId());
         return new Response().ok(MS,"user",user);
     }
+
+    public Object saveUserById(UserEditReq req) throws BaseException {
+        tokenService.checkAdminByToken();
+        User user = service.findById(req.getId());
+        service.saveByUser(user,req.getFirstname(),req.getLastname(),req.getAddress(),req.getFacebook(),req.getLine());
+
+        return new Response().success("Edit Profile Success");
+    }
+
+    public Object refreshToken() throws BaseException {
+        User user = tokenService.getUserByToken();
+
+        String token = tokenService.tokenize(user);
+
+        return new Response().ok("login success", "token", token);
+
+    }
+
 }

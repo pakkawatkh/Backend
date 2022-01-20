@@ -1,6 +1,8 @@
 package com.example.backend.config.token;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.UserException;
 import com.example.backend.service.token.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +33,7 @@ public class TokenFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         
         String authorization = request.getHeader("Authorization");
@@ -48,14 +50,16 @@ public class TokenFilter extends GenericFilterBean {
         String token = authorization.substring(7);
         DecodedJWT decoded = tokenService.verify(token);
         if (decoded == null) {
+
             filterChain.doFilter(servletRequest, servletResponse);
             return;
+
         }
         String principal = decoded.getClaim("principal").asString();
-        String role = decoded.getClaim("role").asString();
+        String lastpass = decoded.getClaim("lastpass").asString();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority(lastpass));
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, "protected", authorities);
 

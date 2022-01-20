@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class Shop extends AutoID {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean active;
 
+    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
     private Date date;
 

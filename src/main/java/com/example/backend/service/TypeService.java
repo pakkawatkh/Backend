@@ -62,7 +62,8 @@ public class TypeService {
         }
         Type entity = type.get();
 
-        if (entity.getName()==name){
+        if (entity.getName().equals(name)){
+            System.out.println(entity.getName()+name);
             return;
         }
         if (repository.existsByName(name)) {

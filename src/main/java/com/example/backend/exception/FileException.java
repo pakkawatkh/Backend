@@ -10,8 +10,8 @@ public class FileException extends BaseException{
         return new FileException("null");
     }
 
-    public static FileException fileMaxSiza() {
-        return new FileException("max.siza");
+    public static FileException fileMaxSize() {
+        return new FileException("max.size");
     }
 
     public static FileException unsupported() {

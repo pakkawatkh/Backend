@@ -26,12 +26,8 @@ public class Response {
 
             data.put(key, value);
             res.put("data", data);
-
         }
-
         return res;
-
-
     }
 
     public Object success(String message) {
