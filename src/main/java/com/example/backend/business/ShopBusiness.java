@@ -73,7 +73,7 @@ public class ShopBusiness {
         service.changStatus(req.getId(), req.getActive());
 
         User.Role user;
-        if (req.getActive() == true) {
+        if (req.getActive()) {
             user = User.Role.SHOP;
         } else {
             user = User.Role.USER;
@@ -136,9 +136,9 @@ public class ShopBusiness {
 
         Shop shop = service.findById(req.getId());
 
-//        ShopResponse shopResponse = mapper.toShopResponse(shop);
+        ShopResponse shopResponse = mapper.toShopResponse(shop);
 
-        return new Response().ok(MS, "profile", shop);
+        return new Response().ok(MS, "profile", shopResponse);
 
     }
 

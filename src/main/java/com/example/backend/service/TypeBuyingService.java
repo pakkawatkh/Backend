@@ -21,7 +21,7 @@ public class TypeBuyingService {
         this.repository = repository;
     }
 
-    public void saveBuying(Shop shop,String name,Float price) throws BaseException {
+    public void saveBuying(Shop shop,String name) throws BaseException {
 
         if (repository.existsByShopAndName(shop,name)){
             throw TypeBuyingException.nameDuplicate();
@@ -31,7 +31,6 @@ public class TypeBuyingService {
 
         entity.setName(name);
         entity.setDate(new Date());
-        entity.setPrice(price);
         entity.setShop(shop);
         repository.save(entity);
     }

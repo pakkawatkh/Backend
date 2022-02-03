@@ -16,4 +16,9 @@ public class TypeBuyingException extends BaseException {
         return new TypeBuyingException("not.allowed");
     }
 
+    public static TypeBuyingException requestInvalid () {
+        return new TypeBuyingException("request.invalid");
+    }
+
+
 }

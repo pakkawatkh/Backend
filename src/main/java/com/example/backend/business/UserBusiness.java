@@ -17,11 +17,10 @@ import java.util.Optional;
 
 @Service
 public class UserBusiness {
-private String MS="OK";
-
     private final UserService service;
     private final TokenService tokenService;
     private final UserMapper mapper;
+    private String MS = "OK";
 
     public UserBusiness(UserService userService, TokenService tokenService, UserMapper mapper) {
         this.service = userService;
@@ -31,14 +30,18 @@ private String MS="OK";
 
 
     public Object register(RegisterReq req) throws BaseException {
-         service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone());
+
+        if (req.getPhone() == null || req.getFirstname() == null || req.getLastname() == null || req.getPassword() == null) {
+            throw UserException.requestInvalid();
+        }
+        service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone());
         return new Response().success("register success");
 
     }
 
-    public Object login(LoginReq req) throws BaseException {
-        Optional<User> opt = service.findByPhone(req.getPhone());
-        User user = opt.get();
+    public Object loginUser(LoginReq req) throws BaseException {
+
+        User user = login(req);
         if (!service.matchPassword(req.getPassword(), user.getPassword())) {
             throw UserException.notFound();
         }
@@ -46,33 +49,48 @@ private String MS="OK";
 
         return new Response().ok("login success", "token", token);
     }
-    public Object loginAdmin(LoginReq req) throws BaseException {
-        Optional<User> opt = service.findByPhone(req.getPhone());
-        User user = opt.get();
-        if (!service.matchPassword(req.getPassword(), user.getPassword())) {
-            throw UserException.notFound();
-        }
 
-        if (user.getRole()!= User.Role.ADMIN){
+    public Object loginAdmin(LoginReq req) throws BaseException {
+
+        User user = login(req);
+
+        if (user.getRole() != User.Role.ADMIN) {
             throw UserException.notFound();
         }
         String token = tokenService.tokenize(user);
 
         return new Response().ok("login success", "token", token);
+    }
+
+    public User login(LoginReq req) throws BaseException {
+        if (req.getPhone() == null || req.getPassword() == null) {
+            throw UserException.requestInvalid();
+        }
+        Optional<User> opt = service.findByPhone(req.getPhone());
+        User user = opt.get();
+        if (!service.matchPassword(req.getPassword(), user.getPassword())) {
+            throw UserException.notFound();
+        }
+        return user;
     }
 
     public Object editProfile(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
+        if (req.getFirstname() == null || req.getLastname() == null) {
+            throw UserException.requestInvalid();
+        }
 
-        service.editUserById(user, req);
+        service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine());
         return new Response().ok("edit profile success", null, null);
 
     }
 
     public Object editPhone(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-
-        service.editPhoneById(user, req);
+        if (req.getPhone() == null) {
+            throw UserException.requestInvalid();
+        }
+        service.editPhoneById(user, req.getPhone());
         return new Response().ok("edit phone success", null, null);
 
     }
@@ -81,17 +99,20 @@ private String MS="OK";
         User user = tokenService.getUserByToken();
 
         UserResponse userResponse = mapper.toUserResponse(user);
-        return new Response().ok(MS,"profile",userResponse);
-//    return user;
+        return new Response().ok(MS, "profile", userResponse);
+
     }
 
     public Object updateUserActive(UserActiveReq req) throws BaseException {
 
         tokenService.checkAdminByToken();
+        if (req.getId() == null || req.getActive() == null) {
+            throw UserException.requestInvalid();
+        }
 
         User user = service.findById(req.getId());
 
-        if (user.getRole()== User.Role.ADMIN){
+        if (user.getRole() == User.Role.ADMIN) {
             throw UserException.accessDenied();
         }
 
@@ -104,6 +125,9 @@ private String MS="OK";
     public Object changPassword(UserPasswordReq req) throws BaseException {
 
         User user = tokenService.getUserByToken();
+        if (req.getPasswordOld() == null || req.getPasswordNew() == null) {
+            throw UserException.requestInvalid();
+        }
 
         if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) {
             throw UserException.passwordIncorrect();
@@ -118,28 +142,36 @@ private String MS="OK";
         tokenService.checkAdminByToken();
 
         List<User> all = service.findAll();
-        return new Response().ok(MS,"user",all);
+        return new Response().ok(MS, "user", all);
     }
 
     public Object userById(User req) throws BaseException {
 
         tokenService.checkAdminByToken();
+        if (req.getId() == null) {
+            throw UserException.requestInvalid();
+        }
 
         User user = service.findById(req.getId());
-        return new Response().ok(MS,"user",user);
+        return new Response().ok(MS, "user", user);
     }
 
     public Object userByShop(Shop req) throws BaseException {
         tokenService.checkAdminByToken();
-
+        if (req.getId() == null) {
+            throw UserException.requestInvalid();
+        }
         User user = service.findByShop(req.getId());
-        return new Response().ok(MS,"user",user);
+        return new Response().ok(MS, "user", user);
     }
 
     public Object saveUserById(UserEditReq req) throws BaseException {
         tokenService.checkAdminByToken();
+        if (req.getId() == null || req.getFirstname() == null || req.getLastname() == null) {
+            throw UserException.requestInvalid();
+        }
         User user = service.findById(req.getId());
-        service.saveByUser(user,req.getFirstname(),req.getLastname(),req.getAddress(),req.getFacebook(),req.getLine());
+        service.saveByUser(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getFacebook(), req.getLine());
 
         return new Response().success("Edit Profile Success");
     }

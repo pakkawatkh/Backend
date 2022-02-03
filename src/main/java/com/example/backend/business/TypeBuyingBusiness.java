@@ -16,11 +16,10 @@ import java.util.List;
 
 @Service
 public class TypeBuyingBusiness {
-    private String MS = "OK";
-
     public final TokenService tokenService;
     public final TypeBuyingService service;
     public final ShopService shopService;
+    private String MS = "OK";
 
     public TypeBuyingBusiness(TokenService tokenService, TypeBuyingService service, ShopService shopService) {
         this.tokenService = tokenService;
@@ -41,11 +40,15 @@ public class TypeBuyingBusiness {
         }
 
         Shop shop = user.getShop();
-        if (shop.getActive() == false) {
+        if (!shop.getActive()) {
             throw TypeBuyingException.accessDenied();
         }
 
-        service.saveBuying(shop, req.getName(), req.getPrice());
+        if (req.getName() == null) {
+            throw TypeBuyingException.requestInvalid();
+        }
+
+        service.saveBuying(shop, req.getName());
         return new Response().success("create success");
 
     }
@@ -54,6 +57,6 @@ public class TypeBuyingBusiness {
         Shop shop = shopService.findById(req.getId());
 
         List<TypeBuying> buying = service.findByShop(shop);
-        return new Response().ok(MS,"buying",buying);
+        return new Response().ok(MS, "buying", buying);
     }
 }

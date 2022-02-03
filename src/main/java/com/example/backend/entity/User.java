@@ -24,6 +24,9 @@ public class User extends RandomID {
 //    @Column(length = 120, unique = true)
 //    private String email;
 
+    @Column(length = 100)
+    private String picture;
+
     @JsonIgnore
     @Column(nullable = false, length = 120)
     private String password;

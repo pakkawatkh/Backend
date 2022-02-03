@@ -37,6 +37,9 @@ public class Orders extends AutoID {
     @Column(nullable = false)
     private Long longitude ;
 
+    @Column(length = 30)
+    private String province;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

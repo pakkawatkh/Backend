@@ -20,5 +20,7 @@ public class Type extends AutoID {
     @OneToMany(mappedBy = "type")
     private List<Orders> orders;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean active;
 }
 

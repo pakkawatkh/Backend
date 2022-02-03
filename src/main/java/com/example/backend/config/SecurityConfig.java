@@ -21,7 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/register",
             "/user/login",
             "/admin/login",
-            "/uploads/**"
+            "/uploads/**",
+            "/news/**",
+            "/test/**"
     };
     private final TokenService tokenService;
 
@@ -44,19 +46,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors(config -> {
-                    CorsConfiguration cors = new CorsConfiguration();
-                    cors.setAllowCredentials(true);
-//                    cors.setAllowedOriginPatterns(Collections.singletonList("http://*"));
-                    cors.setAllowedOriginPatterns(Collections.singletonList("http://*"));
-                    cors.addAllowedHeader("*");
-                    cors.addAllowedMethod("GET");
-                    cors.addAllowedMethod("POST");
-//                    cors.addAllowedMethod("PUT");
-//                    cors.addAllowedMethod("DELETE");
-//                    cors.addAllowedMethod("OPTIONS");
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowCredentials(true);
+//                    Configuration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
+                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
+                    corsConfiguration.addAllowedHeader("*");
+                    corsConfiguration.addAllowedMethod("GET");
+                    corsConfiguration.addAllowedMethod("POST");
+//                    Configuration.addAllowedMethod("PUT");
+//                   Configuration.addAllowedMethod("DELETE");
+//                    Configuration.addAllowedMethod("OPTIONS");
 
                     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                    source.registerCorsConfiguration("/**", cors);
+                    source.registerCorsConfiguration("/**", corsConfiguration);
 
                     config.configurationSource(source);
                 }).csrf().disable()

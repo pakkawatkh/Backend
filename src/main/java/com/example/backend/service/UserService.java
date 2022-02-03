@@ -33,9 +33,7 @@ public class UserService {
 
     public void createUser(String firstname, String lastname, String password, String phone) throws BaseException {
 
-        if (Objects.isNull(password) || Objects.isNull(firstname) || Objects.isNull(lastname)) {
-            throw UserException.requestInvalid();
-        }
+
         if (repository.existsByPhone(phone)) {
             throw UserException.createPhoneDuplicated();
         }
@@ -97,22 +95,20 @@ public class UserService {
 
     }
 
-    public void editUserById(User user, UserEditReq req) {
+    public void editUserById(User user, String firstName,String lastName, String facebook,String line) {
 
-        user.setFirstname(req.getFirstname());
-        user.setLastname(req.getLastname());
-        user.setFacebook(req.getFacebook());
-        user.setLine(req.getLine());
+        user.setFirstname(firstName);
+        user.setLastname(lastName);
+        user.setFacebook(facebook);
+        user.setLine(line);
 
         repository.save(user);
 
     }
 
-    public void editPhoneById(User user, UserEditReq req) throws BaseException {
-        if (req.getPhone() == null) {
-            throw UserException.requestInvalid();
-        }
-        user.setPhone(req.getPhone());
+    public void editPhoneById(User user, String phone) throws BaseException {
+
+        user.setPhone(phone);
         repository.save(user);
 
     }

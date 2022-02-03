@@ -5,7 +5,6 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.OrderException;
-import com.example.backend.exception.TypeException;
 import com.example.backend.model.BaseUrlFile;
 import com.example.backend.repository.OrdersRepository;
 import com.example.backend.repository.TypeRepository;
@@ -26,19 +25,16 @@ public class OrderService {
         this.typeProductRepository = typeProductRepository;
     }
 
-    public void createOrder(User user, Integer type, Float weight, String picture,Long latitude,Long longitude) throws BaseException {
+    public void createOrder(User user, Type type, Float weight, String picture,Long latitude,Long longitude) throws BaseException {
 
-        Optional<Type> typeId = typeProductRepository.findById(type);
-        if (typeId.isEmpty()){
-            throw TypeException.notFoundId();
-        }
+
 
         Orders entity = new Orders();
 
         entity.setDate(new Date());
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
-        entity.setType(typeId.get());
+        entity.setType(type);
         entity.setPicture(picture);
         entity.setWeight(weight);
         entity.setLatitude(latitude);
@@ -93,5 +89,10 @@ public class OrderService {
             throw OrderException.orderNotFound();
         }
         return byId.get();
+    }
+
+    public boolean fineByType(Type type){
+        List<Orders> byType = repository.findAllByType(type);
+        return !byType.isEmpty();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.business.*;
+import com.example.backend.entity.News;
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
@@ -23,6 +24,7 @@ public class AdminApi {
     private final UserBusiness userBusiness;
     private final OrderBusiness orderBusiness;
     private final TypeBuyingBusiness buyingBusiness;
+
 
     public AdminApi(ShopBusiness shopBusiness, TypeBusiness typeBusiness, UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBuyingBusiness buyingBusiness) {
         this.shopBusiness = shopBusiness;
@@ -114,16 +116,27 @@ public class AdminApi {
     @PostMapping("/type/list")
     public ResponseEntity<Object> typeList() {
 
-        Object list = this.typeBusiness.list();
+        Object list = typeBusiness.list();
 
         return ResponseEntity.ok(list);
     }
 
     @PostMapping("/type/save")
-    public ResponseEntity<Object> save(@RequestBody TypeReq req) throws BaseException {
+    public ResponseEntity<Object> typeSave(@RequestBody TypeReq req) throws BaseException {
 
         Object res = typeBusiness.save(req);
 
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/type/delete")
+    public ResponseEntity<Object> typeDelete(@RequestBody TypeReq req) throws BaseException {
+        Object res = typeBusiness.delete(req);
+        return ResponseEntity.ok(res);
+    }
+    @PostMapping("/type/recovery")
+    public ResponseEntity<Object> typeRecovery(@RequestBody TypeReq req) throws BaseException {
+        Object res = typeBusiness.recovery(req);
         return ResponseEntity.ok(res);
     }
 
@@ -134,4 +147,22 @@ public class AdminApi {
         Object listByShop = buyingBusiness.getListByShop(req);
         return ResponseEntity.ok(listByShop);
     }
+
+    /*  NEWS  */
+
+    @PostMapping("/news/save")
+    public ResponseEntity<News> saveNews(@RequestBody News req) {
+
+
+
+        return ResponseEntity.ok(req);
+    }
+
+
+    @PostMapping("/news/delete")
+    public ResponseEntity<Object> deleteNews(@RequestBody News req){
+
+        return ResponseEntity.ok(req);
+    }
+
 }

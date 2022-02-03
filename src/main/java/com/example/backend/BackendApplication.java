@@ -14,22 +14,15 @@ import java.util.concurrent.TimeUnit;
 
 
 @SpringBootApplication
-public class BackendApplication implements WebMvcConfigurer {
-    public static String uploadDirectory = System.getProperty("user.dir");
+public class BackendApplication  {
 
-    private static Logger logger = LoggerFactory.getLogger(BackendApplication.class.getName());
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args)  {
 
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
+//        System.out.println(InetAddress.getLocalHost().getHostAddress());
         SpringApplication.run(BackendApplication.class, args);
     }
 
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/**").addResourceLocations("file:" + uploadDirectory + "/")
-                .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
-    }
 }

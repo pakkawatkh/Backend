@@ -5,7 +5,6 @@ import com.example.backend.config.token.TokenFilter;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.userModel.*;
 import com.example.backend.repository.UserRepository;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,7 @@ public class UserApi {
 
         @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
-        Object res = business.login(req);
+        Object res = business.loginUser(req);
         return ResponseEntity.ok(res);
     }
 

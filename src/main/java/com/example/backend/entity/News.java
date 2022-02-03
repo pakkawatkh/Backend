@@ -33,5 +33,3 @@ public class News extends AutoID {
     @Column(length = 200)
     private String reference;
 }
-
-

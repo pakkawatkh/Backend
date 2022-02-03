@@ -3,7 +3,6 @@ package com.example.backend.service;
 import com.example.backend.entity.Type;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.TypeException;
-import com.example.backend.model.Response;
 import com.example.backend.repository.TypeRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,10 @@ public class TypeService {
         this.setDefault();
     }
 
-    public List<Type> list() {
+    public List<Type> findByActive() {
+        return repository.findAllByActiveIsTrue();
+    }
+    public List<Type> findAll() {
         return repository.findAll();
     }
 
@@ -34,6 +36,7 @@ public class TypeService {
         Type entity = new Type();
 
         entity.setName("ไม่ระบุประเภท");
+        entity.setActive(true);
         entity.setId(1);
 
         repository.save(entity);
@@ -48,6 +51,7 @@ public class TypeService {
         Type entity = new Type();
 
         entity.setName(name);
+        entity.setActive(true);
 
         repository.save(entity);
 
@@ -74,17 +78,26 @@ public class TypeService {
         repository.save(entity);
     }
 
-    public Object delete(Integer id) throws BaseException {
-        Optional<Type> type = repository.findById(id);
 
-        if (type.isEmpty()) {
+    public Type findById(Integer id) throws BaseException {
+        Optional<Type> byId = repository.findById(id);
+        if (byId.isEmpty()){
             throw TypeException.notFoundId();
         }
-
-        Type entity = type.get();
-
-        repository.deleteById(entity.getId());
-
-        return new Response().success("delete success");
+        return byId.get();
     }
+
+    public void deleteById(Integer id) throws BaseException {
+        repository.deleteById(id);
+    }
+
+    public void changStatusById(Type type,Boolean active) throws BaseException {
+
+
+        type.setActive(active);
+
+        repository.save(type);
+    }
+
+
 }

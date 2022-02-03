@@ -15,5 +15,8 @@ public class TypeException extends BaseException {
     public static TypeException accessDenied(){
         return new TypeException("access.denied");
     }
+    public static TypeException requestInvalid () {
+        return new TypeException("request.invalid");
+    }
 
 }

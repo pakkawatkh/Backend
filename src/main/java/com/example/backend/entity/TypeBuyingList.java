@@ -4,18 +4,22 @@ import com.example.backend.entity.Base.AutoID;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
-public class TypeBuying extends AutoID {
+public class TypeBuyingList extends AutoID {
 
     @Column(nullable = false, length = 60)
     private String name;
+
+    @Column(nullable = false, length = 10)
+    private Float price;
 
     @JsonIgnore
     @JsonFormat(pattern="dd-MM-yyyy")
@@ -24,10 +28,7 @@ public class TypeBuying extends AutoID {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false)
-    private Shop shop;
+    @JoinColumn(name = "type_buying_id", nullable = false)
+    private TypeBuying buying;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "buying", orphanRemoval = true)
-    private List<TypeBuyingList> buyingLists;
 }
