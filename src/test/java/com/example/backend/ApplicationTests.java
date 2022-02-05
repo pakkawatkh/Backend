@@ -1,6 +1,5 @@
 package com.example.backend;
 
-import com.example.backend.entity.User;
 import com.example.backend.service.OrderService;
 import com.example.backend.service.UserService;
 import org.junit.jupiter.api.MethodOrderer;
@@ -10,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
-import java.util.Optional;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) //จัดลำดับการรัน function @Test
-class BackendApplicationTests {
+class ApplicationTests {
 
     @Autowired
     private UserService userService;
