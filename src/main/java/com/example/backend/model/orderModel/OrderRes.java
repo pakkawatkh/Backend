@@ -13,6 +13,8 @@ import java.util.Optional;
 @Data
 public class OrderRes {
 
+    private Integer id;
+
     private Orders.Status status;
 
     private Date date;
@@ -27,7 +29,7 @@ public class OrderRes {
 
     private Long longitude ;
 
-    private Optional<UserResponse> user;
+
 
 
 }

@@ -1,12 +1,16 @@
 package com.example.backend.mapper;
 
 import com.example.backend.entity.Orders;
-import com.example.backend.model.orderModel.OrderListRes;
+import com.example.backend.model.orderModel.OrderRes;
 import org.mapstruct.Mapper;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-//    OrderListRes toOrderListResponse(Orders orders);
+
+    List<OrderRes> toListOrderRes(List<Orders> orders);
+
+    OrderRes toOrderRes(Orders orders);
+
 }

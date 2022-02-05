@@ -3,11 +3,11 @@ package com.example.backend.api;
 import com.example.backend.business.*;
 import com.example.backend.entity.News;
 import com.example.backend.entity.Shop;
+import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
-import com.example.backend.model.adminModel.UserActiveReq;
+import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.shopModel.ShopReq;
-import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.UserEditReq;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,6 @@ public class AdminApi {
     private final OrderBusiness orderBusiness;
     private final TypeBuyingBusiness buyingBusiness;
 
-
     public AdminApi(ShopBusiness shopBusiness, TypeBusiness typeBusiness, UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBuyingBusiness buyingBusiness) {
         this.shopBusiness = shopBusiness;
         this.typeBusiness = typeBusiness;
@@ -33,7 +32,6 @@ public class AdminApi {
         this.orderBusiness = orderBusiness;
         this.buyingBusiness = buyingBusiness;
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
@@ -81,7 +79,7 @@ public class AdminApi {
 
     /*   USER    */
     @PostMapping("/user/active")
-    public ResponseEntity<Object> updateUserActive(@RequestBody UserActiveReq req) throws BaseException {
+    public ResponseEntity<Object> updateUserActive(@RequestBody AUserActiveReq req) throws BaseException {
         Object res = userBusiness.updateUserActive(req);
         return ResponseEntity.ok(res);
     }
@@ -122,7 +120,7 @@ public class AdminApi {
     }
 
     @PostMapping("/type/save")
-    public ResponseEntity<Object> typeSave(@RequestBody TypeReq req) throws BaseException {
+    public ResponseEntity<Object> typeSave(@RequestBody Type req) throws BaseException {
 
         Object res = typeBusiness.save(req);
 
@@ -130,12 +128,12 @@ public class AdminApi {
     }
 
     @PostMapping("/type/delete")
-    public ResponseEntity<Object> typeDelete(@RequestBody TypeReq req) throws BaseException {
+    public ResponseEntity<Object> typeDelete(@RequestBody Type req) throws BaseException {
         Object res = typeBusiness.delete(req);
         return ResponseEntity.ok(res);
     }
     @PostMapping("/type/recovery")
-    public ResponseEntity<Object> typeRecovery(@RequestBody TypeReq req) throws BaseException {
+    public ResponseEntity<Object> typeRecovery(@RequestBody Type req) throws BaseException {
         Object res = typeBusiness.recovery(req);
         return ResponseEntity.ok(res);
     }
@@ -152,8 +150,6 @@ public class AdminApi {
 
     @PostMapping("/news/save")
     public ResponseEntity<News> saveNews(@RequestBody News req) {
-
-
 
         return ResponseEntity.ok(req);
     }

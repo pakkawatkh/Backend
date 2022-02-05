@@ -6,7 +6,8 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.Response;
-import com.example.backend.model.adminModel.UserActiveReq;
+import com.example.backend.model.adminModel.AUserActiveReq;
+import com.example.backend.model.adminModel.AUserResponse;
 import com.example.backend.model.userModel.*;
 import com.example.backend.service.UserService;
 import com.example.backend.service.token.TokenService;
@@ -81,7 +82,7 @@ public class UserBusiness {
         }
 
         service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine());
-        return new Response().ok("edit profile success", null, null);
+        return new Response().success("edit profile success");
 
     }
 
@@ -91,7 +92,7 @@ public class UserBusiness {
             throw UserException.requestInvalid();
         }
         service.editPhoneById(user, req.getPhone());
-        return new Response().ok("edit phone success", null, null);
+        return new Response().success("edit phone success");
 
     }
 
@@ -99,11 +100,29 @@ public class UserBusiness {
         User user = tokenService.getUserByToken();
 
         UserResponse userResponse = mapper.toUserResponse(user);
+
         return new Response().ok(MS, "profile", userResponse);
 
     }
 
-    public Object updateUserActive(UserActiveReq req) throws BaseException {
+
+
+    public Object changPassword(UserPasswordReq req) throws BaseException {
+
+        User user = tokenService.getUserByToken();
+        if (req.getPasswordOld() == null || req.getPasswordNew() == null) {
+            throw UserException.requestInvalid();
+        }
+
+        if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) {
+            throw UserException.passwordIncorrect();
+        }
+
+        service.updatePassword(user, req.getPasswordNew());
+        return new Response().success("update password success");
+    }
+// Admin ///
+    public Object updateUserActive(AUserActiveReq req) throws BaseException {
 
         tokenService.checkAdminByToken();
         if (req.getId() == null || req.getActive() == null) {
@@ -121,28 +140,14 @@ public class UserBusiness {
         return new Response().success("update success");
 
     }
-
-    public Object changPassword(UserPasswordReq req) throws BaseException {
-
-        User user = tokenService.getUserByToken();
-        if (req.getPasswordOld() == null || req.getPasswordNew() == null) {
-            throw UserException.requestInvalid();
-        }
-
-        if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) {
-            throw UserException.passwordIncorrect();
-        }
-
-        service.updatePassword(user, req.getPasswordNew());
-        return new Response().success("update password success");
-    }
-
     public Object userList() throws BaseException {
 
         tokenService.checkAdminByToken();
 
         List<User> all = service.findAll();
-        return new Response().ok(MS, "user", all);
+
+        List<AUserResponse> aUserResponses = mapper.toListAUserResponse(all);
+        return new Response().ok(MS, "user", aUserResponses);
     }
 
     public Object userById(User req) throws BaseException {
@@ -153,7 +158,9 @@ public class UserBusiness {
         }
 
         User user = service.findById(req.getId());
-        return new Response().ok(MS, "user", user);
+
+        AUserResponse aUserResponse = mapper.toAUserResponse(user);
+        return new Response().ok(MS, "user", aUserResponse);
     }
 
     public Object userByShop(Shop req) throws BaseException {

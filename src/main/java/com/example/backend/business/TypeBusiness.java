@@ -4,7 +4,6 @@ import com.example.backend.entity.Type;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.TypeException;
 import com.example.backend.model.Response;
-import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.service.OrderService;
 import com.example.backend.service.TypeService;
 import com.example.backend.service.token.TokenService;
@@ -36,7 +35,7 @@ public class TypeBusiness {
         return new Response().ok(MS, "type", list);
     }
 
-    public Object save(TypeReq req) throws BaseException {
+    public Object save(Type req) throws BaseException {
         String mss;
         tokenService.checkAdminByToken();
 
@@ -54,7 +53,7 @@ public class TypeBusiness {
         return new Response().success(mss + " success");
     }
 
-    public Object delete(TypeReq req) throws BaseException {
+    public Object delete(Type req) throws BaseException {
         String ms;
         Type type = service.findById(req.getId());
         boolean check = orderService.fineByType(type);
@@ -68,7 +67,7 @@ public class TypeBusiness {
         }
         return new Response().success(ms);
     }
-    public Object recovery(TypeReq req) throws BaseException {
+    public Object recovery(Type req) throws BaseException {
 
         Type type = service.findById(req.getId());
 

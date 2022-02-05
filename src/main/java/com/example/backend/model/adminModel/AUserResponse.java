@@ -1,6 +1,5 @@
-package com.example.backend.model.userModel;
+package com.example.backend.model.adminModel;
 
-import com.example.backend.entity.Orders;
 import com.example.backend.entity.User;
 import com.example.backend.model.orderModel.OrderRes;
 import lombok.Data;
@@ -8,7 +7,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserResponse {
+public class AUserResponse {
+
+    private String id;
 
     private String firstname;
 

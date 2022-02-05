@@ -21,19 +21,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
 
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
@@ -45,7 +46,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -56,25 +57,25 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.18.2</version>
+            <version>3.18.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>2.6.1</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>biz.source_code</groupId>
             <artifactId>base64coder</artifactId>
-            <version>2010-09-21</version>
+            <version>2010-12-19</version>
             <scope>import</scope>
         </dependency>
 
@@ -101,7 +102,6 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
-
 
     </dependencies>
 

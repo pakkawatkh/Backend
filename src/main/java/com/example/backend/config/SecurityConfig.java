@@ -23,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/admin/login",
             "/uploads/**",
             "/news/**",
+            "/swagger-ui.html/**",
+            "/api/**",
             "/test/**"
     };
     private final TokenService tokenService;

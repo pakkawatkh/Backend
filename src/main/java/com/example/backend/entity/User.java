@@ -58,7 +58,7 @@ public class User extends RandomID {
     @Column(nullable = false)
     private Date last_password;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Orders> order;
 

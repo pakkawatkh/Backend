@@ -8,6 +8,7 @@ import com.example.backend.exception.OrderException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderReq;
+import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.model.orderModel.OrderStatusReq;
 import com.example.backend.service.OrderService;
 import com.example.backend.service.TypeService;
@@ -70,9 +71,11 @@ public class OrderBusiness {
 
         User user = tokenService.getUserByToken();
 
-        Object orderByUser = service.findByUser(user);
+        List<Orders> byUser = service.findByUser(user);
 
-        return new Response().ok(MS, "product", orderByUser);
+
+        List<OrderRes> orderRes = mapper.toListOrderRes(byUser);
+        return new Response().ok(MS, "product", orderRes);
     }
 
 
@@ -82,16 +85,11 @@ public class OrderBusiness {
         if (req.getId()==null){
             throw OrderException.requestInvalid();
         }
+        Orders orderById = service.findByIdAndUser(req.getId(), user);
 
-        Orders orderById;
-        if (user.getRole() == User.Role.ADMIN) {
+        OrderRes orderRes = mapper.toOrderRes(orderById);
 
-            orderById = service.findById(req.getId());
-
-        } else {
-            orderById = service.findByIdAndUser(req.getId(), user);
-        }
-        return new Response().ok(MS, "product", orderById);
+        return new Response().ok(MS, "product", orderRes);
     }
 
 
@@ -100,7 +98,9 @@ public class OrderBusiness {
         tokenService.checkAdminByToken();
         List<Orders> all = service.findAll();
 
-        return new Response().ok(MS, "product", all);
+        List<OrderRes> orderRes = mapper.toListOrderRes(all);
+
+        return new Response().ok(MS, "product", orderRes);
     }
 
     public Object getOrderByUser(User req) throws BaseException {
@@ -113,7 +113,9 @@ public class OrderBusiness {
 
         User user = userService.findById(req.getId());
 
-        Object orderByUser = service.findByUser(user);
-        return new Response().ok(MS, "product", orderByUser);
+        List<Orders> byUser = service.findByUser(user);
+
+        List<OrderRes> orderRes = mapper.toListOrderRes(byUser);
+        return new Response().ok(MS, "product", orderRes);
     }
 }

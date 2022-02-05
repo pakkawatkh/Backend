@@ -14,7 +14,6 @@ public class UserEditInfoReq {
 
     private String lastname;
 
-
     private String phone;
 
     private String address;
