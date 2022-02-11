@@ -6,5 +6,6 @@ import lombok.Data;
 public class UserForgetPasswordReq {
 
     private String phone;
+
     private String password;
 }

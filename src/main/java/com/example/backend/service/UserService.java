@@ -5,14 +5,12 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
 import com.example.backend.model.userModel.AdminReq;
-import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -56,26 +54,25 @@ public class UserService {
 
     }
 
-    public Optional<User> findByPhone(String phone) throws BaseException {
-        Optional<User> byEmail = repository.findByPhone(phone);
-        if (byEmail.isEmpty()) {
+    public User findByPhone(String phone) throws BaseException {
+
+        Optional<User> byPhone = repository.findByPhone(phone);
+
+        if (byPhone.isEmpty()) {
             throw UserException.notFound();
         }
-        return byEmail;
+        return byPhone.get();
     }
 
     public boolean matchPassword(String rawPassword, String encodedPassword) {
-        // check password is match (database and request)
 
-        boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
-        return matches;
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
 
     public void createAdmin() {
 
         AdminReq req = new AdminReq();
-
 
         if (repository.existsByPhone(req.getPhone()))
             return;

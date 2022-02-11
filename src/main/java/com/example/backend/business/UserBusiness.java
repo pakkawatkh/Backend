@@ -14,7 +14,6 @@ import com.example.backend.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserBusiness {
@@ -67,8 +66,8 @@ public class UserBusiness {
         if (req.getPhone() == null || req.getPassword() == null) {
             throw UserException.requestInvalid();
         }
-        Optional<User> opt = service.findByPhone(req.getPhone());
-        User user = opt.get();
+        User user = service.findByPhone(req.getPhone());
+
         if (!service.matchPassword(req.getPassword(), user.getPassword())) {
             throw UserException.notFound();
         }
@@ -106,7 +105,6 @@ public class UserBusiness {
     }
 
 
-
     public Object changPassword(UserPasswordReq req) throws BaseException {
 
         User user = tokenService.getUserByToken();
@@ -121,7 +119,8 @@ public class UserBusiness {
         service.updatePassword(user, req.getPasswordNew());
         return new Response().success("update password success");
     }
-// Admin ///
+
+    // Admin ///
     public Object updateUserActive(AUserActiveReq req) throws BaseException {
 
         tokenService.checkAdminByToken();
@@ -140,6 +139,7 @@ public class UserBusiness {
         return new Response().success("update success");
 
     }
+
     public Object userList() throws BaseException {
 
         tokenService.checkAdminByToken();
