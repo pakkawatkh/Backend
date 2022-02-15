@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.backend.SetDefault.DataToken;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
@@ -32,11 +33,15 @@ public class TokenService {
         this.userRepository = userRepository;
     }
 
-    public String tokenize(User user) {
+    public String tokenize(User user,boolean type) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 60*3);
+
+        if(type) calendar.add(Calendar.MINUTE, 60*3);
+        else calendar.add(Calendar.SECOND, 5);
+
         Date expiresAt = calendar.getTime();
+
 
         String token = JWT.create().withIssuer(issuer)
                 .withClaim("principal", user.getId())
@@ -61,6 +66,15 @@ public class TokenService {
 
     private Algorithm algorithm() {
         return Algorithm.HMAC256(secret);
+    }
+    public boolean checkLoginSocial() throws BaseException {
+        String userId = this.userId();
+
+        DataToken data = new DataToken();
+        if (!userId.equals(data.getId())) {
+            throw UserException.notFound();
+        }
+        return true;
     }
 
     public User getUserByToken() throws BaseException {
