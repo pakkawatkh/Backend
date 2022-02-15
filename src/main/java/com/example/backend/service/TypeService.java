@@ -23,6 +23,7 @@ public class TypeService {
     public List<Type> findByActive() {
         return repository.findAllByActiveIsTrue();
     }
+
     public List<Type> findAll() {
         return repository.findAll();
     }
@@ -45,9 +46,8 @@ public class TypeService {
     public void create(String name) throws BaseException {
         boolean type = repository.existsByName(name);
 
-        if (type) {
-            throw TypeException.nameDuplicated();
-        }
+        if (type) throw TypeException.nameDuplicated();
+
         Type entity = new Type();
 
         entity.setName(name);
@@ -55,35 +55,29 @@ public class TypeService {
 
         repository.save(entity);
 
-
     }
 
     public void edit(Integer id, String name) throws BaseException {
         Optional<Type> type = repository.findById(id);
 
-        if (type.isEmpty()) {
-            throw TypeException.notFoundId();
-        }
+        if (type.isEmpty()) throw TypeException.notFoundId();
+
         Type entity = type.get();
 
-        if (entity.getName().equals(name)){
-            System.out.println(entity.getName()+name);
-            return;
-        }
-        if (repository.existsByName(name)) {
-            throw TypeException.nameDuplicated();
-        }
-        entity.setName(name);
+        if (entity.getName().equals(name)) return;
 
+        if (repository.existsByName(name)) throw TypeException.nameDuplicated();
+
+        entity.setName(name);
         repository.save(entity);
     }
 
 
     public Type findById(Integer id) throws BaseException {
         Optional<Type> byId = repository.findById(id);
-        if (byId.isEmpty()){
-            throw TypeException.notFoundId();
-        }
+
+        if (byId.isEmpty()) throw TypeException.notFoundId();
+
         return byId.get();
     }
 
@@ -91,8 +85,7 @@ public class TypeService {
         repository.deleteById(id);
     }
 
-    public void changStatusById(Type type,Boolean active) throws BaseException {
-
+    public void changStatusById(Type type, Boolean active) throws BaseException {
 
         type.setActive(active);
 

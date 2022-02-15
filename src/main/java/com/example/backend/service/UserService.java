@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.SetDefault.DataToken;
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
@@ -25,19 +26,14 @@ public class UserService {
         this.shopService = shopService;
         this.passwordEncoder = passwordEncoder;
 
-
-        this.createAdmin();
+        createAdmin();
+        createUserToken();
     }
 
     public void createUser(String firstname, String lastname, String password, String phone) throws BaseException {
 
+        if (repository.existsByPhone(phone)) throw UserException.createPhoneDuplicated();
 
-        if (repository.existsByPhone(phone)) {
-            throw UserException.createPhoneDuplicated();
-        }
-
-
-        //save data to table user
         User entity = new User();
 
         entity.setFirstname(firstname);
@@ -49,23 +45,19 @@ public class UserService {
         entity.setDate(new Date());
         entity.setLast_password(new Date());
 
-
         repository.save(entity);
-
     }
 
     public User findByPhone(String phone) throws BaseException {
 
         Optional<User> byPhone = repository.findByPhone(phone);
 
-        if (byPhone.isEmpty()) {
-            throw UserException.notFound();
-        }
+        if (byPhone.isEmpty()) throw UserException.notFound();
+
         return byPhone.get();
     }
 
     public boolean matchPassword(String rawPassword, String encodedPassword) {
-
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
@@ -74,8 +66,7 @@ public class UserService {
 
         AdminReq req = new AdminReq();
 
-        if (repository.existsByPhone(req.getPhone()))
-            return;
+        if (repository.existsByPhone(req.getPhone())) return;
 
         User user = new User();
 
@@ -91,8 +82,30 @@ public class UserService {
         repository.save(user);
 
     }
+    public void createUserToken() {
 
-    public void editUserById(User user, String firstName,String lastName, String facebook,String line) {
+        DataToken data = new DataToken();
+
+        if (repository.existsByPhone(data.getPhone())) return;
+
+        User user = new User();
+
+        user.setLastname(data.getLastname());
+        user.setFirstname(data.getFirstname());
+        user.setRole(data.getRole());
+        user.setDate(new Date());
+        user.setPassword(passwordEncoder.encode(data.getPassword()));
+        user.setPhone(data.getPhone());
+        user.setActive(data.getActive());
+        user.setLast_password(new Date());
+
+        repository.save(user);
+
+    }
+
+
+
+    public void editUserById(User user, String firstName, String lastName, String facebook, String line) {
 
         user.setFirstname(firstName);
         user.setLastname(lastName);
@@ -160,5 +173,6 @@ public class UserService {
         user.setLine(line);
         repository.save(user);
     }
+
 
 }
