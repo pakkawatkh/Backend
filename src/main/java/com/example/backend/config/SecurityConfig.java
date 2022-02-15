@@ -25,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/news/**",
             "/swagger-ui.html/**",
             "/api/**",
-            "/test/**"
+            "/test/**",
+            "/loginSocial/getToken"
     };
     private final TokenService tokenService;
 
@@ -52,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     corsConfiguration.setAllowCredentials(true);
 //                    Configuration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
                     corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
+                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.addAllowedMethod("GET");
                     corsConfiguration.addAllowedMethod("POST");
