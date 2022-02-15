@@ -20,13 +20,11 @@ public class Response {
         res.put("status", HttpStatus.OK.value());
         res.put("message", message);
 
-        if (key != null) {
+        Map<Object, Object> data = new HashMap<>();
 
-            Map<Object, Object> data = new HashMap<>();
+        data.put(key, value);
+        res.put("data", data);
 
-            data.put(key, value);
-            res.put("data", data);
-        }
         return res;
     }
 
