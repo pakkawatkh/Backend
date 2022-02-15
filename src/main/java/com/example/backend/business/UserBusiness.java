@@ -45,7 +45,7 @@ public class UserBusiness {
         if (!service.matchPassword(req.getPassword(), user.getPassword())) {
             throw UserException.notFound();
         }
-        String token = tokenService.tokenize(user);
+        String token = tokenService.tokenize(user,true);
 
         return new Response().ok("login success", "token", token);
     }
@@ -57,7 +57,7 @@ public class UserBusiness {
         if (user.getRole() != User.Role.ADMIN) {
             throw UserException.notFound();
         }
-        String token = tokenService.tokenize(user);
+        String token = tokenService.tokenize(user,true);
 
         return new Response().ok("login success", "token", token);
     }
@@ -186,7 +186,7 @@ public class UserBusiness {
     public Object refreshToken() throws BaseException {
         User user = tokenService.getUserByToken();
 
-        String token = tokenService.tokenize(user);
+        String token = tokenService.tokenize(user,true);
 
         return new Response().ok("login success", "token", token);
 
