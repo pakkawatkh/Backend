@@ -10,6 +10,7 @@ import com.example.backend.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TypeBusiness {
@@ -39,11 +40,11 @@ public class TypeBusiness {
         String mss;
         tokenService.checkAdminByToken();
 
-        if (req.getName()==null){
+        if (Objects.isNull(req.getName())||req.getName().contains(" ")){
             throw TypeException.requestInvalid();
         }
 
-        if (req.getId() == null) {
+        if ( Objects.isNull(req.getId())) {
             service.create(req.getName());
             mss = "create";
         } else {
