@@ -5,10 +5,6 @@ import com.example.backend.entity.Orders;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.model.orderModel.OrderStatusReq;
-import com.example.backend.repository.OrdersRepository;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.service.OrderService;
-import com.example.backend.service.token.TokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,17 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderApi {
 
-    private final OrdersRepository orderRepository;
-    private final UserRepository userRepository;
-    private final OrderService orderService;
-    private final TokenService tokenService;
     private final OrderBusiness business;
 
-    public OrderApi(OrdersRepository orderRepository, UserRepository userRepository, OrderService orderService, TokenService tokenService, OrderBusiness business) {
-        this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
-        this.orderService = orderService;
-        this.tokenService = tokenService;
+    public OrderApi(OrderBusiness business) {
         this.business = business;
     }
 
@@ -68,9 +56,6 @@ public class OrderApi {
         Object order = business.getById(req);
         return ResponseEntity.ok(order);
     }
-
-
-
 
 
 }

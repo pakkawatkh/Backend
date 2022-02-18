@@ -12,13 +12,13 @@ import java.util.Date;
 @Entity
 public class Orders extends AutoID {
 
-    @Column(length = 10, columnDefinition = "varchar(10) default 'BUY'",nullable = false)
+    @Column(length = 10,nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.BUY;
 
     @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
-    private Date date;
+    private Date date = new Date();
 
     @Column(length = 10)
     private Float weight;

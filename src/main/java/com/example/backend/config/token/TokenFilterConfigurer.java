@@ -14,7 +14,7 @@ public class TokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultSecu
     }
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
         TokenFilter filter = new TokenFilter(tokenService);
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }

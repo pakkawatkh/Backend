@@ -106,16 +106,18 @@ public class ShopBusiness {
 
         tokenService.getUserByToken();
         List<Shop> all = service.findAllByActive();
+        List<ShopResponse> shopResponses = mapper.toListShopRes(all);
 
-        return new Response().ok(MS, "shop", all);
+        return new Response().ok(MS, "shop", shopResponses);
     }
 
     public Object list() throws BaseException {
 
         tokenService.getUserByToken();
         List<Shop> all = service.findAll();
+        List<ShopResponse> shopResponses = mapper.toListShopRes(all);
 
-        return new Response().ok(MS, "shop", all);
+        return new Response().ok(MS, "shop", shopResponses);
     }
 
     public Object byIdActive(ShopReq req) throws BaseException {

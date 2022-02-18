@@ -67,8 +67,7 @@ public class FileApi {
         img.put("url",new BaseUrlFile().ipAddress()+dir+imgName);
         img.put("name",imgName);
 
-        Object res = new Response().ok("upload success", "img", img);
-        return res;
+        return new Response().ok("upload success", "img", img);
 
     }
 }

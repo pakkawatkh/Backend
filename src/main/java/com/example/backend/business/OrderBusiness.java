@@ -54,7 +54,7 @@ public class OrderBusiness {
 
         User user = tokenService.getUserByToken();
 
-        if (req.getType() == null || req.getWeight() == null || req.getPicture() == null || req.getLatitude() == null || req.getLongitude() == null){
+        if ( req.getType() == null || req.getWeight() == null || req.getPicture() == null || req.getLatitude() == null || req.getLongitude() == null){
             throw OrderException.requestInvalid();
         }
 
@@ -72,7 +72,6 @@ public class OrderBusiness {
         User user = tokenService.getUserByToken();
 
         List<Orders> byUser = service.findByUser(user);
-
 
         List<OrderRes> orderRes = mapper.toListOrderRes(byUser);
         return new Response().ok(MS, "product", orderRes);

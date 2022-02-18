@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.backend.SetDefault.DataToken;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.UserException;
@@ -29,28 +28,35 @@ public class TokenService {
     @Value("${app.token.issuer}")
     private String issuer;
 
+    @Value("${app.login-social.user-id}")
+    private String userId;
+
     public TokenService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public String tokenize(User user,boolean type) {
+    public String tokenize(User user, boolean type) {
 
         Calendar calendar = Calendar.getInstance();
 
-        if(type) calendar.add(Calendar.MINUTE, 60*3);
+        if (type) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
         else calendar.add(Calendar.SECOND, 5);
 
         Date expiresAt = calendar.getTime();
 
 
-        String token = JWT.create().withIssuer(issuer)
+        return JWT.create().withIssuer(issuer)
                 .withClaim("principal", user.getId())
                 .withClaim("lastpass", user.getLast_password().toString())
                 .withExpiresAt(expiresAt)
                 .sign(algorithm());
+    }
 
-        //return token type String
-        return token;
+    public String tokenizeSocial(User user) {
+        return tokenize(user, false);
+    }
+    public String tokenizeLogin(User user) {
+        return tokenize(user, true);
     }
 
     public DecodedJWT verify(String token) {
@@ -67,14 +73,12 @@ public class TokenService {
     private Algorithm algorithm() {
         return Algorithm.HMAC256(secret);
     }
-    public boolean checkLoginSocial() throws BaseException {
+
+    public void checkLoginSocial() throws BaseException {
         String userId = this.userId();
 
-        DataToken data = new DataToken();
-        if (!userId.equals(data.getId())) {
-            throw UserException.notFound();
-        }
-        return true;
+        if (!userId.equals(this.userId)) throw UserException.notFound();
+
     }
 
     public User getUserByToken() throws BaseException {
@@ -82,58 +86,47 @@ public class TokenService {
         String date = this.lastPassword();
 
 
-        Optional<User> opt = userRepository.findById(userId);
-        if (opt.isEmpty()) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
             throw UserException.notFound();
         }
 
-        if (!date.equals("["+opt.get().getLast_password()+"]")){
+        if (!date.equals("[" + user.get().getLast_password() + "]")) {
             throw UserException.expires();
         }
 
-        if (!opt.get().getActive()) {
+        if (!user.get().getActive()) {
             throw UserException.accessDenied();
         }
 
-        User user = opt.get();
-        return user;
+        return user.get();
     }
 
     public void checkAdminByToken() throws BaseException {
         String userId = this.userId();
         String date = this.lastPassword();
 
-        System.out.println(5);
         Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw UserException.notFound();
-        }
-        if (!date.equals("["+user.get().getLast_password()+"]")){
-            throw UserException.expires();
-        }
-        if (!user.get().getActive()) {
-            throw UserException.accessDenied();
-        }
-        if (user.get().getRole()!= User.Role.ADMIN){
-            throw UserException.accessDenied();
-        }
+        if (user.isEmpty())  throw UserException.notFound();
 
+        if (!date.equals("[" + user.get().getLast_password() + "]"))  throw UserException.expires();
+
+        if (!user.get().getActive())  throw UserException.accessDenied();
+
+        if (user.get().getRole() != User.Role.ADMIN) throw UserException.accessDenied();
 
     }
 
-    public String userId(){
+    public String userId() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
-        String userId = (String) authentication.getPrincipal();
-        return userId;
+        return (String) authentication.getPrincipal();
     }
 
-    public String lastPassword(){
+    public String lastPassword() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
-        String date = authentication.getAuthorities().toString();
-        return date;
+        return authentication.getAuthorities().toString();
     }
-
 
 }

@@ -22,6 +22,9 @@ app:
   token:
     secret: m#MySecret
     issuer: BackendService
+  login-social:
+    user-id: ccd6bcd9-ed08-4fb5-b05a-29f27ced5375
+
 
 server:
   port : 8080

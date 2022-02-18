@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.SetDefault.DataToken;
+
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
@@ -26,8 +26,8 @@ public class UserService {
         this.shopService = shopService;
         this.passwordEncoder = passwordEncoder;
 
-        createAdmin();
-        createUserToken();
+        this.createAdmin();
+
     }
 
     public void createUser(String firstname, String lastname, String password, String phone) throws BaseException {
@@ -44,6 +44,7 @@ public class UserService {
         entity.setActive(true);
         entity.setDate(new Date());
         entity.setLast_password(new Date());
+        entity.setLogin(User.Login.DEFAULT);
 
         repository.save(entity);
     }
@@ -78,32 +79,11 @@ public class UserService {
         user.setPhone(req.getPhone());
         user.setActive(req.getActive());
         user.setLast_password(new Date());
+        user.setLogin(User.Login.DEFAULT);
 
         repository.save(user);
 
     }
-    public void createUserToken() {
-
-        DataToken data = new DataToken();
-
-        if (repository.existsByPhone(data.getPhone())) return;
-
-        User user = new User();
-
-        user.setLastname(data.getLastname());
-        user.setFirstname(data.getFirstname());
-        user.setRole(data.getRole());
-        user.setDate(new Date());
-        user.setPassword(passwordEncoder.encode(data.getPassword()));
-        user.setPhone(data.getPhone());
-        user.setActive(data.getActive());
-        user.setLast_password(new Date());
-
-        repository.save(user);
-
-    }
-
-
 
     public void editUserById(User user, String firstName, String lastName, String facebook, String line) {
 

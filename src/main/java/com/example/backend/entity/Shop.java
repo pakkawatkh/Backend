@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
+
 @Data
 @Entity
 public class Shop extends AutoID {
@@ -19,12 +21,12 @@ public class Shop extends AutoID {
     @Column(length = 60)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean active;
+    @Column(nullable = false)
+    private Boolean active = TRUE;
 
     @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
-    private Date date;
+    private Date date = new Date();
 
     @Column(nullable = false)
     private Long latitude;
@@ -40,6 +42,10 @@ public class Shop extends AutoID {
     @JsonIgnore
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
     private List<TypeBuying> buying;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "shop", orphanRemoval = true)
+    private List<Comments> comments;
 
 }
 

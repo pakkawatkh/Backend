@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
@@ -54,11 +56,21 @@ public class User extends RandomID {
     @Column(length = 200)
     private String address;
 
+    @Column(length = 50)
+    private String loginSocial;
+
+    @Column(length = 5)
+    private Boolean register = FALSE;
+
+    @Column(length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Login login = Login.DEFAULT;
+
     @JsonIgnore
     @Column(nullable = false)
     private Date last_password;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Orders> order;
 
@@ -66,9 +78,14 @@ public class User extends RandomID {
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Shop shop;
 
-    public enum Role {
-        ADMIN, USER, SHOP
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Comments> comments;
+
+    public enum Role {ADMIN, USER, SHOP}
+
+    public enum Login {DEFAULT, FACEBOOK, LINE}
+
 
 }
 

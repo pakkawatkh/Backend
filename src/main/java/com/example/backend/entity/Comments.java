@@ -11,24 +11,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
+import static java.lang.Boolean.TRUE;
+
 @Data
 @Entity
-public class TypeBuyingList extends AutoID {
+public class Comments extends AutoID {
 
     @Column(nullable = false, length = 60)
-    private String name;
+    private String title;
 
-    @Column(nullable = false, length = 10)
-    private Float price;
-
-    @JsonIgnore
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false)
     private Date date = new Date();
 
+    @Column(nullable = false)
+    private Boolean active = TRUE;
+
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "type_buying_id", nullable = false)
-    private TypeBuying buying;
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 }

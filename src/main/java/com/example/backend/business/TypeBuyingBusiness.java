@@ -19,7 +19,7 @@ public class TypeBuyingBusiness {
     public final TokenService tokenService;
     public final TypeBuyingService service;
     public final ShopService shopService;
-    private String MS = "OK";
+    private final String MS = "OK";
 
     public TypeBuyingBusiness(TokenService tokenService, TypeBuyingService service, ShopService shopService) {
         this.tokenService = tokenService;

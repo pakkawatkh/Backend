@@ -20,7 +20,7 @@ public class UserBusiness {
     private final UserService service;
     private final TokenService tokenService;
     private final UserMapper mapper;
-    private String MS = "OK";
+    private final String MS = "OK";
 
     public UserBusiness(UserService userService, TokenService tokenService, UserMapper mapper) {
         this.service = userService;
@@ -45,7 +45,7 @@ public class UserBusiness {
         if (!service.matchPassword(req.getPassword(), user.getPassword())) {
             throw UserException.notFound();
         }
-        String token = tokenService.tokenize(user,true);
+        String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);
     }
@@ -57,7 +57,7 @@ public class UserBusiness {
         if (user.getRole() != User.Role.ADMIN) {
             throw UserException.notFound();
         }
-        String token = tokenService.tokenize(user,true);
+        String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);
     }
@@ -186,10 +186,15 @@ public class UserBusiness {
     public Object refreshToken() throws BaseException {
         User user = tokenService.getUserByToken();
 
-        String token = tokenService.tokenize(user,true);
+        String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);
 
+    }
+
+    public Object loginSocial(LoginSocialRequest request){
+
+        return "";
     }
 
 }

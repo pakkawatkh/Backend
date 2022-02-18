@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
+
 @Data
 @Entity
 public class Type extends AutoID {
@@ -20,7 +22,7 @@ public class Type extends AutoID {
     @OneToMany(mappedBy = "type")
     private List<Orders> orders;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean active;
+    @Column(nullable = false)
+    private Boolean active = TRUE;
 }
 

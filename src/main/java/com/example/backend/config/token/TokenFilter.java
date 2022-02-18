@@ -1,8 +1,6 @@
 package com.example.backend.config.token;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.backend.exception.BaseException;
-import com.example.backend.exception.UserException;
 import com.example.backend.service.token.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +9,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -35,7 +32,7 @@ public class TokenFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        
+
         String authorization = request.getHeader("Authorization");
         if (ObjectUtils.isEmpty(authorization)) {
             filterChain.doFilter(servletRequest, servletResponse);

@@ -31,7 +31,6 @@ public class OrderService {
 
         Orders entity = new Orders();
 
-        entity.setDate(new Date());
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
         entity.setType(type);

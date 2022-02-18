@@ -17,7 +17,7 @@ public class TypeBusiness {
     private final TypeService service;
     private final TokenService tokenService;
     private final OrderService orderService;
-    private String MS = "OK";
+    private final String MS = "OK";
 
     public TypeBusiness(TypeService service, TokenService tokenService, OrderService orderService) {
         this.service = service;
