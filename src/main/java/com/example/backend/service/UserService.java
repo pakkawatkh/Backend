@@ -43,7 +43,6 @@ public class UserService {
         entity.setRole(User.Role.USER);
         entity.setActive(true);
         entity.setDate(new Date());
-        entity.setLast_password(new Date());
         entity.setLogin(User.Login.DEFAULT);
 
         repository.save(entity);
@@ -78,8 +77,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setPhone(req.getPhone());
         user.setActive(req.getActive());
-        user.setLast_password(new Date());
         user.setLogin(User.Login.DEFAULT);
+        user.setRegister(true);
 
         repository.save(user);
 
@@ -151,7 +150,37 @@ public class UserService {
         user.setAddress(address);
         user.setFacebook(facebook);
         user.setLine(line);
+        user.setRegister(true);
         repository.save(user);
+    }
+
+    public Optional<User> findBySocial(String socialId) {
+        Optional<User> bySocialId = repository.findBySocialId(socialId);
+        return bySocialId;
+    }
+
+    public User saveLoginSocial(String firstname, String lastname, String phone, String userId, User.Login login) {
+        Optional<User> bySocial = findBySocial(userId);
+
+        User user;
+        if (bySocial.isEmpty()) {
+            user = new User();
+            user.setFirstname(firstname);
+            user.setLastname(lastname);
+            user.setLogin(login);
+            user.setPhone(phone);
+            user.setSocialId(userId);
+            user.setRegister(true);
+        } else {
+            user = bySocial.get();
+            user.setFirstname(firstname);
+            user.setLastname(lastname);
+            user.setLogin(login);
+            user.setPhone(phone);
+        }
+        repository.save(user);
+        return user;
+
     }
 
 

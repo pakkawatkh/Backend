@@ -193,8 +193,11 @@ public class UserBusiness {
     }
 
     public Object loginSocial(LoginSocialRequest request){
+        User user = service.saveLoginSocial(request.getFirstname(), request.getLastname(), request.getPhone(), request.getId(), request.getLogin());
 
-        return "";
+        System.out.println(user.toString());
+        String token = tokenService.tokenizeLogin(user);
+        return new Response().ok("login success","token",token);
     }
 
 }

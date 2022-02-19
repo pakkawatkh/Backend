@@ -1,18 +1,14 @@
 package com.example.backend.api;
 
 
+import com.example.backend.business.UserBusiness;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.Response;
 import com.example.backend.model.userModel.LoginSocialRequest;
 import com.example.backend.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/loginSocial")
@@ -22,9 +18,11 @@ public class LoginSocialApi {
     private String userId;
 
     private final TokenService tokenService;
+    private final UserBusiness userBusiness;
 
-    public LoginSocialApi(TokenService tokenService) {
+    public LoginSocialApi(TokenService tokenService, UserBusiness userBusiness) {
         this.tokenService = tokenService;
+        this.userBusiness = userBusiness;
     }
 
     @GetMapping("/getToken")
@@ -32,19 +30,16 @@ public class LoginSocialApi {
 
         User user = new User();
         user.setId(this.userId);
-        user.setLast_password(new Date());
 
-        String tokenize = tokenService.tokenizeSocial(user);
-
-        return new Response().ok("ok", "token", tokenize);
+        return new Response().ok("ok", "token", tokenService.tokenizeSocial(user));
     }
 
     @PostMapping("/login")
-    public Object login(LoginSocialRequest request) throws BaseException {
+    public Object login(@RequestBody LoginSocialRequest request) throws BaseException {
 
         tokenService.checkLoginSocial();
 
-        return new Response().success("ok");
+        return userBusiness.loginSocial(request);
     }
 
 

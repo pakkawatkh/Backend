@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -20,7 +21,7 @@ public class User extends RandomID {
     @Column(nullable = false, length = 50)
     private String firstname;
 
-    @Column(nullable = false, length = 50)
+    @Column( length = 50)
     private String lastname;
 
 //    @Column(length = 120, unique = true)
@@ -30,22 +31,22 @@ public class User extends RandomID {
     private String picture;
 
     @JsonIgnore
-    @Column(nullable = false, length = 120)
+    @Column(length = 120)
     private String password;
 
-    @Column(nullable = false, length = 15, unique = true)
+    @Column( length = 15, unique = true)
     private String phone;
 
-    @Column(length = 10, columnDefinition = "varchar(10) default 'USER'", nullable = false)
+    @Column(length = 10,nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role =Role.USER;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean active;
+    @Column(nullable = false)
+    private Boolean active =TRUE;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false)
-    private Date date;
+    private Date date = new Date();
 
     @Column(length = 50)
     private String facebook;
@@ -57,9 +58,9 @@ public class User extends RandomID {
     private String address;
 
     @Column(length = 50)
-    private String loginSocial;
+    private String socialId;
 
-    @Column(length = 5)
+    @Column(length = 10)
     private Boolean register = FALSE;
 
     @Column(length = 10, nullable = false)
@@ -68,7 +69,7 @@ public class User extends RandomID {
 
     @JsonIgnore
     @Column(nullable = false)
-    private Date last_password;
+    private Date last_password = new Date();
 
     //    @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
