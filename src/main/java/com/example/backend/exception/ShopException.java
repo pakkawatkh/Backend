@@ -2,25 +2,18 @@ package com.example.backend.exception;
 
 public class ShopException extends BaseException {
     public ShopException(String code) {
-        super("shop." + code);
+        super(code);
     }
 
     public static ShopException notId() {
-        return new ShopException("not.find.id");
+        return new ShopException("รหัสร้านค้าไม่ถูกต้อง");
     }
 
-    public static ShopException accessDenied(){
-        return new ShopException("access.denied");
-    }
-
-    public static ShopException requestInvalid(){
-        return new ShopException("request.invalid");
-    }
     public static ShopException registerError(){
-        return new ShopException("register.error");
+        return new ShopException("ลงทะเบียนไม่สำเร็จ");
     }
 
     public static ShopException nameDuplicate(){
-        return new ShopException("name.duplicate");
+        return new ShopException("ชื่อนี้มีผู้ใช้งานแล้ว");
     }
 }

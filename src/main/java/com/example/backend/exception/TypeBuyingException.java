@@ -2,23 +2,10 @@ package com.example.backend.exception;
 
 public class TypeBuyingException extends BaseException {
     public TypeBuyingException(String code) {
-        super("buying." + code);
+        super(code);
     }
 
     public static TypeBuyingException nameDuplicate() {
-        return new TypeBuyingException("name.duplicate");
+        return new TypeBuyingException("ประเภทนี้ถูกใช้งานแล้ว");
     }
-    public static TypeBuyingException accessDenied() {
-        return new TypeBuyingException("access.denied");
-    }
-
-    public static TypeBuyingException notAllowed(){
-        return new TypeBuyingException("not.allowed");
-    }
-
-    public static TypeBuyingException requestInvalid () {
-        return new TypeBuyingException("request.invalid");
-    }
-
-
 }

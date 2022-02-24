@@ -2,19 +2,10 @@ package com.example.backend.exception;
 
 public class OrderException extends BaseException{
     public OrderException(String code) {
-        super("data."+code);
+        super(code);
     }
 
     public static OrderException orderNotFound() {
-        return new OrderException("order.not.found");
+        return new OrderException("รหัสสินค้าไม่ถูกต้อง");
     }
-
-    public static OrderException accessDenied () {
-        return new OrderException("access.denied");
-    }
-
-    public static OrderException requestInvalid () {
-        return new OrderException("request.invalid");
-    }
-
 }
