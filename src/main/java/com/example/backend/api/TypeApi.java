@@ -1,6 +1,6 @@
 package com.example.backend.api;
 
-import com.example.backend.business.TypeBusiness;
+import com.example.backend.process.business.TypeBusiness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,6 @@ public class TypeApi {
 
     @PostMapping("/list")
     public ResponseEntity<Object> list() {
-
         Object list = this.business.listActive();
 
         return ResponseEntity.ok(list);

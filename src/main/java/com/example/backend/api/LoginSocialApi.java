@@ -1,12 +1,12 @@
 package com.example.backend.api;
 
 
-import com.example.backend.business.UserBusiness;
+import com.example.backend.process.business.UserBusiness;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.Response;
 import com.example.backend.model.userModel.LoginSocialRequest;
-import com.example.backend.service.token.TokenService;
+import com.example.backend.process.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +27,6 @@ public class LoginSocialApi {
 
     @GetMapping("/getToken")
     public Object token() {
-
         User user = new User();
         user.setId(this.userId);
 
@@ -36,7 +35,6 @@ public class LoginSocialApi {
 
     @PostMapping("/login")
     public Object login(@RequestBody LoginSocialRequest request) throws BaseException {
-
         tokenService.checkLoginSocial();
 
         return userBusiness.loginSocial(request);

@@ -1,12 +1,8 @@
 package com.example.backend.api;
 
-import com.example.backend.business.NewsBusiness;
-import com.example.backend.entity.News;
+import com.example.backend.process.business.NewsBusiness;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/news")
@@ -18,24 +14,18 @@ public class NewsApi {
         this.business = business;
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Object> listNews(){
+        Object list = business.getList();
 
-        return ResponseEntity.ok(5);
+        return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/detail")
-    public ResponseEntity<Object> detailNews(@RequestBody News req){
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<Object> detailNews(@PathVariable Integer id){
+        Object detailById = business.getDetailById(id);
 
-        return ResponseEntity.ok(req);
+        return ResponseEntity.ok(detailById);
     }
-
-    @PostMapping("/save")
-    public String save(@RequestBody News req){
-        business.save(req);
-        return "";
-
-    }
-
 
 }

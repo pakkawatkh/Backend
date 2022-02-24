@@ -1,13 +1,16 @@
 package com.example.backend.api;
 
+import com.example.backend.entity.News;
 import com.example.backend.entity.Orders;
-import com.example.backend.repository.OrdersRepository;
-import com.example.backend.repository.UserRepository;
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
+import com.example.backend.process.repository.NewsRepository;
+import com.example.backend.process.repository.OrdersRepository;
+import com.example.backend.process.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +18,17 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @RestController
+@Validated
 @RequestMapping("/test")
 public class TestApi {
     public final OrdersRepository repository;
     public final UserRepository userRepository;
+    public final NewsRepository newsRepository;
 
-    public TestApi(OrdersRepository repository, UserRepository userRepository) {
+    public TestApi(OrdersRepository repository, UserRepository userRepository, NewsRepository newsRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.newsRepository = newsRepository;
     }
 
     @GetMapping("/user/{page}/{size}")
@@ -47,5 +53,12 @@ public class TestApi {
         return objects;
     }
 
+    @PostMapping("/news")
+    public Object saveNews(@RequestBody News news) throws BaseException {
+
+        if (news.getTitle().isBlank()) throw MainException.requestInvalid();
+
+        return ResponseEntity.ok(news);
+    }
 
 }

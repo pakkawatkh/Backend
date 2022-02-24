@@ -1,7 +1,7 @@
 package com.example.backend.config;
 
 import com.example.backend.config.token.TokenFilterConfigurer;
-import com.example.backend.service.token.TokenService;
+import com.example.backend.process.service.token.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/login",
             "/admin/login",
             "/uploads/**",
+            "/upload/**",
             "/news/**",
             "/swagger-ui.html/**",
             "/api/**",
@@ -44,7 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         super.configure(auth);
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

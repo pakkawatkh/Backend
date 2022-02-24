@@ -1,6 +1,6 @@
 package com.example.backend.api;
 
-import com.example.backend.business.OrderBusiness;
+import com.example.backend.process.business.OrderBusiness;
 import com.example.backend.entity.Orders;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.orderModel.OrderReq;
@@ -24,38 +24,35 @@ public class OrderApi {
     @PostMapping("/list")
     public ResponseEntity<Object> list() throws BaseException {
         Object list = business.listByUser();
+
         return ResponseEntity.ok(list);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Object> createOrder(@RequestBody OrderReq req) throws BaseException {
-        //GET USER FROM TOKEN (TYPE IS OBJECT)
         Object order = business.create(req);
+
         return ResponseEntity.ok(order);
     }
 
-
     @PostMapping("/cancel")
     public ResponseEntity<Object> cancel(@RequestBody OrderStatusReq req) throws BaseException {
-
         Object res = business.changeStatus(req, Orders.Status.CANCEL);
+
         return ResponseEntity.ok(res);
     }
-
 
     @PostMapping("/success")
     public ResponseEntity<Object> success(@RequestBody OrderStatusReq req) throws BaseException {
-
         Object res = business.changeStatus(req, Orders.Status.SUCCESS);
+
         return ResponseEntity.ok(res);
     }
-
 
     @PostMapping("/byId")
     public ResponseEntity<Object> byId(@RequestBody OrderReq req) throws BaseException {
         Object order = business.getById(req);
+
         return ResponseEntity.ok(order);
     }
-
-
 }
