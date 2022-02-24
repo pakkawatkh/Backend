@@ -19,10 +19,14 @@ public class NewsService {
         this.repository = repository;
     }
 
-    public void save(News news) throws BaseException {
-        //TODO: create news
+    public void save(String title,String detail,String picture,String ref) throws BaseException {
+        News entity = new News();
+        entity.setDetail(detail);
+        entity.setPicture(picture);
+        entity.setTitle(title);
+        entity.setReference(ref);
         try {
-            repository.save(news);
+            repository.save(entity);
         } catch (Exception e) {
             throw MainException.errorSave();
         }

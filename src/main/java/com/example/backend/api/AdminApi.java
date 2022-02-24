@@ -1,5 +1,6 @@
 package com.example.backend.api;
 
+import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.process.business.*;
 import com.example.backend.entity.News;
 import com.example.backend.entity.Shop;
@@ -159,7 +160,7 @@ public class AdminApi {
     }
 
     @PostMapping("/news/save")
-    public ResponseEntity<Object> save(@RequestBody News req) throws BaseException {
+    public ResponseEntity<Object> save(@RequestBody NewsReq req) throws BaseException {
         Object save = newsBusiness.save(req);
         
         return ResponseEntity.ok(save);

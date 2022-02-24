@@ -1,5 +1,6 @@
 package com.example.backend.api;
 
+import com.example.backend.exception.BaseException;
 import com.example.backend.process.business.NewsBusiness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class NewsApi {
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Object> detailNews(@PathVariable Integer id){
+    public ResponseEntity<Object> detailNews(@PathVariable Integer id) throws BaseException {
         Object detailById = business.getDetailById(id);
 
         return ResponseEntity.ok(detailById);
