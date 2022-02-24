@@ -6,7 +6,7 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.exception.UserException;
-import com.example.backend.model.userModel.AdminReq;
+import com.example.backend.model.adminModel.AdminReq;
 import com.example.backend.process.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

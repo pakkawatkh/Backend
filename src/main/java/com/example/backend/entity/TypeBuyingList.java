@@ -21,8 +21,6 @@ public class TypeBuyingList extends AutoID {
     @Column(nullable = false, length = 10)
     private Float price;
 
-    @JsonIgnore
-    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
     private Date date = new Date();
 

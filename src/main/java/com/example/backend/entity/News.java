@@ -16,7 +16,6 @@ public class News extends AutoID {
     @Column(nullable = false)
     private Boolean status = true;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false)
     private Date date = new Date();
 

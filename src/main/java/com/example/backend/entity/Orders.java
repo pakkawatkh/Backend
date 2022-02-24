@@ -16,7 +16,6 @@ public class Orders extends AutoID {
     @Enumerated(EnumType.STRING)
     private Status status = Status.BUY;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
     private Date date = new Date();
 

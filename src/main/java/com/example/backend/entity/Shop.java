@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import static java.lang.Boolean.TRUE;
-
 @Data
 @Entity
 public class Shop extends AutoID {
@@ -22,9 +20,8 @@ public class Shop extends AutoID {
     private String name;
 
     @Column(nullable = false)
-    private Boolean active = TRUE;
+    private Boolean active = true;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(nullable = false)
     private Date date = new Date();
 
