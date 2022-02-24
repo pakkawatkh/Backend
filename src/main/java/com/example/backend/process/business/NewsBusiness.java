@@ -10,6 +10,7 @@ import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class NewsBusiness {
@@ -31,6 +32,12 @@ public class NewsBusiness {
     public Object save(NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
         if (req.getTitle().isBlank() || req.getDetail().isBlank()) throw MainException.requestInvalid();
+
+        if (Objects.isNull(req.getId())){
+
+        }else {
+
+        }
 
         service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
 

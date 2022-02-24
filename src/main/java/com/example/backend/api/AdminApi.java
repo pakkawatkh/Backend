@@ -155,9 +155,9 @@ public class AdminApi {
 
     /*  NEWS  */
     @PostMapping("/news/delete")
-    public ResponseEntity<Object> deleteNews(@RequestBody News req) throws BaseException {
+    public ResponseEntity<Object> deleteNews(@RequestBody NewsReq req) throws BaseException {
         newsBusiness.delete(req.getId());
-        
+
         return ResponseEntity.ok(req);
     }
 
