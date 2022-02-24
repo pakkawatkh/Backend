@@ -1,4 +1,4 @@
-package com.example.backend.model.userModel;
+package com.example.backend.model.adminModel;
 
 import com.example.backend.entity.User;
 import lombok.Data;
