@@ -1,6 +1,6 @@
 package com.example.backend.config.token;
 
-import com.example.backend.service.token.TokenService;
+import com.example.backend.process.service.token.TokenService;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
