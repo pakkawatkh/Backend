@@ -13,8 +13,8 @@ import java.util.Date;
 @Entity
 public class News extends AutoID {
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean status;
+    @Column(nullable = false)
+    private Boolean status = true;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false)
