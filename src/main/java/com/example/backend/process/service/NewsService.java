@@ -42,4 +42,18 @@ public class NewsService {
     public List<News> findAll() {
         return repository.findAll();
     }
+
+    public void deleteById(Integer id) throws BaseException {
+        if (!repository.existsById(id)) throw NewsException.notFound();
+
+        try {
+            repository.deleteById(id);
+        }catch (Exception e){
+            throw getMainException();
+        }
+    }
+
+    private MainException getMainException() {
+        return MainException.errorSave();
+    }
 }

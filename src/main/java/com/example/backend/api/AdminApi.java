@@ -1,16 +1,16 @@
 package com.example.backend.api;
 
-import com.example.backend.model.newsModel.NewsReq;
-import com.example.backend.process.business.*;
 import com.example.backend.entity.News;
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.AUserActiveReq;
+import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.UserEditReq;
+import com.example.backend.process.business.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -137,6 +137,7 @@ public class AdminApi {
 
         return ResponseEntity.ok(res);
     }
+
     @PostMapping("/type/recovery")
     public ResponseEntity<Object> typeRecovery(@RequestBody Type req) throws BaseException {
         Object res = typeBusiness.recovery(req);
@@ -154,15 +155,16 @@ public class AdminApi {
 
     /*  NEWS  */
     @PostMapping("/news/delete")
-    public ResponseEntity<Object> deleteNews(@RequestBody News req){
-
+    public ResponseEntity<Object> deleteNews(@RequestBody News req) throws BaseException {
+        newsBusiness.delete(req.getId());
+        
         return ResponseEntity.ok(req);
     }
 
     @PostMapping("/news/save")
     public ResponseEntity<Object> save(@RequestBody NewsReq req) throws BaseException {
         Object save = newsBusiness.save(req);
-        
+
         return ResponseEntity.ok(save);
     }
 

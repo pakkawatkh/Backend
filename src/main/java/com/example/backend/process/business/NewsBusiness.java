@@ -41,4 +41,10 @@ public class NewsBusiness {
         List<News> all = service.findAll();
         return new Response().ok("ok", "news", all);
     }
+
+    public Object delete(Integer id) throws BaseException {
+        service.deleteById(id);
+
+        return new Response().success("delete success");
+    }
 }
