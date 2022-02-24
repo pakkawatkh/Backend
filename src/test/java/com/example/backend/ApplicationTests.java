@@ -1,7 +1,7 @@
 package com.example.backend;
 
-import com.example.backend.service.OrderService;
-import com.example.backend.service.UserService;
+import com.example.backend.process.service.OrderService;
+import com.example.backend.process.service.UserService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
