@@ -5,6 +5,7 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
+import com.example.backend.exception.UserException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderReq;
@@ -49,8 +50,9 @@ public class OrderBusiness {
 
     public Object create(OrderReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getType()) || Objects.isNull(req.getWeight()) || req.getPicture().isBlank() || Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude()))
+        if (Objects.isNull(req.getType()) || Objects.isNull(req.getWeight()) || Objects.isNull(req.getPicture()) || Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude()))
             throw MainException.requestInvalid();
+        if (req.getPicture().isBlank()) throw MainException.requestInvalid();
 
         Type type = typeService.findById(req.getType());
 
@@ -89,7 +91,8 @@ public class OrderBusiness {
 
     public Object getOrderByUser(User req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (req.getId().isBlank()) throw MainException.requestInvalid();
+        if (Objects.isNull(req.getId())) throw MainException.requestInvalid();
+        if (req.getId().isBlank()) throw UserException.notFound();
 
         User user = userService.findById(req.getId());
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));

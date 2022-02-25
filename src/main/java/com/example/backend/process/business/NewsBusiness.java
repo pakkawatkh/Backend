@@ -31,12 +31,13 @@ public class NewsBusiness {
 
     public Object save(NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (req.getTitle().isBlank() || req.getDetail().isBlank()) throw MainException.requestInvalid();
+        if (Objects.isNull(req.getTitle()) || Objects.isNull(req.getDetail())) throw MainException.requestInvalid();
+        if (req.getTitle().isBlank() || req.getDetail().isBlank()) throw MainException.requestIsBlank();
 
-        if (Objects.isNull(req.getId())){
-
-        }else {
-
+        if (Objects.isNull(req.getId())) {
+//TODO EDIT
+        } else {
+//TODO SAVE
         }
 
         service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());

@@ -36,7 +36,8 @@ public class TypeBuyingBusiness {
 
         Shop shop = user.getShop();
         if (!shop.getActive()) throw MainException.accessDenied();
-        if (req.getName().isBlank()) throw MainException.requestInvalid();
+        if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
+        if (req.getName().isBlank()) throw MainException.requestIsBlank();
 
         service.saveBuying(shop, req.getName());
 

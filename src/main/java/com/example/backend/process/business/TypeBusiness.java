@@ -40,7 +40,8 @@ public class TypeBusiness {
     public Object save(Type req) throws BaseException {
         String mss;
         tokenService.checkAdminByToken();
-        if (req.getName().isBlank()) throw MainException.requestInvalid();
+        if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
+        if (req.getName().isBlank()) throw MainException.requestIsBlank();
 
         if (Objects.isNull(req.getId())) {
             service.create(req.getName());

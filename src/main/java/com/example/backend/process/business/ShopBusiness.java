@@ -33,9 +33,8 @@ public class ShopBusiness {
 
     public Object register(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-
-        if (req.getName().isBlank() || Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude()))
-            throw MainException.requestInvalid();
+        if (Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude())) throw MainException.requestInvalid();
+        if (req.getName().isBlank()) throw MainException.requestIsBlank();
 
         service.existsByUser(user);
         service.existsByName(req.getName());
@@ -48,8 +47,9 @@ public class ShopBusiness {
 
     public Object edit(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (req.getName().isBlank() || Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude()))
-            throw MainException.requestInvalid();
+        if (Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude())) throw MainException.requestInvalid();
+        if (req.getName().isBlank() ) throw MainException.requestIsBlank();
+
         service.edit(user, req.getId(), req.getName(), req.getLatitude(), req.getLongitude());
 
         return new Response().success("edit success");
