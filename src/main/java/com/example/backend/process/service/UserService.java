@@ -30,14 +30,14 @@ public class UserService {
         this.createAdmin();
     }
 
-    public void createUser(String firstname, String lastname, String password, String phone) throws BaseException {
-        if (repository.existsByPhone(phone)) throw UserException.createPhoneDuplicated();
+    public void createUser(String firstname, String lastname, String password, String email) throws BaseException {
+        if (repository.existsByEmail(email)) throw UserException.createEmailDuplicated();
 
         User user = new User();
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setPassword(passwordEncoder.encode(password));
-        user.setPhone(phone);
+        user.setEmail(email);
         user.setRole(User.Role.USER);
         user.setActive(true);
         user.setDate(new Date());
@@ -49,11 +49,11 @@ public class UserService {
         }
     }
 
-    public User findByPhone(String phone) throws BaseException {
-        Optional<User> byPhone = repository.findByPhone(phone);
-        if (byPhone.isEmpty()) throw UserException.notFound();
+    public User findByEmail(String email) throws BaseException {
+        Optional<User> byEmail = repository.findByEmail(email);
+        if (byEmail.isEmpty()) throw UserException.notFound();
 
-        return byPhone.get();
+        return byEmail.get();
     }
 
     public boolean matchPassword(String rawPassword, String encodedPassword) {
@@ -62,7 +62,7 @@ public class UserService {
 
     public void createAdmin() throws BaseException {
         AdminReq req = new AdminReq();
-        if (repository.existsByPhone(req.getPhone())) return;
+        if (repository.existsByEmail(req.getEmail())) return;
 
         User user = new User();
         user.setLastname(req.getLastname());
@@ -70,7 +70,7 @@ public class UserService {
         user.setRole(req.getRole());
         user.setDate(new Date());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setPhone(req.getPhone());
+        user.setEmail(req.getEmail());
         user.setActive(req.getActive());
         user.setLogin(User.Login.DEFAULT);
         user.setRegister(true);
@@ -91,11 +91,10 @@ public class UserService {
         } catch (Exception e) {
             throw MainException.errorSave();
         }
-
     }
 
-    public void editPhoneById(User user, String phone) throws BaseException {
-        user.setPhone(phone);
+    public void editEmailById(User user, String email) throws BaseException {
+        user.setEmail(email);
         try {
             repository.save(user);
         } catch (Exception e) {
@@ -170,7 +169,7 @@ public class UserService {
         return bySocialId;
     }
 
-    public User saveLoginSocial(String firstname, String lastname, String phone, String userId, User.Login login) throws BaseException {
+    public User saveLoginSocial(String firstname, String lastname, String email, String userId, User.Login login) throws BaseException {
         Optional<User> bySocial = findBySocial(userId);
 
         User user;
@@ -179,7 +178,7 @@ public class UserService {
             user.setFirstname(firstname);
             user.setLastname(lastname);
             user.setLogin(login);
-            user.setPhone(phone);
+            user.setEmail(email);
             user.setSocialId(userId);
             user.setRegister(true);
         } else {
@@ -187,7 +186,7 @@ public class UserService {
             user.setFirstname(firstname);
             user.setLastname(lastname);
             user.setLogin(login);
-            user.setPhone(phone);
+            user.setEmail(email);
         }
         try {
             repository.save(user);

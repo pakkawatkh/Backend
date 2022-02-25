@@ -1,6 +1,5 @@
 package com.example.backend.model.userModel;
 
-import com.example.backend.entity.Orders;
 import com.example.backend.entity.User;
 import com.example.backend.model.orderModel.OrderRes;
 import lombok.Data;
@@ -14,7 +13,7 @@ public class UserResponse {
 
     private String lastname;
 
-    private String phone;
+    private String email;
 
     private User.Role role;
 

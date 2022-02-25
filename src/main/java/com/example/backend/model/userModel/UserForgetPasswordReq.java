@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserForgetPasswordReq {
 
-    private String phone;
+    private String email;
 
     private String password;
 }

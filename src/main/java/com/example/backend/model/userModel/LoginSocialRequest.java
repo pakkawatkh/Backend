@@ -10,6 +10,6 @@ public class LoginSocialRequest {
     private String lastname;
     private String id;
     private User.Login login;
-    private String phone;
+    private String email;
 
 }

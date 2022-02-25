@@ -1,9 +1,9 @@
 package com.example.backend.api;
 
-import com.example.backend.entity.News;
 import com.example.backend.entity.Orders;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
+import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.process.repository.NewsRepository;
 import com.example.backend.process.repository.OrdersRepository;
 import com.example.backend.process.repository.UserRepository;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @RestController
@@ -54,8 +55,9 @@ public class TestApi {
     }
 
     @PostMapping("/news")
-    public Object saveNews(@RequestBody News news) throws BaseException {
+    public Object saveNews(@RequestBody NewsReq news) throws BaseException {
 
+        if (Objects.isNull(news.getTitle())) throw MainException.accessDenied();
         if (news.getTitle().isBlank()) throw MainException.requestInvalid();
 
         return ResponseEntity.ok(news);

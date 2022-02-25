@@ -31,12 +31,12 @@ public class UserBusiness {
     }
 
     public Object register(RegisterReq req) throws BaseException {
-        if (Objects.isNull(req.getPhone()) || Objects.isNull(req.getFirstname()) || Objects.isNull(req.getLastname()) || Objects.isNull(req.getPassword()))
+        if (Objects.isNull(req.getEmail()) || Objects.isNull(req.getFirstname()) || Objects.isNull(req.getLastname()) || Objects.isNull(req.getPassword()))
             throw MainException.requestInvalid();
-        if (req.getPhone().isBlank() || req.getFirstname().isBlank() || req.getLastname().isBlank() || req.getPassword().isBlank())
+        if (req.getEmail().isBlank() || req.getFirstname().isBlank() || req.getLastname().isBlank() || req.getPassword().isBlank())
             throw MainException.requestIsBlank();
 
-        service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getPhone());
+        service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getEmail());
 
         return new Response().success("register success");
     }
@@ -60,9 +60,10 @@ public class UserBusiness {
     }
 
     public User login(LoginReq req) throws BaseException {
-        if (req.getPhone().isBlank() || req.getPassword().isBlank()) throw MainException.requestInvalid();
+        if (Objects.isNull(req.getEmail()) || Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
+        if (req.getEmail().isBlank() || req.getPassword().isBlank()) throw MainException.requestIsBlank();
 
-        User user = service.findByPhone(req.getPhone());
+        User user = service.findByEmail(req.getEmail());
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
         return user;
@@ -81,10 +82,10 @@ public class UserBusiness {
 
     public Object editPhone(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getPhone())) throw MainException.requestInvalid();
-        if (req.getPhone().isBlank()) throw MainException.requestIsBlank();
+        if (Objects.isNull(req.getEmail())) throw MainException.requestInvalid();
+        if (req.getEmail().isBlank()) throw MainException.requestIsBlank();
 
-        service.editPhoneById(user, req.getPhone());
+        service.editEmailById(user, req.getEmail());
 
         return new Response().success("edit phone success");
     }
@@ -174,7 +175,7 @@ public class UserBusiness {
     }
 
     public Object loginSocial(LoginSocialRequest request) throws BaseException {
-        User user = service.saveLoginSocial(request.getFirstname(), request.getLastname(), request.getPhone(), request.getId(), request.getLogin());
+        User user = service.saveLoginSocial(request.getFirstname(), request.getLastname(), request.getEmail(), request.getId(), request.getLogin());
         String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);

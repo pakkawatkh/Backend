@@ -12,9 +12,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 //    Optional<User> findByEmail(String email);
 
-    Optional<User> findByPhone(String phone);
+    Optional<User> findByEmail(String phone);
 
-    boolean existsByPhone(String phone);
+    boolean existsByEmail(String phone);
 
     Optional<User> findById(String id);
 
@@ -27,7 +27,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findBySocialId(String socialId);
 
     boolean existsByIdAndActiveIsTrue(String is);
-
 
     @Query("SELECT u.firstname, COUNT(u.firstname) FROM User AS u GROUP BY u.firstname ")
     List<Object[]> countUser();

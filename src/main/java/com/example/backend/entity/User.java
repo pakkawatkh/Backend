@@ -20,16 +20,15 @@ public class User extends RandomID {
     @Column(length = 50)
     private String lastname;
 
-
-    @Column(length = 100)
+    @Column(length = 80)
     private String picture;
 
     @JsonIgnore
     @Column(length = 120)
     private String password;
 
-    @Column(length = 15, unique = true)
-    private String phone;
+    @Column(length = 100, unique = true)
+    private String email;
 
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)

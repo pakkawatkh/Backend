@@ -9,8 +9,8 @@ public class UserException extends BaseException {
         return new UserException("ไม่มีผู้ใช้นี้ในระบบ");
     }
 
-    public static UserException createPhoneDuplicated() {
-        return new UserException("หมายเลขนี้ถูกใช้งานแล้ว");
+    public static UserException createEmailDuplicated() {
+        return new UserException("อีเมลนี้ถูกใช้งานแล้ว");
     }
 
     public static UserException passwordInvalid() {

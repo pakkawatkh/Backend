@@ -11,7 +11,7 @@ public class UserEditReq {
 
     private String password;
 
-    private String phone;
+    private String email;
 
     private String facebook;
 

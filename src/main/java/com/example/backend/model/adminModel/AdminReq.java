@@ -11,5 +11,5 @@ public class AdminReq {
         private String password = "admin";
         private User.Role role = User.Role.ADMIN;
         private Boolean active = true;
-        private String phone = "0629230120";
+        private String email = "pakkawat@gmail.com";
 }

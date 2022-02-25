@@ -13,6 +13,6 @@ public class RegisterReq {
 
     private String password;
 
-    private String phone;
+    private String email;
 
 }

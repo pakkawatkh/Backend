@@ -1,9 +1,6 @@
 package com.example.backend.model.userModel;
 
-import com.example.backend.entity.User;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class UserEditInfoReq {
@@ -14,7 +11,7 @@ public class UserEditInfoReq {
 
     private String lastname;
 
-    private String phone;
+    private String email;
 
     private String address;
 
