@@ -39,9 +39,9 @@ public class TokenService {
     public String tokenize(User user, tokenizeType type) {
         Calendar calendar = Calendar.getInstance();
 
-        if (type == tokenizeType.LOGIN_DEFAULT) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
-        if (type == tokenizeType.REGISTER) calendar.add(Calendar.MINUTE, 5);
-        if (type == tokenizeType.LOGIN_SOCIAL) calendar.add(Calendar.SECOND, 5);
+        if (type.equals(tokenizeType.LOGIN_DEFAULT)) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
+        if (type.equals(tokenizeType.REGISTER)) calendar.add(Calendar.MINUTE, 5);
+        if (type.equals(tokenizeType.LOGIN_SOCIAL)) calendar.add(Calendar.SECOND, 5);
 
         Date expiresAt = calendar.getTime();
 
