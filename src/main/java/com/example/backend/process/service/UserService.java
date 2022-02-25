@@ -200,5 +200,13 @@ public class UserService {
         if (!repository.existsByIdAndActiveIsTrue(id)) throw MainException.accessDenied();
     }
 
+    public void RegisterActive(User user) throws MainException {
+        try {
+            repository.save(user);
+        }catch (Exception e){
+            throw MainException.errorSave();
+        }
+    }
+
 
 }

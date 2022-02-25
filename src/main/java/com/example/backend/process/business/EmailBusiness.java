@@ -16,11 +16,13 @@ public class EmailBusiness {
 
     private final EmailService service;
 
+    private String webFrontEnd = "http://localhost:4200";
+
     public EmailBusiness(EmailService service) {
         this.service = service;
     }
 
-    public void sendActivateUserEmail(String email, String name, String token) throws BaseException {
+    public void sendActivateUserEmail(String email, String name, String data) throws BaseException {
         //(HTML)
         String html;
         try {
@@ -29,11 +31,29 @@ public class EmailBusiness {
             throw EmailException.templateNotFound();
         }
 
-        String finalLink= "http://localhost:4200/activate/"+token;
+        String finalLink= webFrontEnd+"/activate/"+data;
+
         html = html.replace("${P_NAME}",name);
         html = html.replace("${LINK}",finalLink);
 
         String subject = "Please activate your account";
+
+        service.send(email, subject, html);
+    }
+    public void sendResetPasswordUserEmail(String email, String name, String data) throws BaseException {
+        //(HTML)
+        String html;
+        try {
+            html = readEmailTemplate("email-activate-user.html");
+        } catch (IOException e) {
+            throw EmailException.templateNotFound();
+        }
+
+        String finalLink= webFrontEnd+"/reset-password/"+data;
+        html = html.replace("${P_NAME}",name);
+        html = html.replace("${LINK}",finalLink);
+
+        String subject = "Please click link for reset password";
 
         service.send(email, subject, html);
     }

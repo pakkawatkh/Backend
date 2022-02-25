@@ -91,6 +91,14 @@ public class TokenService {
 
         return user.get();
     }
+    public User getUserByTokenRegister() throws BaseException {
+        String userId = this.userId();
+
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) throw UserException.notFound();
+
+        return user.get();
+    }
 
     public void checkAdminByToken() throws BaseException {
         String userId = this.userId();

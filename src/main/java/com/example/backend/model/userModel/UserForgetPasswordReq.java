@@ -8,4 +8,5 @@ public class UserForgetPasswordReq {
     private String email;
 
     private String password;
+
 }

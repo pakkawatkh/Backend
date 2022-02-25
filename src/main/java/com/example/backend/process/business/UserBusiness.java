@@ -43,14 +43,31 @@ public class UserBusiness {
         String token = tokenService.tokenizeRegister(user);
 
         // sendEmail activate account
-        emailBusiness.sendActivateUserEmail(user.getEmail(),user.getFirstname(),token);
+        emailBusiness.sendActivateUserEmail(user.getEmail(), user.getFirstname(), token);
 
         return new Response().success("โปรดยืนยันอีเมลภายใน 5 นาที");
+    }
+
+    public Object confirmAccount() throws BaseException {
+        User user = tokenService.getUserByTokenRegister();
+        if (!user.getRegister()) throw MainException.expires();
+
+        user.setRegister(true);
+        service.RegisterActive(user);
+        String token = tokenService.tokenizeLogin(user);
+
+        return new Response().ok("ยืนยันตัวตนสำเร็จ", "token", token);
     }
 
     public Object loginUser(LoginReq req) throws BaseException {
         User user = login(req);
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
+
+        if (!user.getRegister()) {
+            String tokenizeRegister = tokenService.tokenizeRegister(user);
+            emailBusiness.sendActivateUserEmail(user.getEmail(), user.getFirstname(), tokenizeRegister);
+            throw UserException.pleaseConfirmAccount();
+        }
 
         String token = tokenService.tokenizeLogin(user);
 
@@ -188,6 +205,30 @@ public class UserBusiness {
         String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);
+    }
+
+    public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
+        User user = service.findByEmail(req.getEmail());
+        String token = tokenService.tokenizeRegister(user);
+
+        //forgetPassword send email to reset
+        emailBusiness.sendResetPasswordUserEmail(user.getEmail(), user.getFirstname(),token);
+
+        return new Response().success("เราได้ส่งอีเมลไปให้คุณ โปรดทำรายการภายใน 5 นาที");
+    }
+
+    public Object resetPassword(UserForgetPasswordReq req) throws BaseException {
+        User user = tokenService.getUserByTokenRegister();
+        if (Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
+        if (req.getPassword().isBlank()) throw MainException.requestIsBlank();
+        if (req.getPassword().length()<8) throw UserException.passwordIsShort();
+
+        service.updatePassword(user,req.getPassword());
+        String token = tokenService.tokenizeLogin(user);
+
+        return new Response().ok("เปลี่ยนรหัสผ่านสำเร็จ","token",token);
+
+
     }
 
 }

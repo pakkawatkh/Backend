@@ -23,5 +23,11 @@ public class UserException extends BaseException {
     public static UserException confirmAccount () {
         return new UserException("not.confirm.account");
     }
+    public static UserException pleaseConfirmAccount () {
+        return new UserException("โปรดยืนยันอีเมลของคุณก่อน");
+    }
 
+    public static UserException passwordIsShort () {
+        return new UserException("รหัสผ่านสั่นเกินไป");
+    }
 }
