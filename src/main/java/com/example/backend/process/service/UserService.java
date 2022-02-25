@@ -30,7 +30,7 @@ public class UserService {
         this.createAdmin();
     }
 
-    public void createUser(String firstname, String lastname, String password, String email) throws BaseException {
+    public User createUser(String firstname, String lastname, String password, String email) throws BaseException {
         if (repository.existsByEmail(email)) throw UserException.createEmailDuplicated();
 
         User user = new User();
@@ -43,7 +43,7 @@ public class UserService {
         user.setDate(new Date());
         user.setLogin(User.Login.DEFAULT);
         try {
-            repository.save(user);
+            return repository.save(user);
         } catch (Exception e) {
             throw MainException.errorSave();
         }

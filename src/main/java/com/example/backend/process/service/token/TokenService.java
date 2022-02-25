@@ -36,27 +36,28 @@ public class TokenService {
         this.userRepository = userRepository;
     }
 
-    public String tokenize(User user, boolean type) {
+    public String tokenize(User user, tokenizeType type) {
         Calendar calendar = Calendar.getInstance();
 
-        if (type) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
-        else calendar.add(Calendar.SECOND, 5);
+        if (type == tokenizeType.LOGIN_DEFAULT) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
+        if (type == tokenizeType.REGISTER) calendar.add(Calendar.MINUTE, 5);
+        if (type == tokenizeType.LOGIN_SOCIAL) calendar.add(Calendar.SECOND, 5);
 
         Date expiresAt = calendar.getTime();
 
-        return JWT.create().withIssuer(issuer)
-                .withClaim("principal", user.getId())
-                .withClaim("lastpass", user.getLast_password().toString())
-                .withExpiresAt(expiresAt)
-                .sign(algorithm());
+        return JWT.create().withIssuer(issuer).withClaim("principal", user.getId()).withClaim("lastpass", user.getLast_password().toString()).withExpiresAt(expiresAt).sign(algorithm());
     }
 
     public String tokenizeSocial(User user) {
-        return tokenize(user, false);
+        return tokenize(user, tokenizeType.LOGIN_SOCIAL);
     }
 
     public String tokenizeLogin(User user) {
-        return tokenize(user, true);
+        return tokenize(user, tokenizeType.LOGIN_DEFAULT);
+    }
+
+    public String tokenizeRegister(User user) {
+        return tokenize(user, tokenizeType.REGISTER);
     }
 
     public DecodedJWT verify(String token) {
@@ -67,7 +68,6 @@ public class TokenService {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     private Algorithm algorithm() {
@@ -77,7 +77,6 @@ public class TokenService {
     public void checkLoginSocial() throws BaseException {
         String userId = this.userId();
         if (!userId.equals(this.userId)) throw UserException.notFound();
-
     }
 
     public User getUserByToken() throws BaseException {
@@ -86,6 +85,7 @@ public class TokenService {
 
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) throw UserException.notFound();
+        if (!user.get().getRegister()) throw UserException.confirmAccount();
         if (!date.equals("[" + user.get().getLast_password() + "]")) throw MainException.expires();
         if (!user.get().getActive()) throw MainException.accessDenied();
 
@@ -98,13 +98,10 @@ public class TokenService {
 
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) throw UserException.notFound();
-
+        if (!user.get().getRegister()) throw UserException.confirmAccount();
         if (!date.equals("[" + user.get().getLast_password() + "]")) throw MainException.expires();
-
         if (!user.get().getActive()) throw MainException.accessDenied();
-
         if (user.get().getRole() != User.Role.ADMIN) throw MainException.accessDenied();
-
     }
 
     public void checkUserByToken() throws BaseException {
@@ -125,4 +122,7 @@ public class TokenService {
         return authentication.getAuthorities().toString();
     }
 
+    public enum tokenizeType {
+        LOGIN_DEFAULT, LOGIN_SOCIAL, REGISTER
+    }
 }

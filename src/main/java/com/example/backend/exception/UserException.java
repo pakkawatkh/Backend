@@ -20,5 +20,8 @@ public class UserException extends BaseException {
     public static UserException passwordIncorrect () {
         return new UserException("รหัสผ่านไม่ถึกต้อง");
     }
+    public static UserException confirmAccount () {
+        return new UserException("not.confirm.account");
+    }
 
 }

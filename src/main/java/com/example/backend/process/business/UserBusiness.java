@@ -21,12 +21,14 @@ import java.util.Objects;
 public class UserBusiness {
     private final UserService service;
     private final TokenService tokenService;
+    private final EmailBusiness emailBusiness;
     private final UserMapper mapper;
     private final String MS = "OK";
 
-    public UserBusiness(UserService userService, TokenService tokenService, UserMapper mapper) {
+    public UserBusiness(UserService userService, TokenService tokenService, EmailBusiness emailBusiness, UserMapper mapper) {
         this.service = userService;
         this.tokenService = tokenService;
+        this.emailBusiness = emailBusiness;
         this.mapper = mapper;
     }
 
@@ -36,9 +38,14 @@ public class UserBusiness {
         if (req.getEmail().isBlank() || req.getFirstname().isBlank() || req.getLastname().isBlank() || req.getPassword().isBlank())
             throw MainException.requestIsBlank();
 
-        service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getEmail());
+        User user = service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getEmail());
 
-        return new Response().success("register success");
+        String token = tokenService.tokenizeRegister(user);
+
+        // sendEmail activate account
+        emailBusiness.sendActivateUserEmail(user.getEmail(),user.getFirstname(),token);
+
+        return new Response().success("โปรดยืนยันอีเมลภายใน 5 นาที");
     }
 
     public Object loginUser(LoginReq req) throws BaseException {
@@ -65,6 +72,8 @@ public class UserBusiness {
 
         User user = service.findByEmail(req.getEmail());
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
+
+        if (!user.getRegister()) throw UserException.confirmAccount();
 
         return user;
     }

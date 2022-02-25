@@ -8,8 +8,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import static java.lang.Boolean.TRUE;
-
 @Data
 @Entity
 public class User extends RandomID {
@@ -35,7 +33,7 @@ public class User extends RandomID {
     private Role role = Role.USER;
 
     @Column(nullable = false)
-    private Boolean active = TRUE;
+    private Boolean active = true;
 
     @Column(nullable = false)
     private Date date = new Date();
@@ -52,7 +50,7 @@ public class User extends RandomID {
     @Column(length = 50)
     private String socialId;
 
-    @Column(length = 10)
+    @Column(nullable = false)
     private Boolean register = false;
 
     @Column(length = 10, nullable = false)
