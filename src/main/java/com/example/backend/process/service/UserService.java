@@ -200,12 +200,21 @@ public class UserService {
         if (!repository.existsByIdAndActiveIsTrue(id)) throw MainException.accessDenied();
     }
 
-    public void RegisterActive(User user) throws MainException {
+    public void RegisterActive(User user) throws BaseException {
         try {
             repository.save(user);
         }catch (Exception e){
             throw MainException.errorSave();
         }
+    }
+    public void setLastPassword(User user) throws BaseException {
+        user.setLast_password(new Date());
+        try {
+            repository.save(user);
+        }catch (Exception e){
+            throw MainException.errorSave();
+        }
+
     }
 
 

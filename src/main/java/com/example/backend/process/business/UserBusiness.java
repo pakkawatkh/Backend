@@ -50,7 +50,7 @@ public class UserBusiness {
 
     public Object confirmAccount() throws BaseException {
         User user = tokenService.getUserByTokenRegister();
-        if (!user.getRegister()) throw MainException.expires();
+        if (user.getRegister()) throw MainException.expires();
 
         user.setRegister(true);
         service.RegisterActive(user);
@@ -63,11 +63,7 @@ public class UserBusiness {
         User user = login(req);
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
-        if (!user.getRegister()) {
-            String tokenizeRegister = tokenService.tokenizeRegister(user);
-            emailBusiness.sendActivateUserEmail(user.getEmail(), user.getFirstname(), tokenizeRegister);
-            throw UserException.pleaseConfirmAccount();
-        }
+
 
         String token = tokenService.tokenizeLogin(user);
 
@@ -90,7 +86,11 @@ public class UserBusiness {
         User user = service.findByEmail(req.getEmail());
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
-        if (!user.getRegister()) throw UserException.confirmAccount();
+        if (!user.getRegister()) {
+            String tokenizeRegister = tokenService.tokenizeRegister(user);
+            emailBusiness.sendActivateUserEmail(user.getEmail(), user.getFirstname(), tokenizeRegister);
+            throw UserException.pleaseConfirmAccount();
+        }
 
         return user;
     }
