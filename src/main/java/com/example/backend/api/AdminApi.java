@@ -1,6 +1,5 @@
 package com.example.backend.api;
 
-import com.example.backend.entity.News;
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
@@ -118,7 +117,7 @@ public class AdminApi {
 
     /*   TYPE    */
     @PostMapping("/type/list")
-    public ResponseEntity<Object> typeList() {
+    public ResponseEntity<Object> typeList() throws BaseException {
         Object list = typeBusiness.list();
 
         return ResponseEntity.ok(list);

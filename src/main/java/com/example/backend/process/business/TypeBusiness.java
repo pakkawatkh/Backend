@@ -25,7 +25,8 @@ public class TypeBusiness {
         this.orderService = orderService;
     }
 
-    public Object list() {
+    public Object list() throws BaseException {
+        tokenService.checkAdminByToken();
         List<Type> list = service.findAll();
 
         return new Response().ok(MS, "type", list);
@@ -38,8 +39,8 @@ public class TypeBusiness {
     }
 
     public Object save(Type req) throws BaseException {
-        String mss;
         tokenService.checkAdminByToken();
+        String mss;
         if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
         if (req.getName().isBlank()) throw MainException.requestIsBlank();
 
@@ -55,6 +56,7 @@ public class TypeBusiness {
     }
 
     public Object delete(Type req) throws BaseException {
+        tokenService.checkAdminByToken();
         String ms;
         Type type = service.findById(req.getId());
         boolean check = orderService.existsAllByType(type);
@@ -70,6 +72,7 @@ public class TypeBusiness {
     }
 
     public Object recovery(Type req) throws BaseException {
+        tokenService.checkAdminByToken();
         Type type = service.findById(req.getId());
         service.changStatusById(type, true);
 

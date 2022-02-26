@@ -28,7 +28,6 @@ public class TypeBuyingBusiness {
         this.shopService = shopService;
     }
 
-
     public Object create(BuyingReq req) throws BaseException {
         User user = tokenService.getUserByToken();
         if (user.getRole() != User.Role.SHOP) throw MainException.accessDenied();
@@ -46,7 +45,6 @@ public class TypeBuyingBusiness {
 
     public Object getListByShop(Shop req) throws BaseException {
         Shop shop = shopService.findById(req.getId());
-
         List<TypeBuying> buying = service.findByShop(shop);
 
         return new Response().ok(MS, "buying", buying);

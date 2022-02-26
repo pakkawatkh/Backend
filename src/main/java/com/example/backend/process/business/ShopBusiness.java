@@ -91,7 +91,7 @@ public class ShopBusiness {
     }
 
     public Object list() throws BaseException {
-        tokenService.getUserByToken();
+        tokenService.checkAdminByToken();
         List<ShopResponse> shopResponses = mapper.toListShopRes(service.findAll());
 
         return new Response().ok(MS, "shop", shopResponses);
@@ -105,7 +105,7 @@ public class ShopBusiness {
     }
 
     public Object byId(ShopReq req) throws BaseException {
-        tokenService.getUserByToken();
+        tokenService.checkAdminByToken();
         ShopResponse shopResponse = mapper.toShopResponse(service.findById(req.getId()));
 
         return new Response().ok(MS, "profile", shopResponse);

@@ -46,10 +46,13 @@ public class NewsBusiness {
 
     public Object getList() {
         List<News> all = service.findAll();
+
         return new Response().ok("ok", "news", all);
     }
 
     public Object delete(Integer id) throws BaseException {
+        tokenService.checkAdminByToken();
+
         service.deleteById(id);
 
         return new Response().success("delete success");
