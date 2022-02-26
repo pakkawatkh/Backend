@@ -32,6 +32,21 @@ public class NewsService {
         }
     }
 
+    public void edit(Integer id,String title,String detail,String picture,String ref) throws BaseException {
+        Optional<News> byId = repository.findById(id);
+        if (byId.isEmpty()) throw NewsException.notFound();
+        News news = byId.get();
+        news.setDetail(detail);
+        news.setPicture(picture);
+        news.setTitle(title);
+        news.setReference(ref);
+        try {
+            repository.save(news);
+        } catch (Exception e) {
+            throw MainException.errorSave();
+        }
+    }
+
     public News findById(Integer id) throws BaseException {
         Optional<News> byId = repository.findById(id);
         if (byId.isEmpty()) throw NewsException.notFound();

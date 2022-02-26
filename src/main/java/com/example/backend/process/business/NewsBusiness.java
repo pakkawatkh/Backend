@@ -35,12 +35,11 @@ public class NewsBusiness {
         if (req.getTitle().isBlank() || req.getDetail().isBlank()) throw MainException.requestIsBlank();
 
         if (Objects.isNull(req.getId())) {
-//TODO EDIT
-        } else {
-//TODO SAVE
+            service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
         }
-
-        service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
+        else {
+            service.edit(req.getId(), req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
+        }
 
         return new Response().success("create success");
     }
