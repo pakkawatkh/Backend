@@ -9,6 +9,7 @@ import com.example.backend.exception.OrderException;
 import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.process.repository.OrdersRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public void createOrder(User user, Type type, Float weight, String picture, String province, String district, String name, String detail, Integer price) throws BaseException {
+    public void createOrder(User user, Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws BaseException {
         Orders entity = new Orders();
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
@@ -48,6 +49,9 @@ public class OrderService {
         if (orders.isEmpty()) throw OrderException.orderNotFound();
 
         Orders entity = orders.get();
+
+        if (!entity.getStatus().equals(Orders.Status.BUY)) throw OrderException.notAllowUpdate();
+
         entity.setStatus(status);
         try {
             repository.save(entity);
@@ -56,13 +60,33 @@ public class OrderService {
         }
     }
 
-    public List<Orders> findByUser(User user) {
-        List<Orders> orders = repository.findByUser(user);
+    public List<Orders> findByUser(User user,int page ) {
+//        List<Orders> orders = repository.findByUser(user);
+
+        PageRequest limit = PageRequest.of(page, 6);
+
+        List<Orders> orders = repository.findAllByUserOrderByDateDesc(user, limit);
+//        System.out.println(allByUserOrderByDateDesc.toString());
+
         BaseUrlFile urlFile = new BaseUrlFile();
         for (Orders order : orders)
             order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
 
         return orders;
+    }
+    public List<Orders> findAllByUser(User user ) {
+        List<Orders> orders = repository.findByUser(user);
+
+        BaseUrlFile urlFile = new BaseUrlFile();
+        for (Orders order : orders)
+            order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
+
+        return orders;
+    }
+
+    public Long countByUser(User user){
+        Long count = repository.count(user);
+        return count;
     }
 
     public List<Orders> findAll() {
@@ -95,14 +119,14 @@ public class OrderService {
         return orderRes;
     }
 
-    public OrderRes setStatusThOrder(OrderRes orderRes){
+    public OrderRes setStatusThOrder(OrderRes orderRes) {
         if (orderRes.getStatus().equals(Orders.Status.BUY)) orderRes.setStatusTh(statusTh.BUY);
         if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
         if (orderRes.getStatus().equals(Orders.Status.CANCEL)) orderRes.setStatusTh(statusTh.CANCEL);
         return orderRes;
     }
 
-    interface statusTh{
+    interface statusTh {
         String BUY = "กำลังขาย";
         String SUCCESS = "สำเร็จ";
         String CANCEL = "ยกเลิก";

@@ -18,9 +18,9 @@ public class OrderApi {
         this.business = business;
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<Object> list() throws BaseException {
-        Object list = business.listByUser();
+    @GetMapping("/list/{page}")
+    public ResponseEntity<Object> list(@PathVariable("page") Integer page) throws BaseException {
+        Object list = business.listByUser(page);
 
         return ResponseEntity.ok(list);
     }

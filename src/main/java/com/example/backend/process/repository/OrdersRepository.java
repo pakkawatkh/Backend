@@ -6,6 +6,8 @@ import com.example.backend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,12 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     Page<Orders> findAllByStatus(Orders.Status status,Pageable pageable);
 
-//    List<Orders> findAllByType(Type type);
-
     boolean existsAllByType(Type type);
+
+    //select by user and page
+    List<Orders> findAllByUserOrderByDateDesc(User user, Pageable pageable);
+
+    //count order by user
+    @Query(value = "SELECT count(o) FROM Orders as o where o.user = :user")
+     Long count(@Param("user") User user);
 }

@@ -5,6 +5,7 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
+import com.example.backend.exception.OrderException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderReq;
@@ -48,7 +49,7 @@ public class OrderBusiness {
     public Object create(OrderReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (req.isValid()) throw MainException.requestInvalid();
+        if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
         Type type = typeService.findById(req.getTypeId());
@@ -59,13 +60,16 @@ public class OrderBusiness {
 
     }
 
-    public Object listByUser() throws BaseException {
+    public Object listByUser(int page) throws BaseException {
         User user = tokenService.getUserByToken();
-        List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));
 
+        Long count = service.countByUser(user);
+        List<Orders> list = service.findByUser(user,page);
+
+        List<OrderRes> orderRes = mapper.toListOrderRes(list);
         List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
 
-        return new Response().ok(MS, "product", setStatus);
+        return new Response().ok2(MS, "product", setStatus,"count",count);
     }
 
 
@@ -93,7 +97,7 @@ public class OrderBusiness {
         tokenService.checkAdminByToken();
 
         User user = userService.findById(id);
-        List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));
+        List<OrderRes> orderRes = mapper.toListOrderRes(service.findAllByUser(user));
 
         List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
 
