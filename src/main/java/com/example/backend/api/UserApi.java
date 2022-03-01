@@ -44,7 +44,7 @@ public class UserApi {
         return ResponseEntity.ok(profile);
     }
 
-    @PostMapping("/editProfile")
+    @PutMapping("/editProfile")
     public ResponseEntity<Object> editProfile(@RequestBody UserEditReq req) throws BaseException {
         Object edit = business.editProfile(req);
 
