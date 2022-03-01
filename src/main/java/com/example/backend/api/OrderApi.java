@@ -32,16 +32,16 @@ public class OrderApi {
         return ResponseEntity.ok(order);
     }
 
-    @PostMapping("/cancel")
-    public ResponseEntity<Object> cancel(@RequestBody OrderStatusReq req) throws BaseException {
-        Object res = business.changeStatus(req, Orders.Status.CANCEL);
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Object> cancel(@PathVariable("id") Integer id) throws BaseException {
+        Object res = business.changeStatus(id, Orders.Status.CANCEL);
 
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/success")
-    public ResponseEntity<Object> success(@RequestBody OrderStatusReq req) throws BaseException {
-        Object res = business.changeStatus(req, Orders.Status.SUCCESS);
+    @PutMapping("/success/{id}")
+    public ResponseEntity<Object> success(@PathVariable("id") Integer id) throws BaseException {
+        Object res = business.changeStatus(id, Orders.Status.SUCCESS);
 
         return ResponseEntity.ok(res);
     }

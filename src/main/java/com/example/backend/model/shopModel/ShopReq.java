@@ -7,8 +7,6 @@ public class ShopReq {
 
     private String name;
 
-    private Integer id;
-
     private Boolean active;
 
     private Long latitude;
@@ -27,6 +25,6 @@ public class ShopReq {
 
     //validate is not null
     public boolean isValid2() {
-        return active != null && id != null;
+        return active != null;
     }
 }

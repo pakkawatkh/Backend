@@ -41,13 +41,17 @@ public class ShopService {
         }
     }
 
-    public void edit(User user, Integer id, String name, Long latitude, Long longitude) throws BaseException {
-        Shop entity = this.checkShop(user, id);
-        entity.setNumber(name);
-        entity.setLatitude(latitude);
-        entity.setLongitude(longitude);
+    public void edit(User user,  String name, Long latitude, Long longitude) throws BaseException {
+        Optional<Shop> entity = repository.findByUser(user);
+
+        if (entity.isEmpty())throw ShopException.notId();
+
+        Shop shop = entity.get();
+        shop.setNumber(name);
+        shop.setLatitude(latitude);
+        shop.setLongitude(longitude);
         try {
-            repository.save(entity);
+            repository.save(shop);
         } catch (Exception e) {
             throw MainException.errorSave();
         }
@@ -60,11 +64,10 @@ public class ShopService {
         return shop.get();
     }
 
-    public void changStatus(Integer id, Boolean status) throws BaseException {
-        Shop entity = this.findById(id);
-        entity.setActive(status);
+    public void changStatus(Shop shop, Boolean status) throws BaseException {
+        shop.setActive(status);
         try {
-            repository.save(entity);
+            repository.save(shop);
         } catch (Exception e) {
             throw MainException.errorSave();
         }

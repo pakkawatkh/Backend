@@ -15,8 +15,6 @@ public class OrderReq {
 
     private String district;
 
-    private Integer id;
-
     private Integer price;
 
     private String name;

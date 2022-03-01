@@ -52,18 +52,18 @@ public class ShopBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.edit(user, req.getId(), req.getName(), req.getLatitude(), req.getLongitude());
+        service.edit(user, req.getName(), req.getLatitude(), req.getLongitude());
 
         return new Response().success("edit success");
     }
 
-    public Object changStatus(ShopReq req) throws BaseException {
+    public Object changStatus(Integer id, ShopReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
         if (!req.isValid2()) throw MainException.requestInvalid();
 
-        Shop shop = service.findById(req.getId());
-        service.changStatus(req.getId(), req.getActive());
+        Shop shop = service.findById(id);
+        service.changStatus(shop, req.getActive());
 
         User.Role user;
         if (req.getActive()) user = User.Role.SHOP;
@@ -100,9 +100,9 @@ public class ShopBusiness {
         return new Response().ok(MS, "shop", shopResponses);
     }
 
-    public Object byIdActive(ShopReq req) throws BaseException {
-        tokenService.getUserByToken();
-        ShopResponse shopResponse = mapper.toShopResponse(service.findByIdAndActive(req.getId()));
+    public Object byIdActive(Integer id) throws BaseException {
+        tokenService.checkUserByToken();
+        ShopResponse shopResponse = mapper.toShopResponse(service.findByIdAndActive(id));
 
         return new Response().ok(MS, "profile", shopResponse);
     }

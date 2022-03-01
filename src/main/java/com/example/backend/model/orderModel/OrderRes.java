@@ -30,4 +30,8 @@ public class OrderRes {
     private String district ;
 
     private String name;
+
+    private Integer price;
+
+    private String statusTh;
 }

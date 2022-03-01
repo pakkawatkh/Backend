@@ -42,9 +42,9 @@ public class AdminApi {
     }
 
     /*   SHOP    */
-    @PostMapping("/shop/active")
-    public ResponseEntity<Object> updateStatus(@RequestBody ShopReq req) throws BaseException {
-        Object res = shopBusiness.changStatus(req);
+    @PutMapping("/shop/active/{id}")
+    public ResponseEntity<Object> updateStatus(@PathVariable("id") Integer id,@RequestBody ShopReq req) throws BaseException {
+        Object res = shopBusiness.changStatus(id,req);
 
         return ResponseEntity.ok(res);
     }
@@ -171,7 +171,7 @@ public class AdminApi {
 
         return ResponseEntity.ok(res);
     }
-    @PostMapping("/news/edit/{id}")
+    @PutMapping("/news/edit/{id}")
     public ResponseEntity<Object> editNews(@PathVariable("id") Integer id,@RequestBody NewsReq req) throws BaseException {
         Object res = newsBusiness.edit(id,req);
 

@@ -22,7 +22,7 @@ public class ShopApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public ResponseEntity<Object> edit(@RequestBody ShopReq req) throws BaseException {
         Object res = business.edit(req);
 
@@ -43,9 +43,9 @@ public class ShopApi {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/byId")
-    public ResponseEntity<Object> byId(@RequestBody ShopReq req) throws BaseException {
-        Object shopResponse = business.byIdActive(req);
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
+        Object shopResponse = business.byIdActive(id);
 
         return ResponseEntity.ok(shopResponse);
     }

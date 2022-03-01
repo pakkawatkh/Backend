@@ -58,7 +58,7 @@ public class UserApi {
 //        return ResponseEntity.ok(edit);
 //    }
 
-    @PostMapping("/changPassword")
+    @PutMapping("/changPassword")
     public ResponseEntity<Object> changPassword(@RequestBody UserPasswordReq req) throws BaseException {
         Object res = business.changPassword(req);
 
