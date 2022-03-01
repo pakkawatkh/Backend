@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class OrderReq {
 
-    private Float weight;
+    private String weight;
 
     private Integer typeId;
 
@@ -15,7 +15,7 @@ public class OrderReq {
 
     private String district;
 
-    private Integer price;
+    private String price;
 
     private String name;
 
@@ -25,11 +25,11 @@ public class OrderReq {
 
     //validate is not null
     public boolean isValid() {
-        return typeId != null && weight != null && picture != null && province != null && district != null && detail != null && name != null;
+        return typeId != null && picture != null && province != null && district != null && detail != null && name != null&& price != null&& weight != null ;
     }
 
     //validate is blank
     public boolean isBlank() {
-        return picture.isBlank() || province.isBlank() || district.isBlank() || detail.isBlank() || name.isBlank();
+        return picture.isBlank() || province.isBlank() || district.isBlank() || detail.isBlank() || name.isBlank()|| price.isBlank() || weight.isBlank();
     }
 }

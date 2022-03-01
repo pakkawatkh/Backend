@@ -31,8 +31,6 @@ public class UserResponse {
 
     private String picture;
 
-    private List<OrderRes> order;
-
     private ShopResponse shop;
 
     private Date date;

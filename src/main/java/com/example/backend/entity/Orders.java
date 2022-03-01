@@ -22,13 +22,13 @@ public class Orders extends AutoID {
     private Date date = new Date();
 
     @Column(length = 10)
-    private Float weight;
+    private String weight;
 
     @Column(length = 100)
     private String picture;
 
     @Column(length = 5)
-    private Integer price;
+    private String price;
 
     @Column(nullable = false)
     @Lob

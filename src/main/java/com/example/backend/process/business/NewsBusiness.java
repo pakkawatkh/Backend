@@ -31,7 +31,7 @@ public class NewsBusiness {
     public Object save(NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (req.isValid()) throw MainException.requestInvalid();
+        if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
@@ -42,7 +42,7 @@ public class NewsBusiness {
     public Object edit(Integer id, NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (req.isValid()) throw MainException.requestInvalid();
+        if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.edit(id, req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());

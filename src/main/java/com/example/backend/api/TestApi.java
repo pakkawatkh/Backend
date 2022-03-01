@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.entity.Orders;
+import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.model.newsModel.NewsReq;
@@ -13,21 +14,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 @RestController
 @Validated
 @RequestMapping("/test")
 public class TestApi {
-    public final OrdersRepository repository;
+    public final OrdersRepository ordersRepository;
     public final UserRepository userRepository;
     public final NewsRepository newsRepository;
 
     public TestApi(OrdersRepository repository, UserRepository userRepository, NewsRepository newsRepository) {
-        this.repository = repository;
+        this.ordersRepository = repository;
         this.userRepository = userRepository;
         this.newsRepository = newsRepository;
     }
@@ -36,9 +35,9 @@ public class TestApi {
     public Object userList(@PathVariable Integer page, @PathVariable Integer size) {
 
         PageRequest limit = PageRequest.of(page, size);
-        Stream<Orders> ordersStream = repository.findAllByStatus(Orders.Status.BUY, limit).get();
+        Stream<Orders> ordersStream = ordersRepository.findAllByStatus(Orders.Status.BUY, limit).get();
 
-        int all = repository.findAll().size();
+        int all = ordersRepository.findAll().size();
 
         Map<Object, Object> data = new HashMap<>();
 
@@ -48,11 +47,11 @@ public class TestApi {
         return data;
     }
 
-    @GetMapping("/group")
-    public Object getUser() {
-        List<Object[]> objects = userRepository.countUser();
-        return objects;
-    }
+//    @GetMapping("/group")
+//    public Object getUser() {
+//        Long objects = ordersRepository.count(new User());
+//        return objects;
+//    }
 
     @PostMapping("/news")
     public Object saveNews(@RequestBody NewsReq news) throws BaseException {

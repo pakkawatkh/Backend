@@ -29,6 +29,22 @@ public class Response {
 
         return res;
     }
+    public Object ok2(String message, String key, Object value, String key2, Object value2) {
+
+        Map<Object, Object> res = new HashMap<>();
+
+        res.put("timestamp", timestamp);
+        res.put("status", HttpStatus.OK.value());
+        res.put("message", message);
+
+        Map<Object, Object> data = new HashMap<>();
+
+        data.put(key, value);
+        data.put(key2, value2);
+        res.put("data", data);
+
+        return res;
+    }
 
     public Object success(String message) {
 
