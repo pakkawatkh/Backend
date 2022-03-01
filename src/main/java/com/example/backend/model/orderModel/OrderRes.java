@@ -25,11 +25,9 @@ public class OrderRes {
 
     private Type type;
 
-    private Long latitude ;
+    private String province ;
 
-    private Long longitude ;
+    private String district ;
 
-
-
-
+    private String name;
 }

@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/login",
             "/admin/login",
             "/uploads/**",
-            "/upload/**",
+//            "/upload/**",
             "/news/**",
             "/swagger-ui.html/**",
             "/api/**",
@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     corsConfiguration.setAllowCredentials(true);
 //                    Configuration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
                     corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
-                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
+//                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.addAllowedMethod("GET");
                     corsConfiguration.addAllowedMethod("POST");

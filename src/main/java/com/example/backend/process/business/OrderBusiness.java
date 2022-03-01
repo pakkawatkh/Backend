@@ -5,7 +5,6 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
-import com.example.backend.exception.UserException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderReq;
@@ -50,16 +49,15 @@ public class OrderBusiness {
 
     public Object create(OrderReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getType()) || Objects.isNull(req.getWeight()) || Objects.isNull(req.getPicture()) || Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude()))
-            throw MainException.requestInvalid();
-        if (req.getPicture().isBlank()) throw MainException.requestInvalid();
 
-        Type type = typeService.findById(req.getType());
+        if (req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.createOrder(user, type, req.getWeight(), req.getPicture(), req.getLatitude(), req.getLongitude());
+        Type type = typeService.findById(req.getTypeId());
+
+        service.createOrder(user, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
 
         return new Response().success("create " + MS);
-
 
     }
 
@@ -71,11 +69,10 @@ public class OrderBusiness {
     }
 
 
-    public Object getById(OrderReq req) throws BaseException {
+    public Object getById(Integer id) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getId())) throw MainException.requestInvalid();
 
-        OrderRes orderRes = mapper.toOrderRes(service.findByIdAndUser(req.getId(), user));
+        OrderRes orderRes = mapper.toOrderRes(service.findByIdAndUser(id, user));
 
         return new Response().ok(MS, "product", orderRes);
     }
@@ -89,12 +86,10 @@ public class OrderBusiness {
         return new Response().ok(MS, "product", orderRes);
     }
 
-    public Object getOrderByUser(User req) throws BaseException {
+    public Object getOrderByUser(String id) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getId())) throw MainException.requestInvalid();
-        if (req.getId().isBlank()) throw UserException.notFound();
 
-        User user = userService.findById(req.getId());
+        User user = userService.findById(id);
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));
 
         return new Response().ok(MS, "product", orderRes);

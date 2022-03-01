@@ -9,4 +9,13 @@ public class UserForgetPasswordReq {
 
     private String password;
 
+    //validate is not null
+    public boolean isValid() {
+        return email != null && password != null;
+    }
+
+    //validate is blank
+    public boolean isBlank() {
+        return email.isBlank() || password.isBlank();
+    }
 }

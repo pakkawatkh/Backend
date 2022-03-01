@@ -1,9 +1,9 @@
-package com.example.backend.model.TypeBuyingModel;
+package com.example.backend.model.typeModel;
 
 import lombok.Data;
 
 @Data
-public class BuyingReq {
+public class TypeReq {
 
     private String name;
 

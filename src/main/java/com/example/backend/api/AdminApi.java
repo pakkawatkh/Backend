@@ -5,16 +5,15 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.AUserActiveReq;
+import com.example.backend.model.adminModel.AUserByIdReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
+import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.process.business.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -50,73 +49,73 @@ public class AdminApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/shop/list")
+    @GetMapping("/shop/list")
     public ResponseEntity<Object> shopList() throws BaseException {
         Object list = shopBusiness.list();
 
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/shop/profile")
-    public ResponseEntity<Object> shopById(@RequestBody ShopReq req) throws BaseException {
-        Object list = shopBusiness.byId(req);
+    @GetMapping("/shop/profile/{id}")
+    public ResponseEntity<Object> shopById(@PathVariable("id") Integer id) throws BaseException {
+        Object list = shopBusiness.byId(id);
 
         return ResponseEntity.ok(list);
     }
 
     /*   ORDER    */
-    @PostMapping("/order/list")
+    @GetMapping("/order/list")
     public ResponseEntity<Object> orderList() throws BaseException {
         Object orderAllUser = orderBusiness.getOrderAllUser();
 
         return ResponseEntity.ok(orderAllUser);
     }
 
-    @PostMapping("/order/listByUser")
-    public ResponseEntity<Object> orderListByUser(@RequestBody User req) throws BaseException {
-        Object orderByUser = orderBusiness.getOrderByUser(req);
+    @GetMapping("/order/listByUser/{id}")
+    public ResponseEntity<Object> orderListByUser(@PathVariable("id") String id) throws BaseException {
+        Object orderByUser = orderBusiness.getOrderByUser(id);
 
         return ResponseEntity.ok(orderByUser);
     }
 
     /*   USER    */
-    @PostMapping("/user/active")
-    public ResponseEntity<Object> updateUserActive(@RequestBody AUserActiveReq req) throws BaseException {
-        Object res = userBusiness.updateUserActive(req);
+    @PutMapping("/user/active/{id}")
+    public ResponseEntity<Object> updateUserActive(@PathVariable("id") String id,@RequestBody AUserActiveReq req) throws BaseException {
+        Object res = userBusiness.updateUserActive(id,req);
 
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/user/list")
+    @GetMapping("/user/list")
     public ResponseEntity<Object> userList() throws BaseException {
         Object users = userBusiness.userList();
 
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/user/profile")
-    public ResponseEntity<Object> userById(@RequestBody User req) throws BaseException {
-        Object user = userBusiness.userById(req);
+    @GetMapping("/user/profile/{id}")
+    public ResponseEntity<Object> userById(@PathVariable("id") String id) throws BaseException {
+        Object user = userBusiness.userById(id);
 
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/user/profileByShop")
-    public ResponseEntity<Object> userByShop(@RequestBody Shop req) throws BaseException {
-        Object user = userBusiness.userByShop(req);
+    @GetMapping("/user/profileByShop/{id}")
+    public ResponseEntity<Object> userByShop(@PathVariable("id") Integer id) throws BaseException {
+        Object user = userBusiness.userByShop(id);
 
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/user/save")
-    public ResponseEntity<Object> userEditProfile(@RequestBody UserEditReq req) throws BaseException {
-        Object res = userBusiness.saveUserById(req);
+    @PutMapping("/user/edit/{id}")
+    public ResponseEntity<Object> userEditProfile(@PathVariable("id") String id,@RequestBody UserEditReq req) throws BaseException {
+        Object res = userBusiness.editUserById(id,req);
 
         return ResponseEntity.ok(res);
     }
 
     /*   TYPE    */
-    @PostMapping("/type/list")
+    @GetMapping("/type/list")
     public ResponseEntity<Object> typeList() throws BaseException {
         Object list = typeBusiness.list();
 
@@ -124,47 +123,59 @@ public class AdminApi {
     }
 
     @PostMapping("/type/save")
-    public ResponseEntity<Object> typeSave(@RequestBody Type req) throws BaseException {
+    public ResponseEntity<Object> typeSave(@RequestBody TypeReq req) throws BaseException {
         Object res = typeBusiness.save(req);
 
         return ResponseEntity.ok(res);
     }
-
-    @PostMapping("/type/delete")
-    public ResponseEntity<Object> typeDelete(@RequestBody Type req) throws BaseException {
-        Object res = typeBusiness.delete(req);
+    @PutMapping("/type/edit/{id}")
+    public ResponseEntity<Object> typeEdit(@PathVariable("id") Integer id,@RequestBody TypeReq req) throws BaseException {
+        Object res = typeBusiness.edit(id,req);
 
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/type/recovery")
-    public ResponseEntity<Object> typeRecovery(@RequestBody Type req) throws BaseException {
-        Object res = typeBusiness.recovery(req);
+    @DeleteMapping("/type/delete/{id}")
+    public ResponseEntity<Object> typeDelete(@PathVariable("id") Integer id) throws BaseException {
+        Object res = typeBusiness.delete(id);
+
+        return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/type/recovery/{id}")
+    public ResponseEntity<Object> typeRecovery(@PathVariable("id") Integer id) throws BaseException {
+        Object res = typeBusiness.recovery(id);
 
         return ResponseEntity.ok(res);
     }
 
     /*   BUYING    */
-    @PostMapping("/buying/listByShop")
-    public ResponseEntity<Object> listByShop(@RequestBody Shop req) throws BaseException {
-        Object listByShop = buyingBusiness.getListByShop(req);
+    @GetMapping("/buying/listByShop/{id}")
+    public ResponseEntity<Object> listByShop(@PathVariable("id") Integer id) throws BaseException {
+        Object listByShop = buyingBusiness.getListByShop(id);
 
         return ResponseEntity.ok(listByShop);
     }
 
     /*  NEWS  */
-    @PostMapping("/news/delete")
-    public ResponseEntity<Object> deleteNews(@RequestBody NewsReq req) throws BaseException {
-        newsBusiness.delete(req.getId());
+    @DeleteMapping("/news/delete/{id}")
+    public ResponseEntity<Object> deleteNews(@PathVariable("id") Integer id) throws BaseException {
+        Object res = newsBusiness.delete(id);
 
-        return ResponseEntity.ok(req);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/news/save")
-    public ResponseEntity<Object> save(@RequestBody NewsReq req) throws BaseException {
-        Object save = newsBusiness.save(req);
+    public ResponseEntity<Object> saveNews(@RequestBody NewsReq req) throws BaseException {
+        Object res = newsBusiness.save(req);
 
-        return ResponseEntity.ok(save);
+        return ResponseEntity.ok(res);
+    }
+    @PostMapping("/news/edit/{id}")
+    public ResponseEntity<Object> editNews(@PathVariable("id") Integer id,@RequestBody NewsReq req) throws BaseException {
+        Object res = newsBusiness.edit(id,req);
+
+        return ResponseEntity.ok(res);
     }
 
 }

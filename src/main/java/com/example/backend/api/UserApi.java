@@ -37,7 +37,7 @@ public class UserApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/profile")
+    @GetMapping("/profile")
     public ResponseEntity<Object> profile() throws BaseException {
         Object profile = business.profile();
 
@@ -51,12 +51,12 @@ public class UserApi {
         return ResponseEntity.ok(edit);
     }
 
-    @PostMapping("/editPhone")
-    public ResponseEntity<Object> editPhone(@RequestBody UserEditReq req) throws BaseException {
-        Object edit = business.editPhone(req);
-
-        return ResponseEntity.ok(edit);
-    }
+//    @PostMapping("/editPhone")
+//    public ResponseEntity<Object> editPhone(@RequestBody UserEditReq req) throws BaseException {
+//        Object edit = business.editPhone(req);
+//
+//        return ResponseEntity.ok(edit);
+//    }
 
     @PostMapping("/changPassword")
     public ResponseEntity<Object> changPassword(@RequestBody UserPasswordReq req) throws BaseException {
@@ -72,12 +72,12 @@ public class UserApi {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/reset-password")
-    public ResponseEntity<Object> resetPassword(UserForgetPasswordReq req) throws BaseException {
-        Object res = business.resetPassword(req);
-
-        return ResponseEntity.ok(res);
-    }
+//    @GetMapping("/reset-password")
+//    public ResponseEntity<Object> resetPassword(UserForgetPasswordReq req) throws BaseException {
+//        Object res = business.resetPassword(req);
+//
+//        return ResponseEntity.ok(res);
+//    }
 
     @GetMapping("/refreshToken")
     public ResponseEntity<Object> refreshToken() throws BaseException {

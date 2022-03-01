@@ -2,24 +2,36 @@ package com.example.backend.model.orderModel;
 
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 public class OrderReq {
 
     private Float weight;
 
-    private Integer type;
+    private Integer typeId;
 
     private String picture;
 
-    private Long latitude;
+    private String province;
 
-    private Long longitude;
+    private String district;
 
     private Integer id;
 
+    private Integer price;
+
+    private String name;
+
+    private String detail;
 
 //    private List<>
 
+    //validate is not null
+    public boolean isValid() {
+        return typeId != null && weight != null && picture != null && province != null && district != null && detail != null && name != null;
+    }
+
+    //validate is blank
+    public boolean isBlank() {
+        return picture.isBlank() || province.isBlank() || district.isBlank() || detail.isBlank() || name.isBlank();
+    }
 }

@@ -3,13 +3,16 @@ package com.example.backend.model.TypeBuyingModel;
 import lombok.Data;
 
 @Data
-public class BuyingReq {
+public class BuyingListReq {
 
     private String name;
 
-    //validate is not null
+    private Integer price;
+
+    private Integer buyingId;
+
     public boolean isValid() {
-        return name != null;
+        return name != null && price != null && buyingId != null;
     }
 
     //validate is blank

@@ -3,14 +3,16 @@ package com.example.backend.model;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class Response {
 
-    private final LocalDateTime timestamp = LocalDateTime.now();
+    private final Date timestamp = new Date();
 
     public Object ok(String message, String key, Object value) {
 
@@ -35,7 +37,6 @@ public class Response {
         res.put("timestamp", timestamp);
         res.put("status", HttpStatus.OK.value());
         res.put("message", message);
-
 
         return res;
 

@@ -10,7 +10,6 @@ import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class NewsBusiness {
@@ -31,17 +30,24 @@ public class NewsBusiness {
 
     public Object save(NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getTitle()) || Objects.isNull(req.getDetail())) throw MainException.requestInvalid();
-        if (req.getTitle().isBlank() || req.getDetail().isBlank()) throw MainException.requestIsBlank();
 
-        if (Objects.isNull(req.getId())) {
-            service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
-        }
-        else {
-            service.edit(req.getId(), req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
-        }
+        if (req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        service.save(req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
 
         return new Response().success("create success");
+    }
+
+    public Object edit(Integer id, NewsReq req) throws BaseException {
+        tokenService.checkAdminByToken();
+
+        if (req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        service.edit(id, req.getTitle(), req.getDetail(), req.getPicture(), req.getReference());
+
+        return new Response().success("edit success");
     }
 
     public Object getList() {

@@ -57,8 +57,9 @@ public class TestApi {
     @PostMapping("/news")
     public Object saveNews(@RequestBody NewsReq news) throws BaseException {
 
-        if (Objects.isNull(news.getTitle())) throw MainException.accessDenied();
-        if (news.getTitle().isBlank()) throw MainException.requestInvalid();
+        if (!news.isValid()) throw MainException.accessDenied();
+
+        if (news.isBlank()) throw MainException.expires();
 
         return ResponseEntity.ok(news);
     }

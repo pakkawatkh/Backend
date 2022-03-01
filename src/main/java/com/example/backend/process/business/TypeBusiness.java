@@ -4,6 +4,7 @@ import com.example.backend.entity.Type;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.model.Response;
+import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.process.service.OrderService;
 import com.example.backend.process.service.TypeService;
 import com.example.backend.process.service.token.TokenService;
@@ -38,42 +39,49 @@ public class TypeBusiness {
         return new Response().ok(MS, "type", list);
     }
 
-    public Object save(Type req) throws BaseException {
+    public Object save(TypeReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        String mss;
+
         if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
         if (req.getName().isBlank()) throw MainException.requestIsBlank();
 
-        if (Objects.isNull(req.getId())) {
-            service.create(req.getName());
-            mss = "create";
-        } else {
-            service.edit(req.getId(), req.getName());
-            mss = "edit";
-        }
+        service.create(req.getName());
 
-        return new Response().success(mss + " success");
+        return new Response().success("create success");
     }
 
-    public Object delete(Type req) throws BaseException {
+    public Object edit(Integer id, TypeReq req) throws BaseException {
+        tokenService.checkAdminByToken();
+
+        if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
+        if (req.getName().isBlank()) throw MainException.requestIsBlank();
+
+        service.edit(id, req.getName());
+
+        return new Response().success("edit success");
+    }
+
+    public Object delete(Integer id) throws BaseException {
         tokenService.checkAdminByToken();
         String ms;
-        Type type = service.findById(req.getId());
+
+        Type type = service.findById(id);
         boolean check = orderService.existsAllByType(type);
         if (check) {
             service.changStatusById(type, false);
             ms = "Cannot be deleted, but will be hidden";
         } else {
-            service.deleteById(req.getId());
+            service.deleteById(id);
             ms = "delete success";
         }
 
         return new Response().success(ms);
     }
 
-    public Object recovery(Type req) throws BaseException {
+    public Object recovery(Integer id) throws BaseException {
         tokenService.checkAdminByToken();
-        Type type = service.findById(req.getId());
+
+        Type type = service.findById(id);
         service.changStatusById(type, true);
 
         return new Response().success("recover success");

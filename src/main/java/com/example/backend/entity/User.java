@@ -21,6 +21,9 @@ public class User extends RandomID {
     @Column(length = 80)
     private String picture;
 
+    @Column(length = 15)
+    private String phone;
+
     @JsonIgnore
     @Column(length = 120)
     private String password;
@@ -65,7 +68,7 @@ public class User extends RandomID {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Orders> order;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Shop shop;
 

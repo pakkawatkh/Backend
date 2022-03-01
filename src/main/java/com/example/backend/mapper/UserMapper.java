@@ -2,6 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.entity.User;
 import com.example.backend.model.adminModel.AUserResponse;
+import com.example.backend.model.userModel.LoginResponse;
 import com.example.backend.model.userModel.UserResponse;
 import org.mapstruct.Mapper;
 
@@ -14,4 +15,6 @@ public interface UserMapper {
    List<AUserResponse> toListAUserResponse(List<User> userList);
 
    AUserResponse toAUserResponse(User user);
+
+   LoginResponse toLoginResponse(User user);
 }

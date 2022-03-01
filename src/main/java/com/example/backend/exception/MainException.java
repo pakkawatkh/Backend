@@ -8,8 +8,9 @@ public class MainException extends BaseException {
     public static  MainException requestInvalid() {
         return new MainException("กรุณากรอกข้อมูลให้ครบถ้วน");
     }
+
     public static  MainException requestIsBlank() {
-        return new MainException("ไม่อนุณาติให้ใช้ช่องว่าง");
+        return new MainException("กรุณากรอกข้อมูลให้ครบถ้วน");
     }
 
     public static MainException accessDenied() {

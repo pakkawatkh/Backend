@@ -4,10 +4,7 @@ import com.example.backend.process.business.ShopBusiness;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.shopModel.ShopReq;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shop")
@@ -32,14 +29,14 @@ public class ShopApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/profile")
+    @GetMapping("/profile")
     public ResponseEntity<Object> profile() throws BaseException {
         Object profile = business.profile();
 
         return ResponseEntity.ok(profile);
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Object> list() throws BaseException {
         Object list = business.listActive();
 

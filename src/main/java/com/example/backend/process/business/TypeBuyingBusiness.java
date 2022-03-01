@@ -2,10 +2,12 @@ package com.example.backend.process.business;
 
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.TypeBuying;
+import com.example.backend.entity.TypeBuyingList;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.model.Response;
+import com.example.backend.model.TypeBuyingModel.BuyingListReq;
 import com.example.backend.model.TypeBuyingModel.BuyingReq;
 import com.example.backend.process.service.ShopService;
 import com.example.backend.process.service.TypeBuyingService;
@@ -35,18 +37,31 @@ public class TypeBuyingBusiness {
 
         Shop shop = user.getShop();
         if (!shop.getActive()) throw MainException.accessDenied();
-        if (Objects.isNull(req.getName())) throw MainException.requestInvalid();
-        if (req.getName().isBlank()) throw MainException.requestIsBlank();
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.saveBuying(shop, req.getName());
 
         return new Response().success("create success");
     }
 
-    public Object getListByShop(Shop req) throws BaseException {
-        Shop shop = shopService.findById(req.getId());
+    public Object getListByShop(Integer shopId) throws BaseException {
+
+
+        Shop shop = shopService.findById(shopId);
         List<TypeBuying> buying = service.findByShop(shop);
 
         return new Response().ok(MS, "buying", buying);
+    }
+
+    public Object createChild(BuyingListReq req) throws BaseException {
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        TypeBuying typeBuying = service.findById(req.getBuyingId());
+        service.saveChild(typeBuying, req.getName(), req.getPrice());
+        return new Response().success("create success");
     }
 }

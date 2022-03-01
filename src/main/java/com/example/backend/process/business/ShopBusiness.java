@@ -33,8 +33,9 @@ public class ShopBusiness {
 
     public Object register(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude())) throw MainException.requestInvalid();
-        if (req.getName().isBlank()) throw MainException.requestIsBlank();
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.existsByUser(user);
         service.existsByName(req.getName());
@@ -47,8 +48,9 @@ public class ShopBusiness {
 
     public Object edit(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getLatitude()) || Objects.isNull(req.getLongitude())) throw MainException.requestInvalid();
-        if (req.getName().isBlank() ) throw MainException.requestIsBlank();
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.edit(user, req.getId(), req.getName(), req.getLatitude(), req.getLongitude());
 
@@ -57,7 +59,8 @@ public class ShopBusiness {
 
     public Object changStatus(ShopReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getActive()) || Objects.isNull(req.getId())) throw MainException.requestInvalid();
+
+        if (!req.isValid2()) throw MainException.requestInvalid();
 
         Shop shop = service.findById(req.getId());
         service.changStatus(req.getId(), req.getActive());
@@ -104,9 +107,9 @@ public class ShopBusiness {
         return new Response().ok(MS, "profile", shopResponse);
     }
 
-    public Object byId(ShopReq req) throws BaseException {
+    public Object byId(Integer id) throws BaseException {
         tokenService.checkAdminByToken();
-        ShopResponse shopResponse = mapper.toShopResponse(service.findById(req.getId()));
+        ShopResponse shopResponse = mapper.toShopResponse(service.findById(id));
 
         return new Response().ok(MS, "profile", shopResponse);
     }

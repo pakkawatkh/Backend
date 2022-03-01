@@ -6,10 +6,7 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.model.orderModel.OrderStatusReq;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
@@ -21,7 +18,7 @@ public class OrderApi {
         this.business = business;
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Object> list() throws BaseException {
         Object list = business.listByUser();
 
@@ -49,9 +46,9 @@ public class OrderApi {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/byId")
-    public ResponseEntity<Object> byId(@RequestBody OrderReq req) throws BaseException {
-        Object order = business.getById(req);
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
+        Object order = business.getById(id);
 
         return ResponseEntity.ok(order);
     }

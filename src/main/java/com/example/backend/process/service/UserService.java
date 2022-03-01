@@ -93,14 +93,14 @@ public class UserService {
         }
     }
 
-    public void editEmailById(User user, String email) throws BaseException {
-        user.setEmail(email);
-        try {
-            repository.save(user);
-        } catch (Exception e) {
-            throw MainException.errorSave();
-        }
-    }
+//    public void editEmailById(User user, String email) throws BaseException {
+//        user.setEmail(email);
+//        try {
+//            repository.save(user);
+//        } catch (Exception e) {
+//            throw MainException.errorSave();
+//        }
+//    }
 
     public void updateRole(User user, User.Role role) throws BaseException {
         user.setRole(role);
@@ -149,7 +149,7 @@ public class UserService {
         return all;
     }
 
-    public void saveByUser(User user, String firstname, String lastname, String address, String facebook, String line) throws BaseException {
+    public void saveEditByUser(User user, String firstname, String lastname, String address, String facebook, String line) throws BaseException {
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setAddress(address);

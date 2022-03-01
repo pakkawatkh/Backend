@@ -12,4 +12,13 @@ public class LoginSocialRequest {
     private User.Login login;
     private String email;
 
+    //validate is not null
+    public boolean isValid() {
+        return firstname != null && id != null&& login != null;
+    }
+
+    //validate is blank
+    public boolean isBlank() {
+        return firstname.isBlank() || id.isBlank();
+    }
 }

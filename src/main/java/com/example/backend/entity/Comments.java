@@ -20,9 +20,6 @@ public class Comments extends AutoID {
     @Column(nullable = false)
     private Date date = new Date();
 
-    @Column(nullable = false)
-    private Boolean active = true;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)

@@ -1,8 +1,8 @@
 package com.example.backend.process.repository;
 
-import com.example.backend.entity.TypeBuying;
+import com.example.backend.entity.TypeBuyingList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TypeBuyingListRepository extends JpaRepository<TypeBuying, Integer> {
+public interface TypeBuyingListRepository extends JpaRepository<TypeBuyingList, Integer> {
 
 }

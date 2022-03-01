@@ -18,22 +18,23 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrdersRepository repository;
-    private final TypeRepository typeProductRepository;
 
-    public OrderService(OrdersRepository repository, TypeRepository typeProductRepository) {
+    public OrderService(OrdersRepository repository) {
         this.repository = repository;
-        this.typeProductRepository = typeProductRepository;
     }
 
-    public void createOrder(User user, Type type, Float weight, String picture, Long latitude, Long longitude) throws BaseException {
+    public void createOrder(User user, Type type, Float weight, String picture, String province, String district,String name ,String detail,Integer price) throws BaseException {
         Orders entity = new Orders();
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
         entity.setType(type);
         entity.setPicture(picture);
         entity.setWeight(weight);
-        entity.setLatitude(latitude);
-        entity.setLongitude(longitude);
+        entity.setDistrict(district);
+        entity.setProvince(province);
+        entity.setName(name);
+        entity.setDetail(detail);
+        entity.setPrice(price);
         try {
             repository.save(entity);
         } catch (Exception e) {

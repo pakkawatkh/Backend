@@ -8,13 +8,16 @@ import com.example.backend.exception.UserException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.adminModel.AUserActiveReq;
+import com.example.backend.model.adminModel.AUserByIdReq;
 import com.example.backend.model.adminModel.AUserResponse;
 import com.example.backend.model.userModel.*;
 import com.example.backend.process.service.UserService;
 import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -33,10 +36,8 @@ public class UserBusiness {
     }
 
     public Object register(RegisterReq req) throws BaseException {
-        if (Objects.isNull(req.getEmail()) || Objects.isNull(req.getFirstname()) || Objects.isNull(req.getLastname()) || Objects.isNull(req.getPassword()))
-            throw MainException.requestInvalid();
-        if (req.getEmail().isBlank() || req.getFirstname().isBlank() || req.getLastname().isBlank() || req.getPassword().isBlank())
-            throw MainException.requestIsBlank();
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         User user = service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getEmail());
 
@@ -63,9 +64,14 @@ public class UserBusiness {
         User user = login(req);
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
-
-
         String token = tokenService.tokenizeLogin(user);
+
+        LoginResponse loginResponse = mapper.toLoginResponse(user);
+
+//        Map<Object, Object> data = new HashMap<>();
+//        data.put("token",token);
+//        data.put("profile",loginResponse);
+
 
         return new Response().ok("login success", "token", token);
     }
@@ -80,8 +86,8 @@ public class UserBusiness {
     }
 
     public User login(LoginReq req) throws BaseException {
-        if (Objects.isNull(req.getEmail()) || Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
-        if (req.getEmail().isBlank() || req.getPassword().isBlank()) throw MainException.requestIsBlank();
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         User user = service.findByEmail(req.getEmail());
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
@@ -97,24 +103,24 @@ public class UserBusiness {
 
     public Object editProfile(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getFirstname()) || Objects.isNull(req.getLastname()))
-            throw MainException.requestInvalid();
-        if (req.getFirstname().isBlank() || req.getLastname().isBlank()) throw MainException.requestIsBlank();
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine());
 
         return new Response().success("edit profile success");
     }
 
-    public Object editPhone(UserEditReq req) throws BaseException {
-        User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getEmail())) throw MainException.requestInvalid();
-        if (req.getEmail().isBlank()) throw MainException.requestIsBlank();
-
-        service.editEmailById(user, req.getEmail());
-
-        return new Response().success("edit phone success");
-    }
+//    public Object editPhone(UserEditReq req) throws BaseException {
+//        User user = tokenService.getUserByToken();
+//        if (Objects.isNull(req.getEmail())) throw MainException.requestInvalid();
+//        if (req.getEmail().isBlank()) throw MainException.requestIsBlank();
+//
+//        service.editEmailById(user, req.getEmail());
+//
+//        return new Response().success("edit phone success");
+//    }
 
     public Object profile() throws BaseException {
         User user = tokenService.getUserByToken();
@@ -126,9 +132,9 @@ public class UserBusiness {
 
     public Object changPassword(UserPasswordReq req) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getPasswordOld()) || Objects.isNull(req.getPasswordNew()))
-            throw MainException.requestInvalid();
-        if (req.getPasswordOld().isBlank() || req.getPasswordNew().isBlank()) throw MainException.requestIsBlank();
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) throw UserException.passwordIncorrect();
 
@@ -139,12 +145,12 @@ public class UserBusiness {
 
 
     // Admin ///
-    public Object updateUserActive(AUserActiveReq req) throws BaseException {
+    public Object updateUserActive(String id,AUserActiveReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getId()) || Objects.isNull(req.getActive())) throw MainException.requestInvalid();
-        if (req.getId().isBlank()) throw MainException.requestIsBlank();
 
-        User user = service.findById(req.getId());
+        if (!req.isValid()) throw MainException.requestInvalid();
+
+        User user = service.findById(id);
         if (user.getRole() == User.Role.ADMIN) throw MainException.accessDenied();
 
         service.updateUserActive(user, req.getActive());
@@ -160,35 +166,31 @@ public class UserBusiness {
         return new Response().ok(MS, "user", aUserResponses);
     }
 
-    public Object userById(User req) throws BaseException {
+    public Object userById(String id) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getId())) throw MainException.requestInvalid();
-        if (req.getId().isBlank()) throw MainException.requestIsBlank();
 
-        User user = service.findById(req.getId());
+        User user = service.findById(id);
         AUserResponse aUserResponse = mapper.toAUserResponse(user);
 
         return new Response().ok(MS, "user", aUserResponse);
     }
 
-    public Object userByShop(Shop req) throws BaseException {
+    public Object userByShop(Integer id) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getId())) throw MainException.requestInvalid();
 
-        User user = service.findByShop(req.getId());
+        User user = service.findByShop(id);
 
         return new Response().ok(MS, "user", user);
     }
 
-    public Object saveUserById(UserEditReq req) throws BaseException {
+    public Object editUserById(String id,UserEditReq req) throws BaseException {
         tokenService.checkAdminByToken();
-        if (Objects.isNull(req.getId()) || Objects.isNull(req.getFirstname()) || Objects.isNull(req.getLastname()))
-            throw MainException.requestInvalid();
-        if (req.getId().isBlank() || req.getFirstname().isBlank() || req.getLastname().isBlank())
-            throw MainException.requestIsBlank();
 
-        User user = service.findById(req.getId());
-        service.saveByUser(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getFacebook(), req.getLine());
+        if (!req.isValid2()) throw MainException.requestInvalid();
+        if (req.isBlank2()) throw MainException.requestIsBlank();
+
+        User user = service.findById(id);
+        service.saveEditByUser(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getFacebook(), req.getLine());
 
         return new Response().success("Edit Profile Success");
     }
@@ -200,14 +202,22 @@ public class UserBusiness {
         return new Response().ok("login success", "token", token);
     }
 
-    public Object loginSocial(LoginSocialRequest request) throws BaseException {
-        User user = service.saveLoginSocial(request.getFirstname(), request.getLastname(), request.getEmail(), request.getId(), request.getLogin());
+    public Object loginSocial(LoginSocialRequest req) throws BaseException {
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getEmail(), req.getId(), req.getLogin());
         String token = tokenService.tokenizeLogin(user);
 
         return new Response().ok("login success", "token", token);
     }
 
     public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
         User user = service.findByEmail(req.getEmail());
         String token = tokenService.tokenizeRegister(user);
 
@@ -217,18 +227,18 @@ public class UserBusiness {
         return new Response().success("เราได้ส่งอีเมลไปให้คุณ โปรดทำรายการภายใน 5 นาที");
     }
 
-    public Object resetPassword(UserForgetPasswordReq req) throws BaseException {
-        User user = tokenService.getUserByTokenRegister();
-        if (Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
-        if (req.getPassword().isBlank()) throw MainException.requestIsBlank();
-        if (req.getPassword().length()<8) throw UserException.passwordIsShort();
-
-        service.updatePassword(user,req.getPassword());
-        String token = tokenService.tokenizeLogin(user);
-
-        return new Response().ok("เปลี่ยนรหัสผ่านสำเร็จ","token",token);
-
-
-    }
+//    public Object resetPassword(UserForgetPasswordReq req) throws BaseException {
+//        User user = tokenService.getUserByTokenRegister();
+//        if (Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
+//        if (req.getPassword().isBlank()) throw MainException.requestIsBlank();
+//        if (req.getPassword().length()<8) throw UserException.passwordIsShort();
+//
+//        service.updatePassword(user,req.getPassword());
+//        String token = tokenService.tokenizeLogin(user);
+//
+//        return new Response().ok("เปลี่ยนรหัสผ่านสำเร็จ","token",token);
+//
+//
+//    }
 
 }
