@@ -110,6 +110,16 @@ public class OrderService {
         return repository.existsAllByType(type);
     }
 
+    public void deleteById(Integer id,User user) throws BaseException {
+        if (!repository.existsByIdAndUser(id,user)) throw OrderException.orderNotFound();
+
+        try {
+            repository.deleteById(id);
+        }catch (Exception e){
+            throw MainException.errorSave();
+        }
+    }
+
     public List<OrderRes> setListStatusThOrder(List<OrderRes> orderRes) {
         for (OrderRes order : orderRes) {
             if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);

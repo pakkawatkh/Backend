@@ -46,6 +46,13 @@ public class OrderApi {
         return ResponseEntity.ok(res);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") Integer id) throws BaseException {
+        Object res = business.deleteById(id);
+        return ResponseEntity.ok(res);
+    }
+
+
     @GetMapping("/byId/{id}")
     public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
         Object order = business.getById(id);

@@ -24,6 +24,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     boolean existsAllByType(Type type);
 
+    boolean existsByIdAndUser(Integer id,User user);
+
     //select by user and page
     List<Orders> findAllByUserOrderByDateDesc(User user, Pageable pageable);
 

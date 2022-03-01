@@ -104,4 +104,11 @@ public class OrderBusiness {
         return new Response().ok(MS, "product", setStatus);
     }
 
+    public Object deleteById(Integer id) throws BaseException {
+        User user = tokenService.getUserByToken();
+        service.deleteById(id,user);
+
+        return new Response().success("ลบข้อมูลสำเร็จ");
+    }
+
 }
