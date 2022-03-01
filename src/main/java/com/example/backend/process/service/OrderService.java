@@ -7,8 +7,8 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.exception.OrderException;
 import com.example.backend.model.BaseUrlFile;
+import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.process.repository.OrdersRepository;
-import com.example.backend.process.repository.TypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public void createOrder(User user, Type type, Float weight, String picture, String province, String district,String name ,String detail,Integer price) throws BaseException {
+    public void createOrder(User user, Type type, Float weight, String picture, String province, String district, String name, String detail, Integer price) throws BaseException {
         Orders entity = new Orders();
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
@@ -43,7 +43,6 @@ public class OrderService {
     }
 
     public void changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
-        if (id == null || status == null) throw MainException.requestInvalid();
 
         Optional<Orders> orders = repository.findByIdAndUser(id, user);
         if (orders.isEmpty()) throw OrderException.orderNotFound();
@@ -85,5 +84,27 @@ public class OrderService {
 
     public boolean existsAllByType(Type type) {
         return repository.existsAllByType(type);
+    }
+
+    public List<OrderRes> setListStatusThOrder(List<OrderRes> orderRes) {
+        for (OrderRes order : orderRes) {
+            if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);
+            if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
+            if (order.getStatus().equals(Orders.Status.CANCEL)) order.setStatusTh(statusTh.CANCEL);
+        }
+        return orderRes;
+    }
+
+    public OrderRes setStatusThOrder(OrderRes orderRes){
+        if (orderRes.getStatus().equals(Orders.Status.BUY)) orderRes.setStatusTh(statusTh.BUY);
+        if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
+        if (orderRes.getStatus().equals(Orders.Status.CANCEL)) orderRes.setStatusTh(statusTh.CANCEL);
+        return orderRes;
+    }
+
+    interface statusTh{
+        String BUY = "กำลังขาย";
+        String SUCCESS = "สำเร็จ";
+        String CANCEL = "ยกเลิก";
     }
 }

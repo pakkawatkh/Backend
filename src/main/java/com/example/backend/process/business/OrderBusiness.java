@@ -9,7 +9,6 @@ import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.model.orderModel.OrderRes;
-import com.example.backend.model.orderModel.OrderStatusReq;
 import com.example.backend.process.service.OrderService;
 import com.example.backend.process.service.TypeService;
 import com.example.backend.process.service.UserService;
@@ -17,7 +16,6 @@ import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class OrderBusiness {
@@ -37,11 +35,11 @@ public class OrderBusiness {
         this.typeService = typeService;
     }
 
-    public Object changeStatus(OrderStatusReq req, Orders.Status status) throws BaseException {
+    public Object changeStatus(Integer id, Orders.Status status) throws BaseException {
         User user = tokenService.getUserByToken();
-        if (Objects.isNull(req.getId()) || Objects.isNull(status)) throw MainException.requestInvalid();
+        if (id == null || status == null) throw MainException.requestInvalid();
 
-        service.changeStatus(req.getId(), status, user);
+        service.changeStatus(id, status, user);
 
         return new Response().success(MS);
 
@@ -65,7 +63,9 @@ public class OrderBusiness {
         User user = tokenService.getUserByToken();
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));
 
-        return new Response().ok(MS, "product", orderRes);
+        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
+
+        return new Response().ok(MS, "product", setStatus);
     }
 
 
@@ -74,7 +74,9 @@ public class OrderBusiness {
 
         OrderRes orderRes = mapper.toOrderRes(service.findByIdAndUser(id, user));
 
-        return new Response().ok(MS, "product", orderRes);
+        OrderRes setStatus = service.setStatusThOrder(orderRes);
+
+        return new Response().ok(MS, "product", setStatus);
     }
 
 
@@ -82,8 +84,9 @@ public class OrderBusiness {
     public Object getOrderAllUser() throws BaseException {
         tokenService.checkAdminByToken();
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findAll());
+        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
 
-        return new Response().ok(MS, "product", orderRes);
+        return new Response().ok(MS, "product", setStatus);
     }
 
     public Object getOrderByUser(String id) throws BaseException {
@@ -92,6 +95,9 @@ public class OrderBusiness {
         User user = userService.findById(id);
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findByUser(user));
 
-        return new Response().ok(MS, "product", orderRes);
+        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
+
+        return new Response().ok(MS, "product", setStatus);
     }
+
 }
