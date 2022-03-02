@@ -105,5 +105,11 @@ public class ShopService {
         return repository.findAll();
     }
 
+    public Shop findByUser(User user) throws BaseException {
+        Optional<Shop> shop = repository.findByUser(user);
+        if (shop.isEmpty()) throw ShopException.notId();
+
+        return shop.get();
+    }
 
 }

@@ -1,11 +1,7 @@
 package com.example.backend.api;
 
-import com.example.backend.entity.Shop;
-import com.example.backend.entity.Type;
-import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.AUserActiveReq;
-import com.example.backend.model.adminModel.AUserByIdReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.typeModel.TypeReq;
@@ -152,7 +148,7 @@ public class AdminApi {
     /*   BUYING    */
     @GetMapping("/buying/listByShop/{id}")
     public ResponseEntity<Object> listByShop(@PathVariable("id") Integer id) throws BaseException {
-        Object listByShop = buyingBusiness.getListByShop(id);
+        Object listByShop = buyingBusiness.getListByShopId(id);
 
         return ResponseEntity.ok(listByShop);
     }

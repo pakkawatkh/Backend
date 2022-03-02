@@ -1,24 +1,20 @@
 package com.example.backend.process.business;
 
-import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.exception.UserException;
 import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.Response;
 import com.example.backend.model.adminModel.AUserActiveReq;
-import com.example.backend.model.adminModel.AUserByIdReq;
 import com.example.backend.model.adminModel.AUserResponse;
 import com.example.backend.model.userModel.*;
 import com.example.backend.process.service.UserService;
 import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class UserBusiness {
@@ -68,12 +64,9 @@ public class UserBusiness {
 
         LoginResponse loginResponse = mapper.toLoginResponse(user);
 
-//        Map<Object, Object> data = new HashMap<>();
-//        data.put("token",token);
-//        data.put("profile",loginResponse);
+        LoginResponse profile = this.updateUser(loginResponse);
 
-
-        return new Response().ok("login success", "token", token);
+        return new Response().ok2("login success", "token", token,"profile",profile);
     }
 
     public Object loginAdmin(LoginReq req) throws BaseException {
@@ -225,6 +218,13 @@ public class UserBusiness {
         emailBusiness.sendResetPasswordUserEmail(user.getEmail(), user.getFirstname(),token);
 
         return new Response().success("เราได้ส่งอีเมลไปให้คุณ โปรดทำรายการภายใน 5 นาที");
+    }
+
+    public LoginResponse updateUser(LoginResponse response){
+        BaseUrlFile file = new BaseUrlFile();
+        if (response.getPicture()!=null) response.setPicture(file.getDomain()+file.getImageProfileUrl()+response.getPicture());
+
+        return response;
     }
 
 //    public Object resetPassword(UserForgetPasswordReq req) throws BaseException {

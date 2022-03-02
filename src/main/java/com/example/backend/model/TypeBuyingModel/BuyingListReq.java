@@ -7,7 +7,7 @@ public class BuyingListReq {
 
     private String name;
 
-    private Integer price;
+    private String price;
 
     private Integer buyingId;
 

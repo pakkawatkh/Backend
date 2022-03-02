@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 public class LoginResponse {
-    String firstname;
-    String lastname;
-    User.Role role;
+  private String firstname;
+  private String lastname;
+  private User.Role role;
+  private String picture;
 }

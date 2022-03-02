@@ -19,7 +19,7 @@ public class TypeBuyingList extends AutoID {
     private String name;
 
     @Column(nullable = false, length = 10)
-    private Integer price;
+    private String price;
 
     @Column(nullable = false)
     private Date date = new Date();

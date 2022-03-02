@@ -60,7 +60,7 @@ public class OrderService {
         }
     }
 
-    public List<Orders> findByUser(User user,int page ) {
+    public List<Orders> findByUser(User user, int page) {
 //        List<Orders> orders = repository.findByUser(user);
 
         PageRequest limit = PageRequest.of(page, 6);
@@ -74,7 +74,8 @@ public class OrderService {
 
         return orders;
     }
-    public List<Orders> findAllByUser(User user ) {
+
+    public List<Orders> findAllByUser(User user) {
         List<Orders> orders = repository.findByUser(user);
 
         BaseUrlFile urlFile = new BaseUrlFile();
@@ -84,7 +85,7 @@ public class OrderService {
         return orders;
     }
 
-    public Long countByUser(User user){
+    public Long countByUser(User user) {
         Long count = repository.count(user);
         return count;
     }
@@ -110,12 +111,12 @@ public class OrderService {
         return repository.existsAllByType(type);
     }
 
-    public void deleteById(Integer id,User user) throws BaseException {
-        if (!repository.existsByIdAndUser(id,user)) throw OrderException.orderNotFound();
+    public void deleteById(Integer id, User user) throws BaseException {
+        if (!repository.existsByIdAndUser(id, user)) throw OrderException.orderNotFound();
 
         try {
             repository.deleteById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw MainException.errorSave();
         }
     }
@@ -123,16 +124,16 @@ public class OrderService {
     public List<OrderRes> setListStatusThOrder(List<OrderRes> orderRes) {
         for (OrderRes order : orderRes) {
             if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);
-            if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
-            if (order.getStatus().equals(Orders.Status.CANCEL)) order.setStatusTh(statusTh.CANCEL);
+            else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
+            else order.setStatusTh(statusTh.CANCEL);
         }
         return orderRes;
     }
 
     public OrderRes setStatusThOrder(OrderRes orderRes) {
         if (orderRes.getStatus().equals(Orders.Status.BUY)) orderRes.setStatusTh(statusTh.BUY);
-        if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
-        if (orderRes.getStatus().equals(Orders.Status.CANCEL)) orderRes.setStatusTh(statusTh.CANCEL);
+        else if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
+        else orderRes.setStatusTh(statusTh.CANCEL);
         return orderRes;
     }
 
