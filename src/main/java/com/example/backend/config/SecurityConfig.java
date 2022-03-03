@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
                     corsConfiguration.setAllowCredentials(true);
 //                    Configuration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
-                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
+                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
 //                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.addAllowedMethod("GET");
