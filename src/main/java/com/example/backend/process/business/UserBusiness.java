@@ -52,8 +52,10 @@ public class UserBusiness {
         user.setRegister(true);
         service.RegisterActive(user);
         String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
+        LoginResponse profile = mapper.toLoginResponse(user);
 
-        return new Response().ok("ยืนยันตัวตนสำเร็จ", "token", token);
+        return new Response().login("ยืนยันตัวตนสำเร็จ", "token", token,"refreshToken",refreshToken,"profile",profile);
     }
 
     public Object loginUser(LoginReq req) throws BaseException {
