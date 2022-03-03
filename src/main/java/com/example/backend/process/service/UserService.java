@@ -169,7 +169,7 @@ public class UserService {
         return bySocialId;
     }
 
-    public User saveLoginSocial(String firstname, String lastname, String email, String userId, User.Login login) throws BaseException {
+    public User saveLoginSocial(String firstname, String lastname, String userId, User.Login login) throws BaseException {
         Optional<User> bySocial = findBySocial(userId);
 
         User user;
@@ -178,7 +178,6 @@ public class UserService {
             user.setFirstname(firstname);
             user.setLastname(lastname);
             user.setLogin(login);
-            user.setEmail(email);
             user.setSocialId(userId);
             user.setRegister(true);
         } else {
@@ -186,7 +185,6 @@ public class UserService {
             user.setFirstname(firstname);
             user.setLastname(lastname);
             user.setLogin(login);
-            user.setEmail(email);
         }
         try {
             repository.save(user);

@@ -10,7 +10,6 @@ public class LoginSocialRequest {
     private String lastname;
     private String id;
     private User.Login login;
-    private String email;
 
     //validate is not null
     public boolean isValid() {

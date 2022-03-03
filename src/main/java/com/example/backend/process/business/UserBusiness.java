@@ -202,10 +202,13 @@ public class UserBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getEmail(), req.getId(), req.getLogin());
+        User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getId(), req.getLogin());
         String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
 
-        return new Response().ok("login success", "token", token);
+        LoginResponse profile = mapper.toLoginResponse(user);
+
+        return new Response().login("login success", "token", token,"refreshToken",refreshToken,"profile",profile);
     }
 
     public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
