@@ -39,9 +39,11 @@ public class TokenService {
     public String tokenize(User user, tokenizeType type) {
         Calendar calendar = Calendar.getInstance();
 
-        if (type.equals(tokenizeType.LOGIN_DEFAULT)) calendar.add(Calendar.MINUTE, 60 * 24 * 7);
-        if (type.equals(tokenizeType.REGISTER)) calendar.add(Calendar.MINUTE, 5);
-        if (type.equals(tokenizeType.LOGIN_SOCIAL)) calendar.add(Calendar.SECOND, 5);
+        if (type.equals(tokenizeType.LOGIN_DEFAULT)) calendar.add(Calendar.HOUR,  24);
+       else if (type.equals(tokenizeType.REGISTER)) calendar.add(Calendar.MINUTE, 5);
+       else if (type.equals(tokenizeType.LOGIN_SOCIAL)) calendar.add(Calendar.SECOND, 5);
+       else if (type.equals(tokenizeType.REFRESH_TOKEN)) calendar.add(Calendar.HOUR, 24 * 7);
+
 
         Date expiresAt = calendar.getTime();
 
@@ -59,6 +61,8 @@ public class TokenService {
     public String tokenizeRegister(User user) {
         return tokenize(user, tokenizeType.REGISTER);
     }
+
+    public String tokenizeRefreshToken(User user) {return tokenize(user, tokenizeType.REFRESH_TOKEN);}
 
     public DecodedJWT verify(String token) {
         try {
@@ -134,6 +138,6 @@ public class TokenService {
     }
 
     public enum tokenizeType {
-        LOGIN_DEFAULT, LOGIN_SOCIAL, REGISTER
+        LOGIN_DEFAULT, LOGIN_SOCIAL, REGISTER,REFRESH_TOKEN
     }
 }

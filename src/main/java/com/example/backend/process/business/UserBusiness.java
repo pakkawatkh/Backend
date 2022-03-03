@@ -61,12 +61,13 @@ public class UserBusiness {
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
         String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
 
         LoginResponse loginResponse = mapper.toLoginResponse(user);
 
         LoginResponse profile = this.updateUser(loginResponse);
 
-        return new Response().ok2("login success", "token", token,"profile",profile);
+        return new Response().login("login success", "token", token,"refreshToken", refreshToken,"profile",profile);
     }
 
     public Object loginAdmin(LoginReq req) throws BaseException {
@@ -191,8 +192,9 @@ public class UserBusiness {
     public Object refreshToken() throws BaseException {
         User user = tokenService.getUserByToken();
         String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
 
-        return new Response().ok("login success", "token", token);
+        return new Response().ok2("refreshToken success", "token", token,"refreshToken",refreshToken);
     }
 
     public Object loginSocial(LoginSocialRequest req) throws BaseException {
