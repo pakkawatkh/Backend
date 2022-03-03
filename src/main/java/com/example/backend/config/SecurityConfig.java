@@ -71,37 +71,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().apply(new TokenFilterConfigurer(tokenService));
     }
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors().disable().csrf().disable()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and().authorizeRequests()
-//                .antMatchers(PUBLIC)
-//                .anonymous()
-//                .anyRequest()
-//                .authenticated()
-//                .and().apply(new TokenFilterConfigurer(tokenService));
-//    }
-//
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowCredentials(true);
-////        config.addAllowedOrigin("http://localhost/4200");
-//        config.setAllowedOriginPatterns(Arrays.asList("http://localhost*"));
-//        config.addAllowedHeader("*");
-////        config.addAllowedMethod("OPTIONS");
-////        config.addAllowedMethod("POST");
-////        config.addAllowedMethod("GET");
-////        config.addAllowedMethod("PUT");
-////        config.addAllowedMethod("DELETE");
-//        config.addAllowedMethod("*");
-//
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
-
 }
