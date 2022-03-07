@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 @Data
 public class BaseUrlFile {
 
-    private final String domain = "http://74ff-2403-6200-8837-c1f-cc34-dc0e-781e-42f3.ngrok.io";
+    private final String domain = "https://f25f-2403-6200-8837-c1f-80b6-e999-cc84-3a18.ngrok.io";
 //    private final String domain = "http://localhost:8080";
 
     private final String baseDir = "/uploads/image";

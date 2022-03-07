@@ -16,7 +16,7 @@ public class EmailBusiness {
 
     private final EmailService service;
 
-    private String webFrontEnd = "http://localhost:4200";
+    private String webFrontEnd = "https://localhost:4200";
 
     public EmailBusiness(EmailService service) {
         this.service = service;
@@ -31,7 +31,7 @@ public class EmailBusiness {
             throw EmailException.templateNotFound();
         }
 
-        String finalLink= webFrontEnd+"/activate/"+data;
+        String finalLink= webFrontEnd+"/verify/"+data;
 
         html = html.replace("${P_NAME}",name);
         html = html.replace("${LINK}",finalLink);

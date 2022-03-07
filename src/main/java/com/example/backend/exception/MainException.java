@@ -18,7 +18,7 @@ public class MainException extends BaseException {
     }
 
     public static MainException expires() {
-        return new MainException("เซสชั่นหมดอายุ");
+        return new MainException("expires");
     }
 
     public static MainException errorSave() {

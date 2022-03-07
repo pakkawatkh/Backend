@@ -21,13 +21,36 @@ public class News extends AutoID {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column()
     @Lob
-    private String detail;
+    private String paragraphOne;
+
+
+    @Column()
+    @Lob
+    private String paragraphTwo;
+
+
+    @Column()
+    @Lob
+    private String paragraphThree;
+
+
+    @Column()
+    @Lob
+    private String paragraphFour;
+
+    @Column()
+    @Lob
+    private String paragraphFive;
 
     @Column(length = 100)
     private String picture;
 
     @Column(length = 200)
     private String reference;
+
+    @Column()
+    @Lob
+    private String linkRef;
 }

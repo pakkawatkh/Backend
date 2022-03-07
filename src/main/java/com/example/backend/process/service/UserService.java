@@ -38,10 +38,8 @@ public class UserService {
         user.setLastname(lastname);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
-        user.setRole(User.Role.USER);
-        user.setActive(true);
-        user.setDate(new Date());
         user.setLogin(User.Login.DEFAULT);
+        user.setLast_password(new Date());
         try {
             return repository.save(user);
         } catch (Exception e) {

@@ -17,16 +17,21 @@ public class NewsApi {
 
     @GetMapping("/list")
     public ResponseEntity<Object> listNews(){
-        Object list = business.getList();
+        Object res = business.getList();
 
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Object> detailNews(@PathVariable Integer id) throws BaseException {
-        Object detailById = business.getDetailById(id);
+    public ResponseEntity<Object> detailNews(@PathVariable("id") Integer id) throws BaseException {
+        Object res = business.getDetailById(id);
 
-        return ResponseEntity.ok(detailById);
+        return ResponseEntity.ok(res);
+    }
+    @GetMapping("/recommend")
+    public ResponseEntity<Object> recommend(){
+        Object res = business.getRecommend();
+        return ResponseEntity.ok(res);
     }
 
 }

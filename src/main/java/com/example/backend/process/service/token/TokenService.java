@@ -98,11 +98,9 @@ public class TokenService {
 
     public User getUserByTokenRegister() throws BaseException {
         String userId = this.userId();
-        String date = this.lastPassword();
 
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) throw UserException.notFound();
-        if (!date.equals("[" + user.get().getLast_password() + "]")) throw MainException.expires();
 
         return user.get();
     }

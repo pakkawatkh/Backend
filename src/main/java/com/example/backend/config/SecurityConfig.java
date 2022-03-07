@@ -51,9 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors(config -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
                     corsConfiguration.setAllowCredentials(true);
-//                    Configuration.setAllowedOriginPatterns(Collections.singletonList("http://*"));
                     corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
-//                    corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("https://*"));
                     corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.addAllowedMethod("GET");
                     corsConfiguration.addAllowedMethod("POST");
@@ -63,7 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
                     source.registerCorsConfiguration("/**", corsConfiguration);
-
                     config.configurationSource(source);
                 }).csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
