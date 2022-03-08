@@ -1,10 +1,10 @@
 package com.example.backend.api;
 
+import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.process.business.OrderBusiness;
 import com.example.backend.entity.Orders;
 import com.example.backend.exception.BaseException;
 import com.example.backend.model.orderModel.OrderReq;
-import com.example.backend.model.orderModel.OrderStatusReq;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +58,10 @@ public class OrderApi {
         Object order = business.getById(id);
 
         return ResponseEntity.ok(order);
+    }
+    @PostMapping("/list-all")
+    public ResponseEntity<Object> listFilter(@RequestBody OrderBuyFillerReq req) throws BaseException {
+        Object res = business.getListFilter(req);
+        return  ResponseEntity.ok(res);
     }
 }

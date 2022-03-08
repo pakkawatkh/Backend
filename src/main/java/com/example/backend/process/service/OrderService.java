@@ -7,6 +7,7 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.exception.OrderException;
 import com.example.backend.model.BaseUrlFile;
+import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.process.repository.OrdersRepository;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+interface statusTh {
+    String BUY = "กำลังขาย";
+    String SUCCESS = "สำเร็จ";
+    String CANCEL = "ยกเลิก";
+}
 
 @Service
 public class OrderService {
@@ -121,7 +128,7 @@ public class OrderService {
         }
     }
 
-    public List<OrderRes> setListStatusThOrder(List<OrderRes> orderRes) {
+    public List<OrderRes> updateListOrder(List<OrderRes> orderRes) {
         for (OrderRes order : orderRes) {
             if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);
             else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
@@ -130,16 +137,74 @@ public class OrderService {
         return orderRes;
     }
 
-    public OrderRes setStatusThOrder(OrderRes orderRes) {
+    public OrderRes updateOrder(OrderRes orderRes) {
         if (orderRes.getStatus().equals(Orders.Status.BUY)) orderRes.setStatusTh(statusTh.BUY);
         else if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
         else orderRes.setStatusTh(statusTh.CANCEL);
         return orderRes;
     }
 
-    interface statusTh {
-        String BUY = "กำลังขาย";
-        String SUCCESS = "สำเร็จ";
-        String CANCEL = "ยกเลิก";
+
+    //Filter
+    public List<Orders> findAllByPage(Integer page, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 16);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusOrderByDateDesc(status, limit);
+        } else {
+            return repository.findAllByStatusOrderByDateAsc(status, limit);
+        }
     }
+
+    public Long countAll(Orders.Status status) {
+        return repository.countAllBuy(status);
+    }
+
+    //---------------------------------------//
+    public List<Orders> findAllByPageAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 6);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusAndTypeOrderByDateDesc(status, type, limit);
+        } else {
+            return repository.findAllByStatusAndTypeOrderByDateAsc(status, type, limit);
+        }
+    }
+
+    public Long countAllByType(Type type, Orders.Status status) {
+        return repository.countAllByType(type, status);
+    }
+
+    //---------------------------------------//
+    public List<Orders> findAllByPageAndProvince(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 6);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusAndProvinceOrderByDateDesc(status, province, limit);
+        } else {
+            return repository.findAllByStatusAndProvinceOrderByDateAsc(status, province, limit);
+        }
+    }
+
+    public Long countAllByProvince(String province, Orders.Status status) {
+        return repository.countAllByProvince(province, status);
+    }
+
+    //---------------------------------------//
+    public List<Orders> findAllByPageAndProvinceAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 6);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusAndTypeAndProvinceOrderByDateDesc(status, type, province, limit);
+        } else {
+            return repository.findAllByStatusAndTypeAndProvinceOrderByDateAsc(status, type, province, limit);
+        }
+    }
+
+    public Long countAllByProvinceAndType(Type type, String province, Orders.Status status) {
+        return repository.countAllByTypeAndProvince(type, province, status);
+    }
+    //---------------------------------------//
+
+
 }

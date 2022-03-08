@@ -32,4 +32,29 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     //count order by user
     @Query(value = "SELECT count(o) FROM Orders as o where o.user = :user")
      Long count(@Param("user") User user);
+
+
+    //Filter
+//    @Query(value = "SELECT o FROM Orders o where o.status = 'CANCEL'")
+//        List<Orders> allDesc();
+    List<Orders> findAllByStatusOrderByDateDesc(Orders.Status status, Pageable pageable);
+    List<Orders> findAllByStatusOrderByDateAsc(Orders.Status status,Pageable pageable);
+    @Query(value = "SELECT count(o) FROM Orders as o where  o.status = :status")
+    Long countAllBuy(@Param("status") Orders.Status status);
+
+    List<Orders> findAllByStatusAndTypeOrderByDateDesc(Orders.Status status,Type type,Pageable pageable);
+    List<Orders> findAllByStatusAndTypeOrderByDateAsc(Orders.Status status,Type type,Pageable pageable);
+    @Query(value = "SELECT count(o) FROM Orders as o where o.type = :type and o.status = :status")
+    Long countAllByType(@Param("type") Type type,@Param("status") Orders.Status status);
+
+    List<Orders> findAllByStatusAndProvinceOrderByDateDesc(Orders.Status status,String province,Pageable pageable);
+    List<Orders> findAllByStatusAndProvinceOrderByDateAsc(Orders.Status status,String province,Pageable pageable);
+    @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.status = :status")
+    Long countAllByProvince(@Param("province") String province,@Param("status") Orders.Status status);
+
+    List<Orders> findAllByStatusAndTypeAndProvinceOrderByDateDesc(Orders.Status status,Type type, String province,Pageable pageable);
+    List<Orders> findAllByStatusAndTypeAndProvinceOrderByDateAsc(Orders.Status status,Type type,String province,Pageable pageable);
+    @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.type = :type and o.status = :status")
+
+    Long countAllByTypeAndProvince(@Param("type") Type type,@Param("province") String province,@Param("status") Orders.Status status);
 }

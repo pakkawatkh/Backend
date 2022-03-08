@@ -5,9 +5,9 @@ import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
-import com.example.backend.exception.OrderException;
 import com.example.backend.mapper.OrderMapper;
 import com.example.backend.model.Response;
+import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.process.service.OrderService;
@@ -64,12 +64,12 @@ public class OrderBusiness {
         User user = tokenService.getUserByToken();
 
         Long count = service.countByUser(user);
-        List<Orders> list = service.findByUser(user,page);
+        List<Orders> list = service.findByUser(user, page);
 
         List<OrderRes> orderRes = mapper.toListOrderRes(list);
-        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
+        List<OrderRes> setStatus = service.updateListOrder(orderRes);
 
-        return new Response().ok2(MS, "product", setStatus,"count",count);
+        return new Response().ok2(MS, "product", setStatus, "count", count);
     }
 
 
@@ -78,7 +78,7 @@ public class OrderBusiness {
 
         OrderRes orderRes = mapper.toOrderRes(service.findByIdAndUser(id, user));
 
-        OrderRes setStatus = service.setStatusThOrder(orderRes);
+        OrderRes setStatus = service.updateOrder(orderRes);
 
         return new Response().ok(MS, "product", setStatus);
     }
@@ -88,7 +88,7 @@ public class OrderBusiness {
     public Object getOrderAllUser() throws BaseException {
         tokenService.checkAdminByToken();
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findAll());
-        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
+        List<OrderRes> setStatus = service.updateListOrder(orderRes);
 
         return new Response().ok(MS, "product", setStatus);
     }
@@ -99,16 +99,45 @@ public class OrderBusiness {
         User user = userService.findById(id);
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findAllByUser(user));
 
-        List<OrderRes> setStatus = service.setListStatusThOrder(orderRes);
+        List<OrderRes> setStatus = service.updateListOrder(orderRes);
 
         return new Response().ok(MS, "product", setStatus);
     }
 
     public Object deleteById(Integer id) throws BaseException {
         User user = tokenService.getUserByToken();
-        service.deleteById(id,user);
+        service.deleteById(id, user);
 
         return new Response().success("ลบข้อมูลสำเร็จ");
+    }
+
+    public Object getListFilter(OrderBuyFillerReq req) throws BaseException {
+        long count;
+        List<Orders> orders;
+        if (req.getTypeId() == null && req.getProvince() == null) {
+            orders = service.findAllByPage(req.getPage(), req.getOrderBy(), req.getStatus());
+            count = service.countAll(req.getStatus());
+        } else if (req.getTypeId() != null && req.getProvince() == null) {
+            Type type = typeService.findById(req.typeId);
+
+            orders = service.findAllByPageAndType(req.getPage(), type, req.getOrderBy(), req.getStatus());
+            count = service.countAllByType(type, req.getStatus());
+        } else if (req.getTypeId() == null && req.getProvince() != null) {
+
+            orders = service.findAllByPageAndProvince(req.getPage(), req.getOrderBy(), req.getProvince(), req.getStatus());
+            count = service.countAllByProvince(req.province, req.getStatus());
+        } else {
+            Type type = typeService.findById(req.typeId);
+
+            orders = service.findAllByPageAndProvinceAndType(req.getPage(), type, req.getOrderBy(), req.getProvince(), req.getStatus());
+            count = service.countAllByProvinceAndType(type, req.getProvince(), req.getStatus());
+        }
+
+        List<OrderRes> orderRes = mapper.toListOrderRes(orders);
+
+        List<OrderRes> res = service.updateListOrder(orderRes);
+
+        return new Response().ok2(MS,"order",res,"count",count);
     }
 
 }
