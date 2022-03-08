@@ -15,6 +15,7 @@ public class UserEditReq {
 
     private String address;
 
+    private String shopName;
 
 
     //validate is not null

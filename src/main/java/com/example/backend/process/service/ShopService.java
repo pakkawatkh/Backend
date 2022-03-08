@@ -41,10 +41,10 @@ public class ShopService {
         }
     }
 
-    public void edit(User user,  String name, Long latitude, Long longitude) throws BaseException {
+    public void edit(User user, String name, Long latitude, Long longitude) throws BaseException {
         Optional<Shop> entity = repository.findByUser(user);
 
-        if (entity.isEmpty())throw ShopException.notId();
+        if (entity.isEmpty()) throw ShopException.notId();
 
         Shop shop = entity.get();
         shop.setNumber(name);
@@ -110,6 +110,15 @@ public class ShopService {
         if (shop.isEmpty()) throw ShopException.notId();
 
         return shop.get();
+    }
+
+    public void updateShop(Shop shop) throws BaseException {
+        try {
+            repository.save(shop);
+        } catch (Exception e) {
+            throw MainException.errorSave();
+        }
+
     }
 
 }

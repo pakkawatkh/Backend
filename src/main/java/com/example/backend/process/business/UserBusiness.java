@@ -1,5 +1,6 @@
 package com.example.backend.process.business;
 
+import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
@@ -10,6 +11,7 @@ import com.example.backend.model.Response;
 import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.adminModel.AUserResponse;
 import com.example.backend.model.userModel.*;
+import com.example.backend.process.service.ShopService;
 import com.example.backend.process.service.UserService;
 import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,15 @@ import java.util.List;
 @Service
 public class UserBusiness {
     private final UserService service;
+    private final ShopService shopService;
     private final TokenService tokenService;
     private final EmailBusiness emailBusiness;
     private final UserMapper mapper;
     private final String MS = "OK";
 
-    public UserBusiness(UserService userService, TokenService tokenService, EmailBusiness emailBusiness, UserMapper mapper) {
+    public UserBusiness(UserService userService, ShopService shopService, TokenService tokenService, EmailBusiness emailBusiness, UserMapper mapper) {
         this.service = userService;
+        this.shopService = shopService;
         this.tokenService = tokenService;
         this.emailBusiness = emailBusiness;
         this.mapper = mapper;
@@ -102,6 +106,12 @@ public class UserBusiness {
 
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
+
+        if (user.getRole().equals(User.Role.SHOP)){
+            Shop shop = user.getShop();
+            shop.setName(req.getShopName());
+            shopService.updateShop(shop);
+        }
 
         service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine());
 
