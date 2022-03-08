@@ -129,10 +129,14 @@ public class OrderService {
     }
 
     public List<OrderRes> updateListOrder(List<OrderRes> orderRes) {
+        BaseUrlFile urlFile = new BaseUrlFile();
+
         for (OrderRes order : orderRes) {
             if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);
             else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
             else order.setStatusTh(statusTh.CANCEL);
+            order.setPicture(urlFile.getDomain()+urlFile.getImageOrderUrl()+order.getPicture());
+
         }
         return orderRes;
     }
@@ -141,6 +145,8 @@ public class OrderService {
         if (orderRes.getStatus().equals(Orders.Status.BUY)) orderRes.setStatusTh(statusTh.BUY);
         else if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
         else orderRes.setStatusTh(statusTh.CANCEL);
+        BaseUrlFile urlFile = new BaseUrlFile();
+        orderRes.setPicture(urlFile.getDomain()+urlFile.getImageOrderUrl()+orderRes.getPicture());
         return orderRes;
     }
 
