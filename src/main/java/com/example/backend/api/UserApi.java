@@ -16,20 +16,7 @@ public class UserApi {
         this.business = userBusiness;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody RegisterReq req) throws BaseException {
-        Object response = business.register(req);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
-        Object res = business.loginUser(req);
-
-        return ResponseEntity.ok(res);
-    }
-
+    //Token Verify
     @GetMapping("/confirm-account")
     public ResponseEntity<Object> confirmAccount() throws BaseException {
         Object res = business.confirmAccount();
@@ -51,13 +38,6 @@ public class UserApi {
         return ResponseEntity.ok(edit);
     }
 
-//    @PostMapping("/editPhone")
-//    public ResponseEntity<Object> editPhone(@RequestBody UserEditReq req) throws BaseException {
-//        Object edit = business.editPhone(req);
-//
-//        return ResponseEntity.ok(edit);
-//    }
-
     @PutMapping("/changPassword")
     public ResponseEntity<Object> changPassword(@RequestBody UserPasswordReq req) throws BaseException {
         Object res = business.changPassword(req);
@@ -71,14 +51,6 @@ public class UserApi {
 
         return ResponseEntity.ok(res);
     }
-
-//    @GetMapping("/reset-password")
-//    public ResponseEntity<Object> resetPassword(UserForgetPasswordReq req) throws BaseException {
-//        Object res = business.resetPassword(req);
-//
-//        return ResponseEntity.ok(res);
-//    }
-
     @GetMapping("/refreshToken")
     public ResponseEntity<Object> refreshToken() throws BaseException {
         Object res = business.refreshToken();

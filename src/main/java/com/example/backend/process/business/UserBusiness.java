@@ -35,6 +35,7 @@ public class UserBusiness {
         this.mapper = mapper;
     }
 
+    // not Verify
     public Object register(RegisterReq req) throws BaseException {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
@@ -49,31 +50,17 @@ public class UserBusiness {
         return new Response().success("โปรดยืนยันอีเมลภายใน 5 นาที");
     }
 
-    public Object confirmAccount() throws BaseException {
-        User user = tokenService.getUserByTokenRegister();
-        if (user.getRegister()) throw MainException.expires();
-
-        user.setRegister(true);
-        service.RegisterActive(user);
-        String token = tokenService.tokenizeLogin(user);
-        String refreshToken = tokenService.tokenizeRefreshToken(user);
-        LoginResponse profile = mapper.toLoginResponse(user);
-
-        return new Response().login("ยืนยันตัวตนสำเร็จ", "token", token,"refreshToken",refreshToken,"profile",profile);
-    }
-
     public Object loginUser(LoginReq req) throws BaseException {
         User user = login(req);
         if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
         String token = tokenService.tokenizeLogin(user);
         String refreshToken = tokenService.tokenizeRefreshToken(user);
+        User updateUser = this.updateUser(user);
 
-        LoginResponse loginResponse = mapper.toLoginResponse(user);
+        LoginResponse profile = mapper.toLoginResponse(updateUser);
 
-        LoginResponse profile = this.updateUser(loginResponse);
-
-        return new Response().login("login success", "token", token,"refreshToken", refreshToken,"profile",profile);
+        return new Response().login("login success", "token", token, "refreshToken", refreshToken, "profile", profile);
     }
 
     public Object loginAdmin(LoginReq req) throws BaseException {
@@ -81,8 +68,9 @@ public class UserBusiness {
         if (user.getRole() != User.Role.ADMIN) throw UserException.notFound();
 
         String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
 
-        return new Response().ok("login success", "token", token);
+        return new Response().ok2("login success", "token", token, "refreshToken", refreshToken);
     }
 
     public User login(LoginReq req) throws BaseException {
@@ -101,13 +89,64 @@ public class UserBusiness {
         return user;
     }
 
+    public Object loginSocial(LoginSocialRequest req) throws BaseException {
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getId(), req.getLogin());
+        String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
+
+        LoginResponse profile = mapper.toLoginResponse(user);
+
+        return new Response().login("login success", "token", token, "refreshToken", refreshToken, "profile", profile);
+    }
+    public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
+
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        User user = service.findByEmail(req.getEmail());
+        String token = tokenService.tokenizeRegister(user);
+
+        //forgetPassword send email to reset
+        emailBusiness.sendResetPasswordUserEmail(user.getEmail(), user.getFirstname(), token);
+
+        return new Response().success("เราได้ส่งอีเมลไปให้คุณ โปรดทำรายการภายใน 5 นาที");
+    }
+
+    public Object userByNumber(String number) throws BaseException {
+        User user = service.findByNumber(number);
+
+        User updateUser = this.updateUser(user);
+        UserResponse profile = mapper.toUserResponse(updateUser);
+
+        return new Response().ok(MS,"profile",profile);
+    }
+
+    //Token Verify
+    public Object confirmAccount() throws BaseException {
+        User user = tokenService.getUserByTokenRegister();
+        if (user.getRegister()) throw MainException.expires();
+
+        user.setRegister(true);
+        service.RegisterActive(user);
+        String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
+        LoginResponse profile = mapper.toLoginResponse(user);
+
+        return new Response().login("ยืนยันตัวตนสำเร็จ", "token", token, "refreshToken", refreshToken, "profile", profile);
+    }
+
+
     public Object editProfile(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        if (user.getRole().equals(User.Role.SHOP)){
+        if (user.getRole().equals(User.Role.SHOP)) {
             Shop shop = user.getShop();
             shop.setName(req.getShopName());
             shopService.updateShop(shop);
@@ -117,16 +156,6 @@ public class UserBusiness {
 
         return new Response().success("edit profile success");
     }
-
-//    public Object editPhone(UserEditReq req) throws BaseException {
-//        User user = tokenService.getUserByToken();
-//        if (Objects.isNull(req.getEmail())) throw MainException.requestInvalid();
-//        if (req.getEmail().isBlank()) throw MainException.requestIsBlank();
-//
-//        service.editEmailById(user, req.getEmail());
-//
-//        return new Response().success("edit phone success");
-//    }
 
     public Object profile() throws BaseException {
         User user = tokenService.getUserByToken();
@@ -148,10 +177,17 @@ public class UserBusiness {
 
         return new Response().success("update password success");
     }
+    public Object refreshToken() throws BaseException {
+        User user = tokenService.getUserByToken();
+        String token = tokenService.tokenizeLogin(user);
+        String refreshToken = tokenService.tokenizeRefreshToken(user);
+
+        return new Response().ok2("refreshToken success", "token", token, "refreshToken", refreshToken);
+    }
 
 
     // Admin ///
-    public Object updateUserActive(String id,AUserActiveReq req) throws BaseException {
+    public Object updateUserActive(String id, AUserActiveReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
         if (!req.isValid()) throw MainException.requestInvalid();
@@ -189,7 +225,7 @@ public class UserBusiness {
         return new Response().ok(MS, "user", user);
     }
 
-    public Object editUserById(String id,UserEditReq req) throws BaseException {
+    public Object editUserById(String id, UserEditReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
         if (!req.isValid2()) throw MainException.requestInvalid();
@@ -201,61 +237,10 @@ public class UserBusiness {
         return new Response().success("Edit Profile Success");
     }
 
-    public Object refreshToken() throws BaseException {
-        User user = tokenService.getUserByToken();
-        String token = tokenService.tokenizeLogin(user);
-        String refreshToken = tokenService.tokenizeRefreshToken(user);
-
-        return new Response().ok2("refreshToken success", "token", token,"refreshToken",refreshToken);
-    }
-
-    public Object loginSocial(LoginSocialRequest req) throws BaseException {
-
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
-
-        User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getId(), req.getLogin());
-        String token = tokenService.tokenizeLogin(user);
-        String refreshToken = tokenService.tokenizeRefreshToken(user);
-
-        LoginResponse profile = mapper.toLoginResponse(user);
-
-        return new Response().login("login success", "token", token,"refreshToken",refreshToken,"profile",profile);
-    }
-
-    public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
-
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
-
-        User user = service.findByEmail(req.getEmail());
-        String token = tokenService.tokenizeRegister(user);
-
-        //forgetPassword send email to reset
-        emailBusiness.sendResetPasswordUserEmail(user.getEmail(), user.getFirstname(),token);
-
-        return new Response().success("เราได้ส่งอีเมลไปให้คุณ โปรดทำรายการภายใน 5 นาที");
-    }
-
-    public LoginResponse updateUser(LoginResponse response){
+    public User updateUser(User response) {
         BaseUrlFile file = new BaseUrlFile();
-        if (response.getPicture()!=null) response.setPicture(file.getDomain()+file.getImageProfileUrl()+response.getPicture());
-
+        if (response.getPicture() != null)
+            response.setPicture(file.getDomain() + file.getImageProfileUrl() + response.getPicture());
         return response;
     }
-
-//    public Object resetPassword(UserForgetPasswordReq req) throws BaseException {
-//        User user = tokenService.getUserByTokenRegister();
-//        if (Objects.isNull(req.getPassword())) throw MainException.requestInvalid();
-//        if (req.getPassword().isBlank()) throw MainException.requestIsBlank();
-//        if (req.getPassword().length()<8) throw UserException.passwordIsShort();
-//
-//        service.updatePassword(user,req.getPassword());
-//        String token = tokenService.tokenizeLogin(user);
-//
-//        return new Response().ok("เปลี่ยนรหัสผ่านสำเร็จ","token",token);
-//
-//
-//    }
-
 }

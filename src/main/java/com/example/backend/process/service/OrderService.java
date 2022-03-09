@@ -49,6 +49,9 @@ public class OrderService {
             throw MainException.errorSave();
         }
     }
+    public void update(Orders orders,Type type, String weight, String picture, String province, String district, String name, String detail, String price){
+
+    }
 
     public void changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
 
@@ -68,26 +71,18 @@ public class OrderService {
     }
 
     public List<Orders> findByUser(User user, int page) {
-//        List<Orders> orders = repository.findByUser(user);
-
         PageRequest limit = PageRequest.of(page, 6);
 
         List<Orders> orders = repository.findAllByUserOrderByDateDesc(user, limit);
-//        System.out.println(allByUserOrderByDateDesc.toString());
-
-        BaseUrlFile urlFile = new BaseUrlFile();
-        for (Orders order : orders)
-            order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
-
         return orders;
+    }
+    public List<Orders> findAllUserIsBuy(User user){
+        List<Orders> order = repository.findAllByUserAndStatusOrderByDateDesc(user, Orders.Status.BUY);
+        return order;
     }
 
     public List<Orders> findAllByUser(User user) {
         List<Orders> orders = repository.findByUser(user);
-
-        BaseUrlFile urlFile = new BaseUrlFile();
-        for (Orders order : orders)
-            order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
 
         return orders;
     }
@@ -135,6 +130,7 @@ public class OrderService {
             if (order.getStatus().equals(Orders.Status.BUY)) order.setStatusTh(statusTh.BUY);
             else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
             else order.setStatusTh(statusTh.CANCEL);
+
             order.setPicture(urlFile.getDomain()+urlFile.getImageOrderUrl()+order.getPicture());
 
         }

@@ -1,12 +1,12 @@
 package com.example.backend.api;
 
 import com.example.backend.entity.Orders;
+import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.process.repository.OrdersRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Validated
@@ -26,5 +26,9 @@ public class TestApi {
         PageRequest limit = PageRequest.of(0, 6);
 
         return ordersRepository.findAllByStatusOrderByDateAsc(buy,limit);
+    }
+    @PostMapping("/file")
+    public Object file(@RequestParam("file") MultipartFile file){
+        return file;
     }
 }

@@ -49,6 +49,12 @@ public class FileBusiness {
         String imgName = service.saveImg(file, imageDir);
         return setResponse(imageDir, imgName);
     }
+    public String saveImgNews2(MultipartFile file) throws BaseException {
+        tokenService.checkUserByToken();
+
+        String imageDir = this.baseUrlFile.getImageNewsUrl();
+        return service.saveImg(file, imageDir);
+    }
 
     public Object setResponse(String imageDir, String imgName) {
         Map<Object, Object> img = new HashMap<>();

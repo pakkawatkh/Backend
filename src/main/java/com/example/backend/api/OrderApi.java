@@ -62,6 +62,12 @@ public class OrderApi {
     @PostMapping("/list-all")
     public ResponseEntity<Object> listFilter(@RequestBody OrderBuyFillerReq req) throws BaseException {
         Object res = business.getListFilter(req);
+
         return  ResponseEntity.ok(res);
+    }
+    @PutMapping("edit/{id}")
+    public ResponseEntity<Object> edit(@PathVariable("id") Integer id , OrderReq req) throws BaseException {
+        Object res = business.edit(id, req);
+        return ResponseEntity.ok(res);
     }
 }

@@ -1,0 +1,57 @@
+package com.example.backend.api;
+
+import com.example.backend.exception.BaseException;
+import com.example.backend.model.userModel.LoginReq;
+import com.example.backend.model.userModel.RegisterReq;
+import com.example.backend.process.business.OrderBusiness;
+import com.example.backend.process.business.ShopBusiness;
+import com.example.backend.process.business.TypeBusiness;
+import com.example.backend.process.business.UserBusiness;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthApi {
+
+    private final UserBusiness userBusiness;
+    private final OrderBusiness orderBusiness;
+    private final TypeBusiness typeBusiness;
+    private final ShopBusiness shopBusiness;
+
+    public AuthApi(UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBusiness typeBusiness, ShopBusiness shopBusiness) {
+        this.userBusiness = userBusiness;
+        this.orderBusiness = orderBusiness;
+        this.typeBusiness = typeBusiness;
+        this.shopBusiness = shopBusiness;
+    }
+
+    //user
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@RequestBody RegisterReq req) throws BaseException {
+        Object response = userBusiness.register(req);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
+        Object res = userBusiness.loginUser(req);
+
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/user-profile/{number}")
+    public ResponseEntity<Object> userProfile(@PathVariable("number") String number) throws BaseException {
+        Object res = userBusiness.userByNumber(number);
+        return ResponseEntity.ok(res);
+    }
+
+//    order
+    @GetMapping("/order-user/{number}")
+    public ResponseEntity<Object> orderByUser(@PathVariable("number") String number) throws BaseException {
+        Object res = orderBusiness.orderListByUser(number);
+
+        return ResponseEntity.ok(res);
+    }
+}

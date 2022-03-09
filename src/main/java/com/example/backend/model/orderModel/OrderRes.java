@@ -34,4 +34,6 @@ public class OrderRes {
     private Integer price;
 
     private String statusTh;
+
+    private String detail;
 }

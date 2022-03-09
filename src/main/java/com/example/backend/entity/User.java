@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.RandomID;
+import com.example.backend.entity.Base.RandomString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -11,6 +12,9 @@ import java.util.List;
 @Data
 @Entity
 public class User extends RandomID {
+
+    @Column(nullable = false)
+    private String number = new RandomString().number();
 
     @Column(nullable = false, length = 50)
     private String firstname;

@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class UserResponse {
 
+    private String number;
+
     private String firstname;
 
     private String lastname;

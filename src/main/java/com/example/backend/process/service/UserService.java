@@ -116,6 +116,13 @@ public class UserService {
         return user.get();
     }
 
+    public User findByNumber(String number) throws BaseException {
+        Optional<User> user = repository.findByNumber(number);
+        if (user.isEmpty()) throw UserException.notFound();
+
+        return user.get();
+    }
+
     public User findByShop(Integer id) throws BaseException {
         Shop shop = shopService.findById(id);
 

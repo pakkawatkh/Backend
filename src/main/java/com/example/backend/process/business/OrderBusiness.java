@@ -83,6 +83,16 @@ public class OrderBusiness {
         return new Response().ok(MS, "product", setStatus);
     }
 
+    public Object edit(Integer id,OrderReq req) throws BaseException {
+        User user = tokenService.getUserByToken();
+        Orders order = service.findByIdAndUser(id, user);
+        Type type = typeService.findById(req.getTypeId());
+
+        service.update(order,type,req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
+
+        return new Response().success("update success");
+    }
+
 
     // --ADMIN
     public Object getOrderAllUser() throws BaseException {
@@ -138,6 +148,17 @@ public class OrderBusiness {
         List<OrderRes> res = service.updateListOrder(orderRes);
 
         return new Response().ok2(MS,"order",res,"count",count);
+    }
+
+    public Object orderListByUser(String number) throws BaseException {
+        User user = userService.findByNumber(number);
+
+        List<Orders> orders = service.findAllUserIsBuy(user);
+        List<OrderRes> orderResList = mapper.toListOrderRes(orders);
+
+        List<OrderRes> res = service.updateListOrder(orderResList);
+
+        return new Response().ok(MS,"product",res);
     }
 
 }

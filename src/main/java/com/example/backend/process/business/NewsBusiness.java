@@ -12,6 +12,7 @@ import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.process.service.NewsService;
 import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,11 +22,13 @@ public class NewsBusiness {
     private final NewsService service;
     private final TokenService tokenService;
     private final NewsMapper mapper;
+    private final FileBusiness fileBusiness;
 
-    public NewsBusiness(NewsService service, TokenService tokenService, NewsMapper mapper) {
+    public NewsBusiness(NewsService service, TokenService tokenService, NewsMapper mapper, FileBusiness fileBusiness) {
         this.service = service;
         this.tokenService = tokenService;
         this.mapper = mapper;
+        this.fileBusiness = fileBusiness;
     }
 
     public Object getDetailById(Integer id) throws BaseException {
@@ -43,7 +46,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");
     }
@@ -54,7 +57,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.edit(id, req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        service.edit(id, req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
 
         return new Response().success("edit success");
     }
@@ -79,5 +82,19 @@ public class NewsBusiness {
         List<NewsListResponse> res = mapper.toNewsListResponse(all);
 
         return new Response().ok("ok", "news", res);
+    }
+    public Object create(MultipartFile fileA,MultipartFile fileB,NewsReq req) throws BaseException {
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
+
+        String nameFileA = fileBusiness.saveImgNews2(fileA);
+        String nameFileB = fileBusiness.saveImgNews2(fileB);
+
+        req.setPictureOne(nameFileA);
+        req.setPictureTwo(nameFileB);
+
+        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
+
+        return new Response().success("create success");
     }
 }

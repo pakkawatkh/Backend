@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.exception.BaseException;
+import com.example.backend.model.Response;
 import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
@@ -10,6 +11,7 @@ import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.process.business.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/admin")
@@ -167,6 +169,7 @@ public class AdminApi {
 
         return ResponseEntity.ok(res);
     }
+
     @PutMapping("/news/edit/{id}")
     public ResponseEntity<Object> editNews(@PathVariable("id") Integer id,@RequestBody NewsReq req) throws BaseException {
         Object res = newsBusiness.edit(id,req);
@@ -174,4 +177,28 @@ public class AdminApi {
         return ResponseEntity.ok(res);
     }
 
+    @PostMapping("/news/create")
+    public Object createNews(
+            @RequestParam("file1") MultipartFile fileA ,
+            @RequestParam("file2") MultipartFile fileB ,
+            @RequestParam("paragraphOne" ) String paragraphOne,
+            @RequestParam("paragraphTwo") String paragraphTwo,
+            @RequestParam("paragraphThree") String paragraphThree,
+            @RequestParam("paragraphFour") String paragraphFour,
+            @RequestParam("paragraphFive") String paragraphFive,
+            @RequestParam("reference") String reference,
+            @RequestParam("linkRef") String linkRef
+            ) throws BaseException {
+        NewsReq req = new NewsReq();
+        req.setParagraphOne(paragraphOne);
+        req.setPictureTwo(paragraphTwo);
+        req.setParagraphThree(paragraphThree);
+        req.setParagraphFour(paragraphFour);
+        req.setParagraphFive(paragraphFive);
+        req.setReference(reference);
+        req.setLinkRef(linkRef);
+//        Object res = newsBusiness.create(fileA, fileB, req);
+
+        return req;
+    }
 }

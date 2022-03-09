@@ -18,8 +18,7 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String[] PUBLIC = {
-            "/user/register",
-            "/user/login",
+            "/auth/**",
             "/admin/login",
             "/uploads/**",
 //            "/upload/**",
@@ -28,8 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/**",
             "/test/**",
             "/loginSocial/getToken",
-
-
             "/order/list-all"
     };
     private final TokenService tokenService;
