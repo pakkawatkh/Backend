@@ -73,23 +73,19 @@ public class OrderService {
     public List<Orders> findByUser(User user, int page) {
         PageRequest limit = PageRequest.of(page, 6);
 
-        List<Orders> orders = repository.findAllByUserOrderByDateDesc(user, limit);
-        return orders;
+        return repository.findAllByUserOrderByDateDesc(user, limit);
     }
     public List<Orders> findAllUserIsBuy(User user){
-        List<Orders> order = repository.findAllByUserAndStatusOrderByDateDesc(user, Orders.Status.BUY);
-        return order;
+        return repository.findAllByUserAndStatusOrderByDateDesc(user, Orders.Status.BUY);
     }
 
     public List<Orders> findAllByUser(User user) {
-        List<Orders> orders = repository.findByUser(user);
 
-        return orders;
+        return repository.findByUser(user);
     }
 
     public Long countByUser(User user) {
-        Long count = repository.count(user);
-        return count;
+        return repository.count(user);
     }
 
     public List<Orders> findAll() {
