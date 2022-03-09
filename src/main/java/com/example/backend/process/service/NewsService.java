@@ -27,7 +27,7 @@ public class NewsService {
         entity.setParagraphThree(paragraphThree);
         entity.setParagraphFour(paragraphFour);
         entity.setParagraphFive(paragraphFive);
-        entity.setPicture(picture);
+        entity.setPictureOne(picture);
         entity.setTitle(title);
         entity.setReference(ref);
         entity.setLinkRef(link);
@@ -47,7 +47,7 @@ public class NewsService {
         news.setParagraphThree(paragraphTree);
         news.setParagraphFour(paragraphFour);
         news.setParagraphFive(paragraphFive);
-        news.setPicture(picture);
+        news.setPictureOne(picture);
         news.setTitle(title);
         news.setReference(ref);
         news.setLinkRef(link);
@@ -81,8 +81,7 @@ public class NewsService {
     public List<News> findAllLimit(){
         PageRequest limit = PageRequest.of(0, 4);
 
-        List<News> all = repository.findAllByStatusIsTrueOrderByDateDesc(limit);
-        return all;
+        return repository.findAllByStatusIsTrueOrderByDateDesc(limit);
     }
 
     private MainException getMainException() {

@@ -1,7 +1,6 @@
 package com.example.backend.api;
 
 import com.example.backend.exception.BaseException;
-import com.example.backend.model.Response;
 import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
@@ -41,8 +40,8 @@ public class AdminApi {
 
     /*   SHOP    */
     @PutMapping("/shop/active/{id}")
-    public ResponseEntity<Object> updateStatus(@PathVariable("id") Integer id,@RequestBody ShopReq req) throws BaseException {
-        Object res = shopBusiness.changStatus(id,req);
+    public ResponseEntity<Object> updateStatus(@PathVariable("id") Integer id, @RequestBody ShopReq req) throws BaseException {
+        Object res = shopBusiness.changStatus(id, req);
 
         return ResponseEntity.ok(res);
     }
@@ -78,8 +77,8 @@ public class AdminApi {
 
     /*   USER    */
     @PutMapping("/user/active/{id}")
-    public ResponseEntity<Object> updateUserActive(@PathVariable("id") String id,@RequestBody AUserActiveReq req) throws BaseException {
-        Object res = userBusiness.updateUserActive(id,req);
+    public ResponseEntity<Object> updateUserActive(@PathVariable("id") String id, @RequestBody AUserActiveReq req) throws BaseException {
+        Object res = userBusiness.updateUserActive(id, req);
 
         return ResponseEntity.ok(res);
     }
@@ -106,8 +105,8 @@ public class AdminApi {
     }
 
     @PutMapping("/user/edit/{id}")
-    public ResponseEntity<Object> userEditProfile(@PathVariable("id") String id,@RequestBody UserEditReq req) throws BaseException {
-        Object res = userBusiness.editUserById(id,req);
+    public ResponseEntity<Object> userEditProfile(@PathVariable("id") String id, @RequestBody UserEditReq req) throws BaseException {
+        Object res = userBusiness.editUserById(id, req);
 
         return ResponseEntity.ok(res);
     }
@@ -126,9 +125,10 @@ public class AdminApi {
 
         return ResponseEntity.ok(res);
     }
+
     @PutMapping("/type/edit/{id}")
-    public ResponseEntity<Object> typeEdit(@PathVariable("id") Integer id,@RequestBody TypeReq req) throws BaseException {
-        Object res = typeBusiness.edit(id,req);
+    public ResponseEntity<Object> typeEdit(@PathVariable("id") Integer id, @RequestBody TypeReq req) throws BaseException {
+        Object res = typeBusiness.edit(id, req);
 
         return ResponseEntity.ok(res);
     }
@@ -171,34 +171,36 @@ public class AdminApi {
     }
 
     @PutMapping("/news/edit/{id}")
-    public ResponseEntity<Object> editNews(@PathVariable("id") Integer id,@RequestBody NewsReq req) throws BaseException {
-        Object res = newsBusiness.edit(id,req);
+    public ResponseEntity<Object> editNews(@PathVariable("id") Integer id, @RequestBody NewsReq req) throws BaseException {
+        Object res = newsBusiness.edit(id, req);
 
         return ResponseEntity.ok(res);
     }
 
     @PostMapping("/news/create")
-    public Object createNews(
-            @RequestParam("file1") MultipartFile fileA ,
-            @RequestParam("file2") MultipartFile fileB ,
-            @RequestParam("paragraphOne" ) String paragraphOne,
-            @RequestParam("paragraphTwo") String paragraphTwo,
-            @RequestParam("paragraphThree") String paragraphThree,
-            @RequestParam("paragraphFour") String paragraphFour,
-            @RequestParam("paragraphFive") String paragraphFive,
-            @RequestParam("reference") String reference,
-            @RequestParam("linkRef") String linkRef
-            ) throws BaseException {
+    public Object createNews(@RequestParam(value = "file1") MultipartFile fileA,
+                             @RequestParam(value = "file2") MultipartFile fileB,
+                             @RequestParam(value = "paragraphOne") String paragraphOne,
+                             @RequestParam(value = "paragraphTwo", required = false) String paragraphTwo,
+                             @RequestParam(value = "paragraphThree", required = false) String paragraphThree,
+                             @RequestParam(value = "paragraphFour", required = false) String paragraphFour,
+                             @RequestParam(value = "paragraphFive", required = false) String paragraphFive,
+                             @RequestParam(value = "reference") String reference,
+                             @RequestParam(value = "linkRef") String linkRef,
+                             @RequestParam(value = "title") String title
+    ) throws BaseException {
         NewsReq req = new NewsReq();
         req.setParagraphOne(paragraphOne);
-        req.setPictureTwo(paragraphTwo);
+        req.setParagraphTwo(paragraphTwo);
         req.setParagraphThree(paragraphThree);
         req.setParagraphFour(paragraphFour);
         req.setParagraphFive(paragraphFive);
         req.setReference(reference);
         req.setLinkRef(linkRef);
-//        Object res = newsBusiness.create(fileA, fileB, req);
+        req.setTitle(title);
 
-        return req;
+        Object res = newsBusiness.create(fileA, fileB, req);
+
+        return res;
     }
 }

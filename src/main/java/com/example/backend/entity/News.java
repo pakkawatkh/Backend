@@ -45,7 +45,10 @@ public class News extends AutoID {
     private String paragraphFive;
 
     @Column(length = 100)
-    private String picture;
+    private String pictureOne;
+
+    @Column(length = 100)
+    private String pictureTwo;
 
     @Column(length = 200)
     private String reference;

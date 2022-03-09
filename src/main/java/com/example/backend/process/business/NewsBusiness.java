@@ -84,6 +84,8 @@ public class NewsBusiness {
         return new Response().ok("ok", "news", res);
     }
     public Object create(MultipartFile fileA,MultipartFile fileB,NewsReq req) throws BaseException {
+        tokenService.checkAdminByToken();
+
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
@@ -93,6 +95,7 @@ public class NewsBusiness {
         req.setPictureOne(nameFileA);
         req.setPictureTwo(nameFileB);
 
+        System.out.println(req.toString());
         service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");

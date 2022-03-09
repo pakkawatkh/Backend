@@ -17,12 +17,13 @@ import java.util.Date;
 public class FileService {
 
     public static String uploadDirectory = System.getProperty("user.dir");
-    String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-    String imgName = timeStamp + new RandomString().strImage() + ".png";
 
     public String saveImg(MultipartFile file, String imageDir) throws BaseException {
+
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+
         this.validateFile(file);
-        String image_name = this.imgName;
+        String image_name = timeStamp + new RandomString().strImage() + ".png";
         StringBuilder fileNames = new StringBuilder();
 
         Path fileNameAndPath = Paths.get(uploadDirectory + imageDir, image_name);

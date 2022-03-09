@@ -19,7 +19,7 @@ public class OrderRes {
 
     private Date date;
 
-    private Float weight;
+    private String weight;
 
     private String picture;
 
@@ -31,7 +31,7 @@ public class OrderRes {
 
     private String name;
 
-    private Integer price;
+    private String price;
 
     private String statusTh;
 
