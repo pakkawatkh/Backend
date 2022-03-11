@@ -127,7 +127,7 @@ public class OrderService {
             else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
             else order.setStatusTh(statusTh.CANCEL);
 
-            order.setPicture(urlFile.getDomain()+urlFile.getImageOrderUrl()+order.getPicture());
+            order.setPictureUrl(urlFile.getDomain()+urlFile.getImageOrderUrl()+order.getPicture());
 
         }
         return orderRes;
@@ -138,7 +138,7 @@ public class OrderService {
         else if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
         else orderRes.setStatusTh(statusTh.CANCEL);
         BaseUrlFile urlFile = new BaseUrlFile();
-        orderRes.setPicture(urlFile.getDomain()+urlFile.getImageOrderUrl()+orderRes.getPicture());
+        orderRes.setPictureUrl(urlFile.getDomain()+urlFile.getImageOrderUrl()+orderRes.getPicture());
         return orderRes;
     }
 
