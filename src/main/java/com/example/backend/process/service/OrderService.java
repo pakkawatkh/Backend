@@ -49,8 +49,22 @@ public class OrderService {
             throw MainException.errorSave();
         }
     }
-    public void update(Orders orders,Type type, String weight, String picture, String province, String district, String name, String detail, String price){
+    public void update(Orders orders,Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws MainException {
 
+        orders.setStatus(Orders.Status.BUY);
+        orders.setType(type);
+        orders.setPicture(picture);
+        orders.setWeight(weight);
+        orders.setDistrict(district);
+        orders.setProvince(province);
+        orders.setName(name);
+        orders.setDetail(detail);
+        orders.setPrice(price);
+        try {
+            repository.save(orders);
+        } catch (Exception e) {
+            throw MainException.errorSave();
+        }
     }
 
     public void changeStatus(Integer id, Orders.Status status, User user) throws BaseException {
