@@ -47,7 +47,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        service.save(req.getTitle(), req.getParagraph(),  req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");
     }
@@ -58,7 +58,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.edit(id, req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        service.edit(id, req.getTitle(), req.getParagraph(),  req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("edit success");
     }
@@ -99,7 +99,7 @@ public class NewsBusiness {
 
         req.setPicture(pictureString);
 
-        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        service.save(req.getTitle(), req.getParagraph(), req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");
     }

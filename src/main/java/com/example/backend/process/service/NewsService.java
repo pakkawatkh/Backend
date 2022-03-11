@@ -20,16 +20,10 @@ public class NewsService {
         this.repository = repository;
     }
 
-    public void save(String title, String paragraphOne,
-                     String paragraphTwo, String paragraphThree,
-                     String paragraphFour, String paragraphFive,
+    public void save(String title, String paragraph,
                      String picture, String ref,String link) throws BaseException {
         News entity = new News();
-        entity.setParagraphOne(paragraphOne);
-        entity.setParagraphTwo(paragraphTwo);
-        entity.setParagraphThree(paragraphThree);
-        entity.setParagraphFour(paragraphFour);
-        entity.setParagraphFive(paragraphFive);
+        entity.setParagraph(paragraph);
         entity.setPicture(picture);
         entity.setTitle(title);
         entity.setReference(ref);
@@ -41,15 +35,11 @@ public class NewsService {
         }
     }
 
-    public void edit(Integer id, String title, String paragraphOne, String paragraphTwo, String paragraphTree, String paragraphFour, String paragraphFive, String picture, String ref,String link) throws BaseException {
+    public void edit(Integer id, String title, String paragraphOne, String picture, String ref,String link) throws BaseException {
         Optional<News> byId = repository.findById(id);
         if (byId.isEmpty()) throw NewsException.notFound();
         News news = byId.get();
-        news.setParagraphOne(paragraphOne);
-        news.setParagraphTwo(paragraphTwo);
-        news.setParagraphThree(paragraphTree);
-        news.setParagraphFour(paragraphFour);
-        news.setParagraphFive(paragraphFive);
+        news.setParagraph(paragraphOne);
         news.setPicture(picture);
         news.setTitle(title);
         news.setReference(ref);

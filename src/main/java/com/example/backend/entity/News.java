@@ -23,26 +23,7 @@ public class News extends AutoID {
 
     @Column()
     @Lob
-    private String paragraphOne;
-
-
-    @Column()
-    @Lob
-    private String paragraphTwo;
-
-
-    @Column()
-    @Lob
-    private String paragraphThree;
-
-
-    @Column()
-    @Lob
-    private String paragraphFour;
-
-    @Column()
-    @Lob
-    private String paragraphFive;
+    private String paragraph;
 
     @Column(length = 100)
     private String picture;

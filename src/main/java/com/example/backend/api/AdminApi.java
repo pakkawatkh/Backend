@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/admin")
@@ -181,19 +182,17 @@ public class AdminApi {
 
     @PostMapping("/news/create")
     public Object createNews(@RequestParam(value = "file") MultipartFile[] file,
-                             @RequestParam(value = "paragraphOne") String[] paragraphOne,
+                             @RequestParam(value = "paragraph") String[] paragraphOne,
                              @RequestParam(value = "reference") String reference,
                              @RequestParam(value = "linkRef") String linkRef,
                              @RequestParam(value = "title") String title
     ) throws BaseException {
-        ArrayList<String> paragraph = new ArrayList<>();
-        for (String i :paragraphOne){
-            paragraph.add(i);
-        }
+        ArrayList<String> paragraph = new ArrayList<>(Arrays.asList(paragraphOne));
         String paragraphToString = paragraph.toString();
+        paragraphToString = paragraphToString.substring(1,paragraphToString.length()-1);
 
         NewsReq req = new NewsReq();
-        req.setParagraphOne(paragraphToString);
+        req.setParagraph(paragraphToString);
         req.setReference(reference);
         req.setLinkRef(linkRef);
         req.setTitle(title);

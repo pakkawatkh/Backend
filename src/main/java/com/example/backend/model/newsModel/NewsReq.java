@@ -5,21 +5,17 @@ import lombok.Data;
 @Data
 public class NewsReq {
     private String title;
-    private String paragraphOne;
-    private String paragraphTwo;
-    private String paragraphThree;
-    private String paragraphFour;
-    private String paragraphFive;
+    private String paragraph;
     private String reference;
     private String picture;
     private String linkRef;
 
     public boolean isValid() {
-        return paragraphOne != null && title != null;
+        return paragraph != null && title != null;
     }
 
     public boolean isBlank() {
-        return paragraphOne.isBlank() || title.isBlank();
+        return paragraph.isBlank() || title.isBlank();
     }
 
     public boolean isValidPicture() {

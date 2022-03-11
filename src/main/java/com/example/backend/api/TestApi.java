@@ -38,7 +38,7 @@ public class TestApi {
 
     @GetMapping("/all")
     public Object all() {
-//        Orders orders = new Orders();
+
         Orders.Status buy = Orders.Status.BUY;
         PageRequest limit = PageRequest.of(0, 6);
 
@@ -46,7 +46,7 @@ public class TestApi {
     }
 
     @PostMapping("/file")
-    public Object file(@RequestParam("file") MultipartFile[] file ) throws BaseException {
+    public Object file(@RequestParam("file") MultipartFile[] file) throws BaseException {
         ArrayList<String> picture = new ArrayList<>();
         for (MultipartFile file1 : file) {
             String fileName = fileBusiness.saveImgNews2(file1);
@@ -60,15 +60,16 @@ public class TestApi {
         NewsReq req = new NewsReq();
         req.setTitle("title");
         req.setReference("ref");
-        req.setParagraphOne("one");
+        req.setParagraph("one");
         req.setLinkRef("link");
         req.setPicture(substring);
 
-        newsService.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
+        newsService.save(req.getTitle(), req.getParagraph(), req.getPicture(), req.getReference(), req.getLinkRef());
         return picture;
     }
+
     @GetMapping("news/{id}")
-    public Object news(@PathVariable("id") Integer id){
+    public Object news(@PathVariable("id") Integer id) {
         Optional<News> byId = newsRepository.findById(id);
         News news = byId.get();
         String pictureOne = news.getPicture();
