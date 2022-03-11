@@ -66,7 +66,7 @@ public class OrderApi {
         return  ResponseEntity.ok(res);
     }
     @PutMapping("edit/{id}")
-    public ResponseEntity<Object> edit(@PathVariable("id") Integer id , OrderReq req) throws BaseException {
+    public ResponseEntity<Object> edit(@PathVariable("id") Integer id ,@RequestBody  OrderReq req) throws BaseException {
         Object res = business.edit(id, req);
         return ResponseEntity.ok(res);
     }
