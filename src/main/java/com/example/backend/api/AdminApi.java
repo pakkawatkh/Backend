@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminApi {
@@ -178,28 +180,25 @@ public class AdminApi {
     }
 
     @PostMapping("/news/create")
-    public Object createNews(@RequestParam(value = "file1") MultipartFile fileA,
-                             @RequestParam(value = "file2") MultipartFile fileB,
-                             @RequestParam(value = "paragraphOne") String paragraphOne,
-                             @RequestParam(value = "paragraphTwo", required = false) String paragraphTwo,
-                             @RequestParam(value = "paragraphThree", required = false) String paragraphThree,
-                             @RequestParam(value = "paragraphFour", required = false) String paragraphFour,
-                             @RequestParam(value = "paragraphFive", required = false) String paragraphFive,
+    public Object createNews(@RequestParam(value = "file") MultipartFile[] file,
+                             @RequestParam(value = "paragraphOne") String[] paragraphOne,
                              @RequestParam(value = "reference") String reference,
                              @RequestParam(value = "linkRef") String linkRef,
                              @RequestParam(value = "title") String title
     ) throws BaseException {
+        ArrayList<String> paragraph = new ArrayList<>();
+        for (String i :paragraphOne){
+            paragraph.add(i);
+        }
+        String paragraphToString = paragraph.toString();
+
         NewsReq req = new NewsReq();
-        req.setParagraphOne(paragraphOne);
-        req.setParagraphTwo(paragraphTwo);
-        req.setParagraphThree(paragraphThree);
-        req.setParagraphFour(paragraphFour);
-        req.setParagraphFive(paragraphFive);
+        req.setParagraphOne(paragraphToString);
         req.setReference(reference);
         req.setLinkRef(linkRef);
         req.setTitle(title);
 
-        Object res = newsBusiness.create(fileA, fileB, req);
+        Object res = newsBusiness.create(file, req);
 
         return res;
     }

@@ -14,6 +14,7 @@ import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
+        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");
     }
@@ -57,7 +58,7 @@ public class NewsBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        service.edit(id, req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
+        service.edit(id, req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("edit success");
     }
@@ -83,20 +84,22 @@ public class NewsBusiness {
 
         return new Response().ok("ok", "news", res);
     }
-    public Object create(MultipartFile fileA,MultipartFile fileB,NewsReq req) throws BaseException {
+    public Object create(MultipartFile[] file,NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
+        ArrayList<String> picture = new ArrayList<>();
+        for (MultipartFile file1 :file){
+            String imgName = fileBusiness.saveImgNews2(file1);
+            picture.add(imgName);
+        }
+        String pictureString = picture.toString();
+        pictureString = pictureString.substring(1,pictureString.length()-1);
 
-        String nameFileA = fileBusiness.saveImgNews2(fileA);
-        String nameFileB = fileBusiness.saveImgNews2(fileB);
+        req.setPicture(pictureString);
 
-        req.setPictureOne(nameFileA);
-        req.setPictureTwo(nameFileB);
-
-        System.out.println(req.toString());
-        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPictureOne(), req.getReference(),req.getLinkRef());
+        service.save(req.getTitle(), req.getParagraphOne(), req.getParagraphTwo(), req.getParagraphThree(), req.getParagraphFour(), req.getParagraphFive(), req.getPicture(), req.getReference(),req.getLinkRef());
 
         return new Response().success("create success");
     }

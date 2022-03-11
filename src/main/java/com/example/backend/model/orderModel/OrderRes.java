@@ -23,6 +23,8 @@ public class OrderRes {
 
     private String picture;
 
+    private String pictureUrl;
+
     private Type type;
 
     private String province ;

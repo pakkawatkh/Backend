@@ -11,8 +11,7 @@ public class NewsReq {
     private String paragraphFour;
     private String paragraphFive;
     private String reference;
-    private String pictureOne;
-    private String pictureTwo;
+    private String picture;
     private String linkRef;
 
     public boolean isValid() {
@@ -24,11 +23,11 @@ public class NewsReq {
     }
 
     public boolean isValidPicture() {
-        return pictureOne != null && pictureTwo != null;
+        return picture != null ;
     }
 
     public boolean isBlankPicture() {
-        return pictureOne.isBlank() || pictureTwo.isBlank();
+        return picture.isBlank();
     }
 
 }

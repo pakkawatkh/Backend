@@ -20,14 +20,17 @@ public class NewsService {
         this.repository = repository;
     }
 
-    public void save(String title, String paragraphOne, String paragraphTwo, String paragraphThree, String paragraphFour, String paragraphFive, String picture, String ref,String link) throws BaseException {
+    public void save(String title, String paragraphOne,
+                     String paragraphTwo, String paragraphThree,
+                     String paragraphFour, String paragraphFive,
+                     String picture, String ref,String link) throws BaseException {
         News entity = new News();
         entity.setParagraphOne(paragraphOne);
         entity.setParagraphTwo(paragraphTwo);
         entity.setParagraphThree(paragraphThree);
         entity.setParagraphFour(paragraphFour);
         entity.setParagraphFive(paragraphFive);
-        entity.setPictureOne(picture);
+        entity.setPicture(picture);
         entity.setTitle(title);
         entity.setReference(ref);
         entity.setLinkRef(link);
@@ -47,7 +50,7 @@ public class NewsService {
         news.setParagraphThree(paragraphTree);
         news.setParagraphFour(paragraphFour);
         news.setParagraphFive(paragraphFive);
-        news.setPictureOne(picture);
+        news.setPicture(picture);
         news.setTitle(title);
         news.setReference(ref);
         news.setLinkRef(link);

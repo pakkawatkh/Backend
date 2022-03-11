@@ -18,4 +18,5 @@ public class NewsDetailResponse {
     private String linkRef;
 
     private Date date;
+
 }

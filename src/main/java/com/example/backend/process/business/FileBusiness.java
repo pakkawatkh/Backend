@@ -50,7 +50,7 @@ public class FileBusiness {
         return setResponse(imageDir, imgName);
     }
     public String saveImgNews2(MultipartFile file) throws BaseException {
-        tokenService.checkUserByToken();
+//        tokenService.checkUserByToken();
 
         String imageDir = this.baseUrlFile.getImageNewsUrl();
         return service.saveImg(file, imageDir);
