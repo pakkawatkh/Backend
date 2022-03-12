@@ -4,10 +4,7 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.RegisterReq;
-import com.example.backend.process.business.OrderBusiness;
-import com.example.backend.process.business.ShopBusiness;
-import com.example.backend.process.business.TypeBusiness;
-import com.example.backend.process.business.UserBusiness;
+import com.example.backend.process.business.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +16,14 @@ public class AuthApi {
     private final OrderBusiness orderBusiness;
     private final TypeBusiness typeBusiness;
     private final ShopBusiness shopBusiness;
+    private final NewsBusiness newsBusiness;
 
-    public AuthApi(UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBusiness typeBusiness, ShopBusiness shopBusiness) {
+    public AuthApi(UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBusiness typeBusiness, ShopBusiness shopBusiness, NewsBusiness newsBusiness) {
         this.userBusiness = userBusiness;
         this.orderBusiness = orderBusiness;
         this.typeBusiness = typeBusiness;
         this.shopBusiness = shopBusiness;
+        this.newsBusiness = newsBusiness;
     }
 
     //user
@@ -62,7 +61,7 @@ public class AuthApi {
         return ResponseEntity.ok(res);
     }
     @PostMapping("/order-list-all")
-    public ResponseEntity<Object> listFilter(@RequestBody OrderBuyFillerReq req) throws BaseException {
+    public ResponseEntity<Object> listFilterOrder(@RequestBody OrderBuyFillerReq req) throws BaseException {
         Object res = orderBusiness.getListFilter(req);
 
         return  ResponseEntity.ok(res);
@@ -71,9 +70,29 @@ public class AuthApi {
 
     //type
     @GetMapping("/type-list")
-    public ResponseEntity<Object> list() {
+    public ResponseEntity<Object> listType() {
         Object list = this.typeBusiness.listActive();
 
         return ResponseEntity.ok(list);
+    }
+
+    //NEWS
+    @GetMapping("/news-list")
+    public ResponseEntity<Object> listNews(){
+        Object res = newsBusiness.getList();
+
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/news-detail/{id}")
+    public ResponseEntity<Object> detailNews(@PathVariable("id") Integer id) throws BaseException {
+        Object res = newsBusiness.getDetailById(id);
+
+        return ResponseEntity.ok(res);
+    }
+    @GetMapping("/news-recommend")
+    public ResponseEntity<Object> recommendNews(){
+        Object res = newsBusiness.getRecommend();
+        return ResponseEntity.ok(res);
     }
 }
