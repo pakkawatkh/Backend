@@ -166,6 +166,13 @@ public class OrderBusiness {
         return new Response().ok(MS,"province",province);
     }
 
-//    public Object
+    public Object random(){
+        List<Orders> orders = service.randomLimitAndStatus(8, Orders.Status.BUY.toString());
+        List<OrderRes> orderRes = mapper.toListOrderRes(orders);
+
+        List<OrderRes> res = service.updateListOrder(orderRes);
+
+        return new Response().ok(MS,"order",res);
+    }
 
 }

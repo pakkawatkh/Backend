@@ -62,6 +62,11 @@ public class AuthApi {
         Object res = orderBusiness.getListFilter(req);
         return  ResponseEntity.ok(res);
     }
+    @GetMapping("/order-random")
+    public ResponseEntity<Object> randomOrder(){
+        Object res = orderBusiness.random();
+        return ResponseEntity.ok(res);
+    }
 
     //type
     @GetMapping("/type-list")
