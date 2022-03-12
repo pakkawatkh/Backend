@@ -87,8 +87,9 @@ public class NewsBusiness {
     public Object getRecommend() {
         List<News> all = service.findAllLimit();
         List<NewsListResponse> res = mapper.toNewsListResponse(all);
+        List<NewsListResponse> newsListResponses = updateListNews(res);
 
-        return new Response().ok("ok", "news", res);
+        return new Response().ok("ok", "news", newsListResponses);
     }
 
     public Object create(MultipartFile[] file, String[] paragraphReq, String reference, String linkRef, String title) throws BaseException {
