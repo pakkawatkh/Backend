@@ -38,6 +38,7 @@ app:
     user-id: ccd6bcd9-ed08-4fb5-b05a-29f27ced5375
   email:
     from: projectrecycle05@gmail.com
-
+  img:
+    size: 500
 server:
   port : 8080

@@ -161,4 +161,9 @@ public class OrderBusiness {
         return new Response().ok(MS,"product",res);
     }
 
+    public Object selectProvinceIsBy(){
+        Object province = service.getProvince();
+        return new Response().ok(MS,"province",province);
+    }
+
 }

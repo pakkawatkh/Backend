@@ -35,6 +35,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT count(o) FROM Orders as o where o.user = :user")
      Long count(@Param("user") User user);
 
+    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status GROUP BY o.province")
+    List<Object> getProvince(@Param("status") Orders.Status status);
+
 
     //Filter
 //    @Query(value = "SELECT o FROM Orders o where o.status = 'CANCEL'")

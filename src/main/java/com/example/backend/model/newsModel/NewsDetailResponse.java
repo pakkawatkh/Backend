@@ -11,7 +11,7 @@ public class NewsDetailResponse {
 
     private Object paragraph;
 
-    private String picture;
+    private Object picture;
 
     private String reference;
 

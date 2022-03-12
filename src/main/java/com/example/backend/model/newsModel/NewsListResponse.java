@@ -11,9 +11,9 @@ public class NewsListResponse {
 
     private String title;
 
-    private String paragraphOne;
+    private Object paragraph;
 
-    private String picture;
+    private Object picture;
 
     private String reference;
 

@@ -77,4 +77,9 @@ public class TestApi {
         Stream<String> stream = Arrays.stream(split).map(s -> new BaseUrlFile().getImageNewsUrl() + s);
         return news;
     }
+
+    @GetMapping("/order")
+    public Object getProvince() {
+        return ordersRepository.getProvince(Orders.Status.BUY);
+    }
 }

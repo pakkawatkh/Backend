@@ -54,4 +54,16 @@ public class AuthApi {
 
         return ResponseEntity.ok(res);
     }
+
+    @GetMapping("/order-province")
+    public ResponseEntity<Object> provinceIsBuy(){
+        Object res = orderBusiness.selectProvinceIsBy();
+        return ResponseEntity.ok(res);
+    }
+    @GetMapping("/type-list")
+    public ResponseEntity<Object> list() {
+        Object list = this.typeBusiness.listActive();
+
+        return ResponseEntity.ok(list);
+    }
 }

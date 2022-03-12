@@ -182,22 +182,13 @@ public class AdminApi {
 
     @PostMapping("/news/create")
     public Object createNews(@RequestParam(value = "file") MultipartFile[] file,
-                             @RequestParam(value = "paragraph") String[] paragraphOne,
+                             @RequestParam(value = "paragraph") String[] paragraph,
                              @RequestParam(value = "reference") String reference,
                              @RequestParam(value = "linkRef") String linkRef,
                              @RequestParam(value = "title") String title
     ) throws BaseException {
-        ArrayList<String> paragraph = new ArrayList<>(Arrays.asList(paragraphOne));
-        String paragraphToString = paragraph.toString();
-        paragraphToString = paragraphToString.substring(1,paragraphToString.length()-1);
 
-        NewsReq req = new NewsReq();
-        req.setParagraph(paragraphToString);
-        req.setReference(reference);
-        req.setLinkRef(linkRef);
-        req.setTitle(title);
-
-        Object res = newsBusiness.create(file, req);
+        Object res = newsBusiness.create(file, paragraph,reference,linkRef,title);
 
         return res;
     }

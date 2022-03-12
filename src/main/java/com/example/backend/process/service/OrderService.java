@@ -218,5 +218,8 @@ public class OrderService {
     }
     //---------------------------------------//
 
+    public Object getProvince (){
+        return repository.getProvince(Orders.Status.BUY);
+    }
 
 }

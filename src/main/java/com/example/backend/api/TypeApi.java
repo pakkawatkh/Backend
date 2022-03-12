@@ -14,12 +14,7 @@ public class TypeApi {
         this.business = business;
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<Object> list() {
-        Object list = this.business.listActive();
 
-        return ResponseEntity.ok(list);
-    }
 
 
 
