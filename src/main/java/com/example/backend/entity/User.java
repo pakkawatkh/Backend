@@ -14,7 +14,7 @@ import java.util.List;
 public class User extends RandomID {
 
     @Column(nullable = false)
-    private String number = new RandomString().number();
+    private String number;
 
     @Column(nullable = false, length = 50)
     private String firstname;

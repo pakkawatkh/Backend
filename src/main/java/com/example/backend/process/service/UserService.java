@@ -1,6 +1,7 @@
 package com.example.backend.process.service;
 
 
+import com.example.backend.entity.Base.RandomString;
 import com.example.backend.entity.Shop;
 import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -31,9 +33,12 @@ public class UserService {
     }
 
     public User createUser(String firstname, String lastname, String password, String email) throws BaseException {
+        String number = new RandomString().number();
+        if (repository.existsByNumber(number)) this.createUser(firstname,lastname,password,email);
         if (repository.existsByEmail(email)) throw UserException.createEmailDuplicated();
 
         User user = new User();
+        user.setNumber(number);
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setPassword(passwordEncoder.encode(password));
@@ -59,10 +64,12 @@ public class UserService {
     }
 
     public void createAdmin() throws BaseException {
+
         AdminReq req = new AdminReq();
         if (repository.existsByEmail(req.getEmail())) return;
 
         User user = new User();
+        user.setNumber(req.getNumber());
         user.setLastname(req.getLastname());
         user.setFirstname(req.getFirstname());
         user.setRole(req.getRole());
@@ -179,7 +186,12 @@ public class UserService {
 
         User user;
         if (bySocial.isEmpty()) {
+            String number = new RandomString().number();
+
+            if (repository.existsByNumber(number)) this.saveLoginSocial(firstname,lastname,userId,login);
+
             user = new User();
+            user.setNumber(number);
             user.setFirstname(firstname);
             user.setLastname(lastname);
             user.setLogin(login);

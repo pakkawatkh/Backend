@@ -12,4 +12,5 @@ public class AdminReq {
         private User.Role role = User.Role.ADMIN;
         private Boolean active = true;
         private String email = "pakkawat@gmail.com";
+        private String number = "123456";
 }
