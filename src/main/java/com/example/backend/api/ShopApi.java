@@ -35,18 +35,4 @@ public class ShopApi {
 
         return ResponseEntity.ok(profile);
     }
-
-    @GetMapping("/list")
-    public ResponseEntity<Object> list() throws BaseException {
-        Object list = business.listActive();
-
-        return ResponseEntity.ok(list);
-    }
-
-    @GetMapping("/byId/{id}")
-    public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
-        Object shopResponse = business.byIdActive(id);
-
-        return ResponseEntity.ok(shopResponse);
-    }
 }

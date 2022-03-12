@@ -162,8 +162,10 @@ public class OrderBusiness {
     }
 
     public Object selectProvinceIsBy(){
-        Object province = service.getProvince();
+        List<Object> province = service.getProvince();
         return new Response().ok(MS,"province",province);
     }
+
+//    public Object
 
 }

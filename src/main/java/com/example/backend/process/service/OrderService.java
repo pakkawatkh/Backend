@@ -49,7 +49,8 @@ public class OrderService {
             throw MainException.errorSave();
         }
     }
-    public void update(Orders orders,Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws MainException {
+
+    public void update(Orders orders, Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws MainException {
 
         orders.setStatus(Orders.Status.BUY);
         orders.setType(type);
@@ -89,7 +90,8 @@ public class OrderService {
 
         return repository.findAllByUserOrderByDateDesc(user, limit);
     }
-    public List<Orders> findAllUserIsBuy(User user){
+
+    public List<Orders> findAllUserIsBuy(User user) {
         return repository.findAllByUserAndStatusOrderByDateDesc(user, Orders.Status.BUY);
     }
 
@@ -141,7 +143,7 @@ public class OrderService {
             else if (order.getStatus().equals(Orders.Status.SUCCESS)) order.setStatusTh(statusTh.SUCCESS);
             else order.setStatusTh(statusTh.CANCEL);
 
-            order.setPictureUrl(urlFile.getDomain()+urlFile.getImageOrderUrl()+order.getPicture());
+            order.setPictureUrl(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
 
         }
         return orderRes;
@@ -152,7 +154,7 @@ public class OrderService {
         else if (orderRes.getStatus().equals(Orders.Status.SUCCESS)) orderRes.setStatusTh(statusTh.SUCCESS);
         else orderRes.setStatusTh(statusTh.CANCEL);
         BaseUrlFile urlFile = new BaseUrlFile();
-        orderRes.setPictureUrl(urlFile.getDomain()+urlFile.getImageOrderUrl()+orderRes.getPicture());
+        orderRes.setPictureUrl(urlFile.getDomain() + urlFile.getImageOrderUrl() + orderRes.getPicture());
         return orderRes;
     }
 
@@ -218,8 +220,12 @@ public class OrderService {
     }
     //---------------------------------------//
 
-    public Object getProvince (){
+    public List<Object> getProvince() {
         return repository.getProvince(Orders.Status.BUY);
+    }
+
+    public List<Orders> randomLimitAndStatus(Integer limit, String status) {
+        return repository.randomByStatusLimit(status, limit);
     }
 
 }

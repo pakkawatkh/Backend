@@ -30,14 +30,12 @@ public class AuthApi {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody RegisterReq req) throws BaseException {
         Object response = userBusiness.register(req);
-
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
         Object res = userBusiness.loginUser(req);
-
         return ResponseEntity.ok(res);
     }
 
@@ -51,7 +49,6 @@ public class AuthApi {
     @GetMapping("/order-user/{number}")
     public ResponseEntity<Object> orderByUser(@PathVariable("number") String number) throws BaseException {
         Object res = orderBusiness.orderListByUser(number);
-
         return ResponseEntity.ok(res);
     }
 
@@ -63,16 +60,13 @@ public class AuthApi {
     @PostMapping("/order-list-all")
     public ResponseEntity<Object> listFilterOrder(@RequestBody OrderBuyFillerReq req) throws BaseException {
         Object res = orderBusiness.getListFilter(req);
-
         return  ResponseEntity.ok(res);
     }
-
 
     //type
     @GetMapping("/type-list")
     public ResponseEntity<Object> listType() {
         Object list = this.typeBusiness.listActive();
-
         return ResponseEntity.ok(list);
     }
 
@@ -80,7 +74,6 @@ public class AuthApi {
     @GetMapping("/news-list")
     public ResponseEntity<Object> listNews(){
         Object res = newsBusiness.getList();
-
         return ResponseEntity.ok(res);
     }
 
@@ -94,5 +87,18 @@ public class AuthApi {
     public ResponseEntity<Object> recommendNews(){
         Object res = newsBusiness.getRecommend();
         return ResponseEntity.ok(res);
+    }
+
+    //SHOP
+    @GetMapping("/shop-list")
+    public ResponseEntity<Object> list() throws BaseException {
+        Object list = shopBusiness.listActive();
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/shop-byId/{id}")
+    public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
+        Object shopResponse = shopBusiness.byIdActive(id);
+        return ResponseEntity.ok(shopResponse);
     }
 }

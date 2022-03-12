@@ -13,12 +13,4 @@ public class TypeApi {
     public TypeApi(TypeBusiness business) {
         this.business = business;
     }
-
-
-
-
-
-
-
-
 }

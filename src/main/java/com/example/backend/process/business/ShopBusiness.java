@@ -86,8 +86,7 @@ public class ShopBusiness {
         return new Response().ok(MS, "profile", shopResponse);
     }
 
-    public Object listActive() throws BaseException {
-        tokenService.getUserByToken();
+    public Object listActive() {
         List<ShopResponse> shopResponses = mapper.toListShopRes(service.findAllByActive());
 
         return new Response().ok(MS, "shop", shopResponses);
@@ -101,7 +100,6 @@ public class ShopBusiness {
     }
 
     public Object byIdActive(Integer id) throws BaseException {
-        tokenService.checkUserByToken();
         ShopResponse shopResponse = mapper.toShopResponse(service.findByIdAndActive(id));
 
         return new Response().ok(MS, "profile", shopResponse);
