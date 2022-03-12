@@ -3,6 +3,7 @@ package com.example.backend.model.orderModel;
 import com.example.backend.entity.Orders;
 import com.example.backend.entity.Type;
 import com.example.backend.entity.User;
+import com.example.backend.model.userModel.UserInOrderResponse;
 import com.example.backend.model.userModel.UserResponse;
 import lombok.Data;
 
@@ -38,4 +39,6 @@ public class OrderRes {
     private String statusTh;
 
     private String detail;
+
+    private UserInOrderResponse user;
 }
