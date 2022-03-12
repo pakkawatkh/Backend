@@ -85,8 +85,8 @@ public class NewsBusiness {
     }
 
     public Object getRecommend() {
-        List<News> all = service.findAllLimit();
-        List<NewsListResponse> res = mapper.toNewsListResponse(all);
+        List<News> news = service.getRandomLimitByStatus(4, true);
+        List<NewsListResponse> res = mapper.toNewsListResponse(news);
         List<NewsListResponse> newsListResponses = updateListNews(res);
 
         return new Response().ok("ok", "news", newsListResponses);
@@ -146,4 +146,5 @@ public class NewsBusiness {
         }
         return data;
     }
+
 }

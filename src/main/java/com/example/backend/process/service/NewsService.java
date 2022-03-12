@@ -20,8 +20,7 @@ public class NewsService {
         this.repository = repository;
     }
 
-    public void save(String title, String paragraph,
-                     String picture, String ref,String link) throws BaseException {
+    public void save(String title, String paragraph, String picture, String ref, String link) throws BaseException {
         News entity = new News();
         entity.setParagraph(paragraph);
         entity.setPicture(picture);
@@ -35,7 +34,7 @@ public class NewsService {
         }
     }
 
-    public void edit(Integer id, String title, String paragraphOne, String picture, String ref,String link) throws BaseException {
+    public void edit(Integer id, String title, String paragraphOne, String picture, String ref, String link) throws BaseException {
         Optional<News> byId = repository.findById(id);
         if (byId.isEmpty()) throw NewsException.notFound();
         News news = byId.get();
@@ -68,16 +67,12 @@ public class NewsService {
         try {
             repository.deleteById(id);
         } catch (Exception e) {
-            throw getMainException();
+            throw MainException.errorSave();
         }
     }
-    public List<News> findAllLimit(){
-        PageRequest limit = PageRequest.of(0, 4);
 
-        return repository.findAllByStatusIsTrueOrderByDateDesc(limit);
+    public List<News> getRandomLimitByStatus(Integer limit, boolean status) {
+        return repository.randomByStatusLimit(status, limit);
     }
 
-    private MainException getMainException() {
-        return MainException.errorSave();
-    }
 }
