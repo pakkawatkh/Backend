@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.exception.BaseException;
+import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.RegisterReq;
 import com.example.backend.process.business.OrderBusiness;
@@ -60,6 +61,15 @@ public class AuthApi {
         Object res = orderBusiness.selectProvinceIsBy();
         return ResponseEntity.ok(res);
     }
+    @PostMapping("/order-list-all")
+    public ResponseEntity<Object> listFilter(@RequestBody OrderBuyFillerReq req) throws BaseException {
+        Object res = orderBusiness.getListFilter(req);
+
+        return  ResponseEntity.ok(res);
+    }
+
+
+    //type
     @GetMapping("/type-list")
     public ResponseEntity<Object> list() {
         Object list = this.typeBusiness.listActive();
