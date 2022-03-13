@@ -11,6 +11,7 @@ import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.shopModel.ShopResponse;
 import com.example.backend.model.userModel.UserInOrderResponse;
 import com.example.backend.process.service.ShopService;
+import com.example.backend.process.service.TypeBuyingService;
 import com.example.backend.process.service.UserService;
 import com.example.backend.process.service.token.TokenService;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,15 @@ import java.util.Objects;
 @Service
 public class ShopBusiness {
     private final ShopService service;
+    private final TypeBuyingService typeBuyingService;
     private final TokenService tokenService;
     private final ShopMapper mapper;
     private final UserService userService;
     private String MS = "OK";
 
-    public ShopBusiness(ShopService service, TokenService tokenService, ShopMapper mapper, UserService userService) {
+    public ShopBusiness(ShopService service, TypeBuyingService typeBuyingService, TokenService tokenService, ShopMapper mapper, UserService userService) {
         this.service = service;
+        this.typeBuyingService = typeBuyingService;
         this.tokenService = tokenService;
         this.mapper = mapper;
         this.userService = userService;
@@ -102,10 +105,12 @@ public class ShopBusiness {
     }
 
     public Object byIdActive(Integer id) throws BaseException {
-        ShopResponse shopResponse = mapper.toShopResponse(service.findByIdAndActive(id));
+        Shop shop = service.findByIdAndActive(id);
+        ShopResponse shopResponse = mapper.toShopResponse(shop);
         shopResponse = this.updatePictureUser(shopResponse);
-
-        return new Response().ok(MS, "profile", shopResponse);
+        Long count = typeBuyingService.countByShop(shop);
+        
+        return new Response().ok2(MS, "profile", shopResponse,"countType",count);
     }
 
     public Object byId(Integer id) throws BaseException {
