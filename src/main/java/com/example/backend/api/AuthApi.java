@@ -96,13 +96,13 @@ public class AuthApi {
 
     //SHOP
     @GetMapping("/shop-list")
-    public ResponseEntity<Object> list() throws BaseException {
+    public ResponseEntity<Object> listShop() throws BaseException {
         Object list = shopBusiness.listActive();
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/shop-byId/{id}")
-    public ResponseEntity<Object> byId(@PathVariable("id") Integer id) throws BaseException {
+    public ResponseEntity<Object> byIdShop(@PathVariable("id") Integer id) throws BaseException {
         Object shopResponse = shopBusiness.byIdActive(id);
         return ResponseEntity.ok(shopResponse);
     }

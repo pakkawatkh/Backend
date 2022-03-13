@@ -1,5 +1,6 @@
 package com.example.backend.model.shopModel;
 
+import com.example.backend.model.userModel.UserResponse;
 import lombok.Data;
 
 @Data
@@ -16,5 +17,7 @@ public class ShopResponse {
     private Long longitude;
 
     private String number;
+
+    private UserResponse user;
 
 }

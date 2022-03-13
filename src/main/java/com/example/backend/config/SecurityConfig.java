@@ -27,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/**",
             "/test/**",
             "/loginSocial/getToken",
-            "/order/list-all"
     };
     private final TokenService tokenService;
 
