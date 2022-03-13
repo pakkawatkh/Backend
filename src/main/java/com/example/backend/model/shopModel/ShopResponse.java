@@ -18,6 +18,8 @@ public class ShopResponse {
 
     private String number;
 
+    private String detail;
+
     private UserInOrderResponse user;
 
 }

@@ -44,6 +44,9 @@ public class Shop extends AutoID {
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
     private List<Comments> comments;
 
+    @Column()
+    @Lob
+    private String detail;
 }
 
 
