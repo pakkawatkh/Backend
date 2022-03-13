@@ -71,8 +71,8 @@ public class NewsService {
         }
     }
 
-    public List<News> getRandomLimitByStatus(Integer limit, boolean status) {
-        return repository.randomByStatusLimit(status, limit);
+    public List<News> getRandomLimitByStatus(Integer limit, boolean status,Integer id) {
+        return repository.randomByStatusLimit(status, limit ,id);
     }
 
 }

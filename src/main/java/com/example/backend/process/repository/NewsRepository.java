@@ -14,6 +14,6 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
 
     List<News> findAllByStatusIsTrueOrderByDateDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM News WHERE News.status =:status ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<News> randomByStatusLimit(@Param("status") boolean status, @Param("limit") Integer limit);
+    @Query(value = "SELECT * FROM News WHERE News.status =:status and News.id != :id ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+    List<News> randomByStatusLimit(@Param("status") boolean status, @Param("limit") Integer limit, @Param("id") Integer id);
 }

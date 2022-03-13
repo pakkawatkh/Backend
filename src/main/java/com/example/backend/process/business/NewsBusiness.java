@@ -84,8 +84,8 @@ public class NewsBusiness {
         return new Response().success("delete success");
     }
 
-    public Object getRecommend() {
-        List<News> news = service.getRandomLimitByStatus(4, true);
+    public Object getRecommend(Integer id) {
+        List<News> news = service.getRandomLimitByStatus(4, true,id);
         List<NewsListResponse> res = mapper.toNewsListResponse(news);
         List<NewsListResponse> newsListResponses = updateListNews(res);
 

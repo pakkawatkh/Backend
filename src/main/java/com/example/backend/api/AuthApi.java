@@ -88,9 +88,9 @@ public class AuthApi {
 
         return ResponseEntity.ok(res);
     }
-    @GetMapping("/news-recommend")
-    public ResponseEntity<Object> recommendNews(){
-        Object res = newsBusiness.getRecommend();
+    @GetMapping("/news-recommend/{id}")
+    public ResponseEntity<Object> recommendNews(@PathVariable(value = "id",required = false) Integer id){
+        Object res = newsBusiness.getRecommend(id);
         return ResponseEntity.ok(res);
     }
 
