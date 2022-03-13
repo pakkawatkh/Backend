@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/loginSocial")
 public class LoginSocialApi {
 
-    @Value("${app.login-social.user-id}")
-    private String userId;
+
 
     private final TokenService tokenService;
     private final UserBusiness userBusiness;
@@ -25,20 +24,10 @@ public class LoginSocialApi {
         this.userBusiness = userBusiness;
     }
 
-    @GetMapping("/getToken")
-    public Object token() {
-        User user = new User();
-        user.setId(this.userId);
-
-        return new Response().ok("ok", "token", tokenService.tokenizeSocial(user));
-    }
-
     @PostMapping("/login")
     public Object login(@RequestBody LoginSocialRequest request) throws BaseException {
         tokenService.checkLoginSocial();
 
         return userBusiness.loginSocial(request);
     }
-
-
 }

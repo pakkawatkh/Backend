@@ -1,10 +1,14 @@
 package com.example.backend.api;
 
+import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
+import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.RegisterReq;
 import com.example.backend.process.business.*;
+import com.example.backend.process.service.token.TokenService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,18 +16,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthApi {
 
+    @Value("${app.login-social.user-id}")
+    private String userId;
+
     private final UserBusiness userBusiness;
     private final OrderBusiness orderBusiness;
     private final TypeBusiness typeBusiness;
     private final ShopBusiness shopBusiness;
     private final NewsBusiness newsBusiness;
+    private final TokenService tokenService;
 
-    public AuthApi(UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBusiness typeBusiness, ShopBusiness shopBusiness, NewsBusiness newsBusiness) {
+
+    public AuthApi(UserBusiness userBusiness, OrderBusiness orderBusiness, TypeBusiness typeBusiness, ShopBusiness shopBusiness, NewsBusiness newsBusiness, TokenService tokenService) {
         this.userBusiness = userBusiness;
         this.orderBusiness = orderBusiness;
         this.typeBusiness = typeBusiness;
         this.shopBusiness = shopBusiness;
         this.newsBusiness = newsBusiness;
+        this.tokenService = tokenService;
     }
 
     //user
@@ -43,6 +53,14 @@ public class AuthApi {
     public ResponseEntity<Object> userProfile(@PathVariable("number") String number) throws BaseException {
         Object res = userBusiness.userByNumber(number);
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/loginSocial/getToken")
+    public Object token() {
+        User user = new User();
+        user.setId(this.userId);
+
+        return new Response().ok("ok", "token", tokenService.tokenizeSocial(user));
     }
 
 //    order
