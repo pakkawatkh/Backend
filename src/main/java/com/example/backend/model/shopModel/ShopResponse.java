@@ -1,6 +1,6 @@
 package com.example.backend.model.shopModel;
 
-import com.example.backend.model.userModel.UserResponse;
+import com.example.backend.model.userModel.UserInOrderResponse;
 import lombok.Data;
 
 @Data
@@ -18,6 +18,6 @@ public class ShopResponse {
 
     private String number;
 
-    private UserResponse user;
+    private UserInOrderResponse user;
 
 }
