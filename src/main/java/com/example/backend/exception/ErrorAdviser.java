@@ -1,6 +1,5 @@
 package com.example.backend.exception;
 
-import com.example.backend.exception.BaseException;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
