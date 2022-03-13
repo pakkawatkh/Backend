@@ -83,12 +83,12 @@ public class OrderBusiness {
         return new Response().ok(MS, "product", setStatus);
     }
 
-    public Object edit(Integer id,OrderReq req) throws BaseException {
+    public Object edit(Integer id, OrderReq req) throws BaseException {
         User user = tokenService.getUserByToken();
         Orders order = service.findByIdAndUser(id, user);
         Type type = typeService.findById(req.getTypeId());
 
-        service.update(order,type,req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
+        service.update(order, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
 
         return new Response().success("update success");
     }
@@ -124,30 +124,53 @@ public class OrderBusiness {
     public Object getListFilter(OrderBuyFillerReq req) throws BaseException {
         long count;
         List<Orders> orders;
+        Object getType;
+        Object getProvince;
+
         if (req.getTypeId() == null && req.getProvince() == null) {
             orders = service.findAllByPage(req.getPage(), req.getOrderBy(), req.getStatus());
             count = service.countAll(req.getStatus());
+
+            //COUNT TYPE ALL []
+            getType = service.getAllType();
+
+            //COUNT PROVINCE ALL []
+            getProvince = service.getProvince();
+
         } else if (req.getTypeId() != null && req.getProvince() == null) {
             Type type = typeService.findById(req.typeId);
 
             orders = service.findAllByPageAndType(req.getPage(), type, req.getOrderBy(), req.getStatus());
             count = service.countAllByType(type, req.getStatus());
+            //COUNT TYPE
+            getType = service.getByType(type, req.getStatus());
+            //COUNT PROVINCE ALL []
+            getProvince = service.getAllProvinceByType(type, req.getStatus());
         } else if (req.getTypeId() == null && req.getProvince() != null) {
 
             orders = service.findAllByPageAndProvince(req.getPage(), req.getOrderBy(), req.getProvince(), req.getStatus());
             count = service.countAllByProvince(req.province, req.getStatus());
+
+            //COUNT TYPE ALL []
+            getType = service.getAllTypeByProvince(req.province, req.getStatus());
+            //COUNT PROVINCE
+            getProvince = service.getByProvince(req.province, req.getStatus());
         } else {
             Type type = typeService.findById(req.typeId);
 
             orders = service.findAllByPageAndProvinceAndType(req.getPage(), type, req.getOrderBy(), req.getProvince(), req.getStatus());
             count = service.countAllByProvinceAndType(type, req.getProvince(), req.getStatus());
+            //COUNT TYPE
+            getType = service.getTypeByTypeAndProvince(type, req.getProvince(), req.getStatus());
+            //COUNT PROVINCE
+            getProvince = service.getProvinceByTypeAndProvince(type, req.getProvince(), req.getStatus());
         }
 
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);
 
         List<OrderRes> res = service.updateListOrder(orderRes);
 
-        return new Response().ok2(MS,"order",res,"count",count);
+        return new Response().filterOrder(MS, "order", res, "count", count,"type",getType,"province",getProvince);
     }
 
     public Object orderListByUser(String number) throws BaseException {
@@ -158,21 +181,21 @@ public class OrderBusiness {
 
         List<OrderRes> res = service.updateListOrder(orderResList);
 
-        return new Response().ok(MS,"product",res);
+        return new Response().ok(MS, "product", res);
     }
 
-    public Object selectProvinceIsBy(){
+    public Object selectProvinceIsBy() {
         List<Object> province = service.getProvince();
-        return new Response().ok(MS,"province",province);
+        return new Response().ok(MS, "province", province);
     }
 
-    public Object random(){
+    public Object random() {
         List<Orders> orders = service.randomLimitAndStatus(8, Orders.Status.BUY.toString());
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);
 
         List<OrderRes> res = service.updateListOrder(orderRes);
 
-        return new Response().ok(MS,"order",res);
+        return new Response().ok(MS, "order", res);
     }
 
 }

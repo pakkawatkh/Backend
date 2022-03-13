@@ -108,12 +108,6 @@ public class OrderService {
         return repository.findAll();
     }
 
-    public Orders findById(Integer id) {
-        Optional<Orders> byId = repository.findById(id);
-
-        return byId.get();
-    }
-
     public Orders findByIdAndUser(Integer id, User user) throws BaseException {
         Optional<Orders> byId = repository.findByIdAndUser(id, user);
         if (byId.isEmpty()) throw OrderException.orderNotFound();
@@ -160,6 +154,8 @@ public class OrderService {
 
 
     //Filter
+    //---------------type null , province null-------------//
+
     public List<Orders> findAllByPage(Integer page, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 16);
 
@@ -170,11 +166,20 @@ public class OrderService {
         }
     }
 
+    public List<Object> getAllType() {
+        return repository.getAllType(Orders.Status.BUY);
+    }
+
+    public List<Object> getProvince() {
+        return repository.getAllProvince(Orders.Status.BUY);
+    }
+
     public Long countAll(Orders.Status status) {
         return repository.countAllBuy(status);
     }
 
-    //---------------------------------------//
+    //--------------province null, type not null--------------//
+
     public List<Orders> findAllByPageAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 6);
 
@@ -185,11 +190,21 @@ public class OrderService {
         }
     }
 
+    public Object getByType(Type type, Orders.Status status) {
+        return repository.getByType(type, status);
+
+    }
+
+    public List<Object> getAllProvinceByType(Type type, Orders.Status status) {
+        return repository.getAllProvinceByType(type, status);
+    }
+
     public Long countAllByType(Type type, Orders.Status status) {
         return repository.countAllByType(type, status);
     }
 
-    //---------------------------------------//
+    //--------------type null, province not null--------------//
+
     public List<Orders> findAllByPageAndProvince(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 6);
 
@@ -200,11 +215,21 @@ public class OrderService {
         }
     }
 
+
+    public List<Object> getAllTypeByProvince(String province, Orders.Status status) {
+        return repository.getAllTypeByProvince(province, status);
+    }
+
+    public Object getByProvince(String province, Orders.Status status) {
+        return repository.getByProvince(province, status);
+    }
+
     public Long countAllByProvince(String province, Orders.Status status) {
         return repository.countAllByProvince(province, status);
     }
 
-    //---------------------------------------//
+    //-------------type not null, province not null---------------//
+
     public List<Orders> findAllByPageAndProvinceAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 6);
 
@@ -215,14 +240,17 @@ public class OrderService {
         }
     }
 
+    public Object getTypeByTypeAndProvince(Type type, String province, Orders.Status status) {
+        return repository.getTypeByTypeAndProvince(type, province, status);
+    }
+    public Object getProvinceByTypeAndProvince(Type type, String province, Orders.Status status) {
+        return repository.getProvinceByTypeAndProvince(type, province, status);
+    }
     public Long countAllByProvinceAndType(Type type, String province, Orders.Status status) {
         return repository.countAllByTypeAndProvince(type, province, status);
     }
-    //---------------------------------------//
+    //------------------Filter end---------------------//
 
-    public List<Object> getProvince() {
-        return repository.getProvince(Orders.Status.BUY);
-    }
 
     public List<Orders> randomLimitAndStatus(Integer limit, String status) {
         return repository.randomByStatusLimit(status, limit);

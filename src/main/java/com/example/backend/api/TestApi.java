@@ -80,6 +80,6 @@ public class TestApi {
 
     @GetMapping("/order")
     public Object getProvince() {
-        return ordersRepository.getProvince(Orders.Status.BUY).get(1);
+        return ordersRepository.getAllProvince(Orders.Status.BUY).get(1);
     }
 }

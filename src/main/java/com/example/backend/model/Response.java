@@ -29,6 +29,25 @@ public class Response {
 
         return res;
     }
+    public Object filterOrder(String message, String key, Object value, String key2, Object value2,String key3, Object value3, String key4, Object value4) {
+
+        Map<Object, Object> res = new HashMap<>();
+
+        res.put("timestamp", timestamp);
+        res.put("status", HttpStatus.OK.value());
+        res.put("message", message);
+
+        Map<Object, Object> data = new HashMap<>();
+
+        data.put(key, value);
+        data.put(key2, value2);
+        data.put(key3, value3);
+        data.put(key4, value4);
+
+        res.put("data", data);
+
+        return res;
+    }
     public Object ok2(String message, String key, Object value, String key2, Object value2) {
 
         Map<Object, Object> res = new HashMap<>();
@@ -86,4 +105,5 @@ public class Response {
 
         return res;
     }
+
 }
