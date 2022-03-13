@@ -5,9 +5,11 @@ import com.example.backend.entity.User;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.mapper.ShopMapper;
+import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.Response;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.shopModel.ShopResponse;
+import com.example.backend.model.userModel.UserInOrderResponse;
 import com.example.backend.process.service.ShopService;
 import com.example.backend.process.service.UserService;
 import com.example.backend.process.service.token.TokenService;
@@ -88,7 +90,7 @@ public class ShopBusiness {
 
     public Object listActive() {
         List<ShopResponse> shopResponses = mapper.toListShopRes(service.findAllByActive());
-
+        shopResponses = this.updateListPictureUser(shopResponses);
         return new Response().ok(MS, "shop", shopResponses);
     }
 
@@ -101,6 +103,7 @@ public class ShopBusiness {
 
     public Object byIdActive(Integer id) throws BaseException {
         ShopResponse shopResponse = mapper.toShopResponse(service.findByIdAndActive(id));
+        shopResponse = this.updatePictureUser(shopResponse);
 
         return new Response().ok(MS, "profile", shopResponse);
     }
@@ -110,6 +113,28 @@ public class ShopBusiness {
         ShopResponse shopResponse = mapper.toShopResponse(service.findById(id));
 
         return new Response().ok(MS, "profile", shopResponse);
+    }
+
+    public ShopResponse updatePictureUser(ShopResponse shopResponse) {
+        UserInOrderResponse user = shopResponse.getUser();
+        if (user.getPicture() != null) {
+            BaseUrlFile url = new BaseUrlFile();
+            user.setPicture(url.getDomain() + url.getImageProfileUrl() + user.getPicture());
+            shopResponse.setUser(user);
+        }
+        return shopResponse;
+    }
+
+    public List<ShopResponse> updateListPictureUser(List<ShopResponse> shopResponses) {
+        BaseUrlFile url = new BaseUrlFile();
+        for (ShopResponse response : shopResponses) {
+            UserInOrderResponse user = response.getUser();
+            if (user.getPicture() != null) {
+                user.setPicture(url.getDomain() + url.getImageProfileUrl() + user.getPicture());
+                response.setUser(user);
+            }
+        }
+        return shopResponses;
     }
 
 }
