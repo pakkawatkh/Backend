@@ -190,7 +190,7 @@ public class OrderService {
         }
     }
 
-    public Object getByType(Type type, Orders.Status status) {
+    public List<Object>  getByType(Type type, Orders.Status status) {
         return repository.getByType(type, status);
 
     }
@@ -220,7 +220,7 @@ public class OrderService {
         return repository.getAllTypeByProvince(province, status);
     }
 
-    public Object getByProvince(String province, Orders.Status status) {
+    public List<Object>  getByProvince(String province, Orders.Status status) {
         return repository.getByProvince(province, status);
     }
 
@@ -240,10 +240,10 @@ public class OrderService {
         }
     }
 
-    public Object getTypeByTypeAndProvince(Type type, String province, Orders.Status status) {
+    public List<Object>  getTypeByTypeAndProvince(Type type, String province, Orders.Status status) {
         return repository.getTypeByTypeAndProvince(type, province, status);
     }
-    public Object getProvinceByTypeAndProvince(Type type, String province, Orders.Status status) {
+    public List<Object>  getProvinceByTypeAndProvince(Type type, String province, Orders.Status status) {
         return repository.getProvinceByTypeAndProvince(type, province, status);
     }
     public Long countAllByProvinceAndType(Type type, String province, Orders.Status status) {
