@@ -22,4 +22,6 @@ public class ShopResponse {
 
     private UserInOrderResponse user;
 
+    private Long count;
+
 }

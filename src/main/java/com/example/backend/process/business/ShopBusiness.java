@@ -109,8 +109,8 @@ public class ShopBusiness {
         ShopResponse shopResponse = mapper.toShopResponse(shop);
         shopResponse = this.updatePictureUser(shopResponse);
         Long count = typeBuyingService.countByShop(shop);
-        
-        return new Response().ok2(MS, "profile", shopResponse,"countType",count);
+        shopResponse.setCount(count);
+        return new Response().ok(MS, "profile", shopResponse);
     }
 
     public Object byId(Integer id) throws BaseException {
