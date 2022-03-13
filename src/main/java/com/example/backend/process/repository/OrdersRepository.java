@@ -47,10 +47,10 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     List<Orders> findAllByStatusOrderByDateAsc(Orders.Status status, Pageable pageable);
 
-    @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status GROUP BY o.type")
+    @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status GROUP BY o.type ORDER BY o.type.id asc ")
     List<Object> getAllType(@Param("status") Orders.Status status);
 
-    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status GROUP BY o.province")
+    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status GROUP BY o.province ORDER BY o.province asc ")
     List<Object> getAllProvince(@Param("status") Orders.Status status);
 
     @Query(value = "SELECT count(o) FROM Orders as o where  o.status = :status")
@@ -66,7 +66,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.type =:type GROUP BY o.type")
     Object getByType(@Param("type") Type type,@Param("status") Orders.Status status);
 
-    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.type =:type GROUP BY o.province")
+    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.type =:type GROUP BY o.province ORDER BY o.province asc ")
     List<Object> getAllProvinceByType(@Param("type") Type type,@Param("status") Orders.Status status);
 
     @Query(value = "SELECT count(o) FROM Orders as o where o.type = :type and o.status = :status")
@@ -81,7 +81,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     List<Orders> findAllByStatusAndProvinceOrderByDateAsc(Orders.Status status, String province, Pageable pageable);
 
-    @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.province = :province GROUP BY o.type")
+    @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.province = :province GROUP BY o.type ORDER BY o.type.id asc ")
     List<Object> getAllTypeByProvince(@Param("province") String province,@Param("status") Orders.Status status);
 
     @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.province = :province GROUP BY o.province")
