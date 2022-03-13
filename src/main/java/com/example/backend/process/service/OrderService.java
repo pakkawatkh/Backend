@@ -181,7 +181,7 @@ public class OrderService {
     //--------------province null, type not null--------------//
 
     public List<Orders> findAllByPageAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 6);
+        PageRequest limit = PageRequest.of(page, 16);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndTypeOrderByDateDesc(status, type, limit);
@@ -206,7 +206,7 @@ public class OrderService {
     //--------------type null, province not null--------------//
 
     public List<Orders> findAllByPageAndProvince(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 6);
+        PageRequest limit = PageRequest.of(page, 16);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndProvinceOrderByDateDesc(status, province, limit);
@@ -231,7 +231,7 @@ public class OrderService {
     //-------------type not null, province not null---------------//
 
     public List<Orders> findAllByPageAndProvinceAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 6);
+        PageRequest limit = PageRequest.of(page, 16);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndTypeAndProvinceOrderByDateDesc(status, type, province, limit);
