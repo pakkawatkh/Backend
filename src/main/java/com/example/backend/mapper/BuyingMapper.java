@@ -15,6 +15,4 @@ public interface BuyingMapper {
 
     List<BuyingListResponse> toBuyingListResponse(List<TypeBuyingList> buying);
 
-
-
 }

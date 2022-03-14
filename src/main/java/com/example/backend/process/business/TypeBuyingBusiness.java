@@ -163,4 +163,11 @@ public class TypeBuyingBusiness {
 
         return buying;
     }
+
+    public Object getAllByShop(Integer shopId) throws BaseException {
+        Shop shop = shopService.findById(shopId);
+        List<TypeBuying> buying = service.findByShop(shop);
+        List<BuyingResponse> map = mapper.toBuyingResponse(buying);
+        return new Response().ok(MS,"buying",map);
+    }
 }
