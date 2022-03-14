@@ -26,7 +26,7 @@ public class NewsBusiness {
     private final TokenService tokenService;
     private final NewsMapper mapper;
     private final FileBusiness fileBusiness;
-    private BaseUrlFile url = new BaseUrlFile();
+    private final BaseUrlFile url = new BaseUrlFile();
 
     public NewsBusiness(NewsService service, TokenService tokenService, NewsMapper mapper, FileBusiness fileBusiness) {
         this.service = service;

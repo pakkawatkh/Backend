@@ -5,7 +5,6 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;
 import com.example.backend.exception.NewsException;
 import com.example.backend.process.repository.NewsRepository;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,8 +70,8 @@ public class NewsService {
         }
     }
 
-    public List<News> getRandomLimitByStatus(Integer limit, boolean status,Integer id) {
-        return repository.randomByStatusLimit(status, limit ,id);
+    public List<News> getRandomLimitByStatus(Integer limit, boolean status, Integer id) {
+        return repository.randomByStatusLimit(status, limit, id);
     }
 
 }

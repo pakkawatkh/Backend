@@ -16,7 +16,7 @@ public class EmailBusiness {
 
     private final EmailService service;
 
-    private String webFrontEnd = "https://localhost:4200";
+    private final String webFrontEnd = "https://localhost:4200";
 
     public EmailBusiness(EmailService service) {
         this.service = service;

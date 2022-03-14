@@ -30,7 +30,7 @@ public class TypeService {
 
     public void setDefault() throws BaseException {
         Optional<Type> type = repository.findById(1);
-        if (!type.isEmpty()) return;
+        if (type.isPresent()) return;
 
         Type entity = new Type();
         entity.setName("ไม่ระบุประเภท");

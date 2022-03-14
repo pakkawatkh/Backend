@@ -26,7 +26,7 @@ public class OrderBusiness {
     private final OrderMapper mapper;
     private final UserService userService;
     private final TypeService typeService;
-    private String MS = "OK";
+    private final String MS = "OK";
 
     public OrderBusiness(OrderService service, TokenService tokenService, OrderMapper mapper, UserService userService, TypeService typeService) {
         this.service = service;

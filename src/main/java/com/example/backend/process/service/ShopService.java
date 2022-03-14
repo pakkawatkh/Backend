@@ -57,13 +57,6 @@ public class ShopService {
         }
     }
 
-    public Shop checkShop(User user, Integer id) throws BaseException {
-        Optional<Shop> shop = repository.findByIdAndUser(id, user);
-        if (shop.isEmpty()) throw ShopException.notId();
-
-        return shop.get();
-    }
-
     public void changStatus(Shop shop, Boolean status) throws BaseException {
         shop.setActive(status);
         try {
@@ -80,7 +73,6 @@ public class ShopService {
 
         return shop.get();
     }
-
 
     public void existsByUser(User user) throws BaseException {
         if (repository.existsByUser(user)) throw ShopException.registerError();
@@ -103,13 +95,6 @@ public class ShopService {
 
     public List<Shop> findAll() {
         return repository.findAll();
-    }
-
-    public Shop findByUser(User user) throws BaseException {
-        Optional<Shop> shop = repository.findByUser(user);
-        if (shop.isEmpty()) throw ShopException.notId();
-
-        return shop.get();
     }
 
     public void updateShop(Shop shop) throws BaseException {

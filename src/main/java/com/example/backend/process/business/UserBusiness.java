@@ -52,7 +52,7 @@ public class UserBusiness {
 
     public Object loginUser(LoginReq req) throws BaseException {
         User user = login(req);
-        if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
+        if (service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
         String token = tokenService.tokenizeLogin(user);
         String refreshToken = tokenService.tokenizeRefreshToken(user);
@@ -78,7 +78,7 @@ public class UserBusiness {
         if (req.isBlank()) throw MainException.requestIsBlank();
 
         User user = service.findByEmail(req.getEmail());
-        if (!service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
+        if (service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
 
         if (!user.getRegister()) {
             String tokenizeRegister = tokenService.tokenizeRegister(user);
@@ -130,7 +130,6 @@ public class UserBusiness {
         User user = tokenService.getUserByTokenRegister();
         if (user.getRegister()) throw MainException.expires();
 
-        user.setRegister(true);
         service.RegisterActive(user);
         String token = tokenService.tokenizeLogin(user);
         String refreshToken = tokenService.tokenizeRefreshToken(user);
@@ -171,7 +170,7 @@ public class UserBusiness {
         if (!req.isValid()) throw MainException.requestInvalid();
         if (req.isBlank()) throw MainException.requestIsBlank();
 
-        if (!service.matchPassword(req.getPasswordOld(), user.getPassword())) throw UserException.passwordIncorrect();
+        if (service.matchPassword(req.getPasswordOld(), user.getPassword())) throw UserException.passwordIncorrect();
 
         service.updatePassword(user, req.getPasswordNew());
 
@@ -203,7 +202,7 @@ public class UserBusiness {
     public Object userList() throws BaseException {
         tokenService.checkAdminByToken();
 
-        List<AUserResponse> aUserResponses = mapper.toListAUserResponse(service.findAll());
+        List<AUserResponse> aUserResponses = mapper.toListAUserResponse(service.findAllByRoleIsNot());
 
         return new Response().ok(MS, "user", aUserResponses);
     }

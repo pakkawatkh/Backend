@@ -3,7 +3,6 @@ package com.example.backend.process.service;
 import com.example.backend.entity.Base.RandomString;
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.FileException;
-import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +16,9 @@ import java.util.Date;
 
 @Service
 public class FileService {
+    public static String uploadDirectory = System.getProperty("user.dir");
     @Value("${app.img.size}")
     String imgSize;
-
-    public static String uploadDirectory = System.getProperty("user.dir");
 
     public String saveImg(MultipartFile file, String imageDir) throws BaseException {
 
@@ -37,7 +35,7 @@ public class FileService {
             throw FileException.errorWrite();
         }
         try {
-            byte[] bytes = file.getBytes();
+            file.getBytes();
         } catch (IOException e) {
             throw FileException.fileNull();
         }

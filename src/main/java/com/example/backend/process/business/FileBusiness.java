@@ -18,8 +18,8 @@ public class FileBusiness {
     private final String MS = "success";
     private final FileService service;
     private final TokenService tokenService;
-    private String address = new BaseUrlFile().ipAddress();
-    private BaseUrlFile baseUrlFile = new BaseUrlFile();
+    private final String address = new BaseUrlFile().ipAddress();
+    private final BaseUrlFile baseUrlFile = new BaseUrlFile();
 
     public FileBusiness(FileService service, TokenService tokenService) throws UnknownHostException {
         this.service = service;

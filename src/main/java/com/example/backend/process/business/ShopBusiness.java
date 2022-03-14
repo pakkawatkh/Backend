@@ -26,7 +26,7 @@ public class ShopBusiness {
     private final TokenService tokenService;
     private final ShopMapper mapper;
     private final UserService userService;
-    private String MS = "OK";
+    private final String MS = "OK";
 
     public ShopBusiness(ShopService service, TypeBuyingService typeBuyingService, TokenService tokenService, ShopMapper mapper, UserService userService) {
         this.service = service;

@@ -65,17 +65,13 @@ public class TypeBuyingService {
     }
 
     public List<TypeBuying> findByShop(Shop shop) {
-        List<TypeBuying> buying = repository.findAllByShop(shop);
-
-        return buying;
+        return repository.findAllByShop(shop);
     }
 
     public List<TypeBuying> findByShopAndPage(Shop shop, Integer page) {
         PageRequest limit = PageRequest.of(page, 8);
 
-        List<TypeBuying> buying = repository.findAllByShop(shop, limit);
-
-        return buying;
+        return repository.findAllByShop(shop, limit);
 
     }
 
@@ -153,7 +149,6 @@ public class TypeBuyingService {
         }
     }
     public List<TypeBuyingList> childByBuyingId(TypeBuying buying){
-        List<TypeBuyingList> allByBuying = buyingListRepository.findAllByBuying(buying);
-        return allByBuying;
+        return buyingListRepository.findAllByBuying(buying);
     }
 }

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/loginSocial")
 public class LoginSocialApi {
 
-
-
     private final TokenService tokenService;
     private final UserBusiness userBusiness;
 
