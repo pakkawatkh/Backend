@@ -200,7 +200,7 @@ public class OrderBusiness {
     }
 
     public Object searchName(String name) {
-        List<Orders> orders = service.searchName(name, Orders.Status.BUY,5);
+        List<Orders> orders = service.searchName(name, Orders.Status.BUY);
         List<OrderSearchResponse> search = mapper.toSearchResponse(orders);
         search = service.updateSearch(search);
         return new Response().ok(MS, "product", search);

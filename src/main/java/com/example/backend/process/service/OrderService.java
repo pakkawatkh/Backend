@@ -265,7 +265,7 @@ public class OrderService {
         return repository.randomByStatusLimit(status, limit);
     }
 
-    public List<Orders> searchName(String name,Orders.Status status,Integer limit){
+    public List<Orders> searchName(String name,Orders.Status status){
        return repository.getSearchName(name,status);
     }
 
