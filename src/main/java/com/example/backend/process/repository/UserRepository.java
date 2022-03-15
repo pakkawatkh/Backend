@@ -34,4 +34,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<Object[]> countUser();
 
 
+    @Query(value = "SELECT u.picture FROM User as u")
+    String[] getAllPicture();
 }

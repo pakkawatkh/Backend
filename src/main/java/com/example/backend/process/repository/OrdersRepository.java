@@ -23,6 +23,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT * FROM Orders WHERE Orders.status =:status ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<Orders> randomByStatusLimit(@Param("status") String status, @Param("limit") Integer limit);
 
+    @Query(value = "SELECT o.picture FROM Orders as o")
+    String[] getAllPicture();
+
     List<Orders> findAllByUser(User user);
 
     Page<Orders> findAllByStatus(Orders.Status status, Pageable pageable);
@@ -64,15 +67,13 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findAllByStatusAndTypeOrderByDateAsc(Orders.Status status, Type type, Pageable pageable);
 
     @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.type =:type GROUP BY o.type")
-    List<Object>  getByType(@Param("type") Type type,@Param("status") Orders.Status status);
+    List<Object> getByType(@Param("type") Type type, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.type =:type GROUP BY o.province ORDER BY o.province asc ")
-    List<Object> getAllProvinceByType(@Param("type") Type type,@Param("status") Orders.Status status);
+    List<Object> getAllProvinceByType(@Param("type") Type type, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT count(o) FROM Orders as o where o.type = :type and o.status = :status")
     Long countAllByType(@Param("type") Type type, @Param("status") Orders.Status status);
-
-
 
 
     //--------------type null, province not null--------------//
@@ -82,15 +83,13 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findAllByStatusAndProvinceOrderByDateAsc(Orders.Status status, String province, Pageable pageable);
 
     @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.province = :province GROUP BY o.type ORDER BY o.type.id asc ")
-    List<Object> getAllTypeByProvince(@Param("province") String province,@Param("status") Orders.Status status);
+    List<Object> getAllTypeByProvince(@Param("province") String province, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.province = :province GROUP BY o.province")
-    List<Object>  getByProvince(@Param("province") String province,@Param("status") Orders.Status status);
+    List<Object> getByProvince(@Param("province") String province, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.status = :status")
     Long countAllByProvince(@Param("province") String province, @Param("status") Orders.Status status);
-
-
 
 
     //-------------type not null, province not null---------------//
@@ -100,10 +99,10 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findAllByStatusAndTypeAndProvinceOrderByDateAsc(Orders.Status status, Type type, String province, Pageable pageable);
 
     @Query(value = "SELECT o.type ,count(o) FROM Orders as o  where o.province = :province and o.type = :type and o.status = :status GROUP BY o.type")
-    List<Object>  getTypeByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);
+    List<Object> getTypeByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT o.province ,count(o) FROM Orders as o  where o.province = :province and o.type = :type and o.status = :status GROUP BY o.province")
-    List<Object>  getProvinceByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);
+    List<Object> getProvinceByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);
 
     @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.type = :type and o.status = :status")
     Long countAllByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);

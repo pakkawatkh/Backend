@@ -16,4 +16,7 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
 
     @Query(value = "SELECT * FROM News WHERE News.status =:status and News.id != :id ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<News> randomByStatusLimit(@Param("status") boolean status, @Param("limit") Integer limit, @Param("id") Integer id);
+
+    @Query(value = "SELECT n.picture FROM News as n")
+    String[] getAllPicture();
 }
