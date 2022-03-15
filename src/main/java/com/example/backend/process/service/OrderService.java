@@ -9,6 +9,7 @@ import com.example.backend.exception.OrderException;
 import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.orderModel.OrderRes;
+import com.example.backend.model.orderModel.OrderSearchResponse;
 import com.example.backend.process.repository.OrdersRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -152,6 +153,14 @@ public class OrderService {
         return orderRes;
     }
 
+    public List<OrderSearchResponse> updateSearch(List<OrderSearchResponse> search){
+            BaseUrlFile urlFile = new BaseUrlFile();
+        for (OrderSearchResponse order : search) {
+            order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
+        }
+        return search;
+    }
+
 
     //Filter
     //---------------type null , province null-------------//
@@ -254,6 +263,10 @@ public class OrderService {
 
     public List<Orders> randomLimitAndStatus(Integer limit, String status) {
         return repository.randomByStatusLimit(status, limit);
+    }
+
+    public List<Orders> searchName(String name,Orders.Status status,Integer limit){
+       return repository.getSearchName(name,status);
     }
 
 }

@@ -26,6 +26,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT o.picture FROM Orders as o")
     String[] getAllPicture();
 
+    @Query(value = "SELECT o FROM Orders as o WHERE o.status =:status AND (o.name LIKE %:name% OR o.type.name LIKE %:name%)")
+    List<Orders> getSearchName(@Param("name") String name, @Param("status") Orders.Status status);
+
     List<Orders> findAllByUser(User user);
 
     Page<Orders> findAllByStatus(Orders.Status status, Pageable pageable);

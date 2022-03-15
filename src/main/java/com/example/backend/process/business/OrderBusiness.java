@@ -10,6 +10,7 @@ import com.example.backend.model.Response;
 import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.orderModel.OrderReq;
 import com.example.backend.model.orderModel.OrderRes;
+import com.example.backend.model.orderModel.OrderSearchResponse;
 import com.example.backend.process.service.OrderService;
 import com.example.backend.process.service.TypeService;
 import com.example.backend.process.service.UserService;
@@ -170,7 +171,7 @@ public class OrderBusiness {
 
         List<OrderRes> res = service.updateListOrder(orderRes);
 
-        return new Response().filterOrder(MS, "order", res, "count", count,"type",getType,"province",getProvince);
+        return new Response().filterOrder(MS, "order", res, "count", count, "type", getType, "province", getProvince);
     }
 
     public Object orderListByUser(String number) throws BaseException {
@@ -196,6 +197,13 @@ public class OrderBusiness {
         List<OrderRes> res = service.updateListOrder(orderRes);
 
         return new Response().ok(MS, "order", res);
+    }
+
+    public Object searchName(String name) {
+        List<Orders> orders = service.searchName(name, Orders.Status.BUY,5);
+        List<OrderSearchResponse> search = mapper.toSearchResponse(orders);
+        search = service.updateSearch(search);
+        return new Response().ok(MS, "product", search);
     }
 
 }

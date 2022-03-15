@@ -55,6 +55,11 @@ public class AuthApi {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/search/{name}")
+    public Object searchOrder(@PathVariable("name") String name) {
+        return orderBusiness.searchName(name);
+    }
+
     //type
     @GetMapping("/type-list")
     public ResponseEntity<Object> listType() {
