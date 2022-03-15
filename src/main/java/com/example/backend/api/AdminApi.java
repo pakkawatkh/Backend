@@ -22,13 +22,6 @@ public class AdminApi {
         this.userBusiness = userBusiness;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginReq req) throws BaseException {
-        Object res = userBusiness.loginAdmin(req);
-
-        return ResponseEntity.ok(res);
-    }
-
     /*   USER    */
     @PutMapping("/user/active/{id}")
     public ResponseEntity<Object> updateUserActive(@PathVariable("id") String id, @RequestBody AUserActiveReq req) throws BaseException {
