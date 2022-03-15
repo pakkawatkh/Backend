@@ -68,9 +68,9 @@ public class OrderBusiness {
         List<Orders> list = service.findByUser(user, page);
 
         List<OrderRes> orderRes = mapper.toListOrderRes(list);
-        List<OrderRes> setStatus = service.updateListOrder(orderRes);
+        orderRes = service.updateListOrder(orderRes);
 
-        return new Response().ok2(MS, "product", setStatus, "count", count);
+        return new Response().ok2(MS, "product", orderRes, "count", count);
     }
 
 
@@ -78,10 +78,9 @@ public class OrderBusiness {
         User user = tokenService.getUserByToken();
 
         OrderRes orderRes = mapper.toOrderRes(service.findByIdAndUser(id, user));
+        orderRes = service.updateOrder(orderRes);
 
-        OrderRes setStatus = service.updateOrder(orderRes);
-
-        return new Response().ok(MS, "product", setStatus);
+        return new Response().ok(MS, "product", orderRes);
     }
 
     public Object edit(Integer id, OrderReq req) throws BaseException {
@@ -99,9 +98,9 @@ public class OrderBusiness {
     public Object getOrderAllUser() throws BaseException {
         tokenService.checkAdminByToken();
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findAll());
-        List<OrderRes> setStatus = service.updateListOrder(orderRes);
+        orderRes = service.updateListOrder(orderRes);
 
-        return new Response().ok(MS, "product", setStatus);
+        return new Response().ok(MS, "product", orderRes);
     }
 
     public Object getOrderByUser(String id) throws BaseException {
@@ -109,10 +108,9 @@ public class OrderBusiness {
 
         User user = userService.findById(id);
         List<OrderRes> orderRes = mapper.toListOrderRes(service.findAllByUser(user));
+        orderRes = service.updateListOrder(orderRes);
 
-        List<OrderRes> setStatus = service.updateListOrder(orderRes);
-
-        return new Response().ok(MS, "product", setStatus);
+        return new Response().ok(MS, "product", orderRes);
     }
 
     public Object deleteById(Integer id) throws BaseException {
@@ -168,10 +166,9 @@ public class OrderBusiness {
         }
 
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);
+        orderRes = service.updateListOrder(orderRes);
 
-        List<OrderRes> res = service.updateListOrder(orderRes);
-
-        return new Response().filterOrder(MS, "order", res, "count", count, "type", getType, "province", getProvince);
+        return new Response().filterOrder(MS, "order", orderRes, "count", count, "type", getType, "province", getProvince);
     }
 
     public Object orderListByUser(String number) throws BaseException {
@@ -179,10 +176,9 @@ public class OrderBusiness {
 
         List<Orders> orders = service.findAllUserIsBuy(user);
         List<OrderRes> orderResList = mapper.toListOrderRes(orders);
+        orderResList = service.updateListOrder(orderResList);
 
-        List<OrderRes> res = service.updateListOrder(orderResList);
-
-        return new Response().ok(MS, "product", res);
+        return new Response().ok(MS, "product", orderResList);
     }
 
     public Object selectProvinceIsBy() {
@@ -193,17 +189,25 @@ public class OrderBusiness {
     public Object random() {
         List<Orders> orders = service.randomLimitAndStatus(8, Orders.Status.BUY.toString());
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);
+        orderRes = service.updateListOrder(orderRes);
 
-        List<OrderRes> res = service.updateListOrder(orderRes);
-
-        return new Response().ok(MS, "order", res);
+        return new Response().ok(MS, "order", orderRes);
     }
 
     public Object searchName(String name) {
+        boolean check;
+        List<OrderSearchResponse> search;
+
         List<Orders> orders = service.searchName(name, Orders.Status.BUY);
-        List<OrderSearchResponse> search = mapper.toSearchResponse(orders);
-        search = service.updateSearch(search);
-        return new Response().ok(MS, "product", search);
+        if (!orders.isEmpty()) {
+            search = mapper.toSearchResponse(orders);
+            search = service.updateSearch(search);
+            check = true;
+        } else {
+            check = false;
+            search = null;
+        }
+        return new Response().ok2(MS, "product", search, "check", check);
     }
 
 }
