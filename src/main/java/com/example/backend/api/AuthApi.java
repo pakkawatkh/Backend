@@ -43,6 +43,13 @@ public class AuthApi {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/order-detail/{id}")
+    public ResponseEntity<Object> getDetail(@PathVariable("id") Integer id) throws BaseException {
+        Object res = orderBusiness.getDetailById(id);
+
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/order-list-all")
     public ResponseEntity<Object> listFilterOrder(@RequestBody OrderBuyFillerReq req) throws BaseException {
         Object res = orderBusiness.getListFilter(req);

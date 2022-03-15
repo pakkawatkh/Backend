@@ -269,4 +269,10 @@ public class OrderService {
        return repository.getSearchName(name,status);
     }
 
+    public Orders findById(Integer id) throws BaseException {
+        Optional<Orders> order = repository.findById(id);
+        if (order.isEmpty()) throw OrderException.orderNotFound();
+        return order.get();
+    }
+
 }

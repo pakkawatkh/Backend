@@ -93,6 +93,14 @@ public class OrderBusiness {
         return new Response().success("update success");
     }
 
+    public Object getDetailById(Integer id) throws BaseException {
+        Orders order = service.findById(id);
+        OrderRes orderRes = mapper.toOrderRes(order);
+        orderRes = service.updateOrder(orderRes);
+
+        return new Response().ok(MS,"product",orderRes);
+    }
+
 
     // --ADMIN
     public Object getOrderAllUser() throws BaseException {
