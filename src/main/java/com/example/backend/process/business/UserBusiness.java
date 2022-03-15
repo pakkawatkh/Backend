@@ -56,9 +56,9 @@ public class UserBusiness {
 
         String token = tokenService.tokenizeLogin(user);
         String refreshToken = tokenService.tokenizeRefreshToken(user);
-        User updateUser = this.updateUser(user);
 
-        LoginResponse profile = mapper.toLoginResponse(updateUser);
+        LoginResponse profile = mapper.toLoginResponse(user);
+        profile = this.updateUserLoginResponse(profile);
 
         return new Response().login("login success", "token", token, "refreshToken", refreshToken, "profile", profile);
     }
@@ -102,6 +102,7 @@ public class UserBusiness {
 
         return new Response().login("login success", "token", token, "refreshToken", refreshToken, "profile", profile);
     }
+
     public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
 
         if (!req.isValid()) throw MainException.requestInvalid();
@@ -119,10 +120,10 @@ public class UserBusiness {
     public Object userByNumber(String number) throws BaseException {
         User user = service.findByNumber(number);
 
-        User updateUser = this.updateUser(user);
-        UserResponse profile = mapper.toUserResponse(updateUser);
+        UserResponse profile = mapper.toUserResponse(user);
+        profile = this.updateUserResponse(profile);
 
-        return new Response().ok(MS,"profile",profile);
+        return new Response().ok(MS, "profile", profile);
     }
 
     //Token Verify
@@ -160,6 +161,7 @@ public class UserBusiness {
         User user = tokenService.getUserByToken();
 
         UserResponse userResponse = mapper.toUserResponse(user);
+        userResponse = updateUserResponse(userResponse);
 
         return new Response().ok(MS, "profile", userResponse);
     }
@@ -176,6 +178,7 @@ public class UserBusiness {
 
         return new Response().success("update password success");
     }
+
     public Object refreshToken() throws BaseException {
         User user = tokenService.getUserByToken();
         String token = tokenService.tokenizeLogin(user);
@@ -236,7 +239,13 @@ public class UserBusiness {
         return new Response().success("Edit Profile Success");
     }
 
-    public User updateUser(User response) {
+    public UserResponse updateUserResponse(UserResponse response) {
+        BaseUrlFile file = new BaseUrlFile();
+        if (response.getPicture() != null)
+            response.setPictureUrl(file.getDomain() + file.getImageProfileUrl() + response.getPicture());
+        return response;
+    }
+    public LoginResponse updateUserLoginResponse(LoginResponse response) {
         BaseUrlFile file = new BaseUrlFile();
         if (response.getPicture() != null)
             response.setPicture(file.getDomain() + file.getImageProfileUrl() + response.getPicture());

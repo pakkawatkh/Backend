@@ -33,6 +33,8 @@ public class UserResponse {
 
     private String picture;
 
+    private String pictureUrl;
+
     private ShopResponse shop;
 
     private Date date;
