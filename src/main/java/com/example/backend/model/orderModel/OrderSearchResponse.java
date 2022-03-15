@@ -8,5 +8,6 @@ public class OrderSearchResponse {
     private String name;
     private Integer id;
     private String picture;
+    private String price;
     private TypeResponse type;
 }
