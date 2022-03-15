@@ -27,7 +27,7 @@ public class UserService {
         this.repository = userRepository;
         this.shopService = shopService;
         this.passwordEncoder = passwordEncoder;
-
+//        deleteByRegisterIsFalse();
         this.createAdmin();
     }
 
@@ -205,5 +205,12 @@ public class UserService {
         }catch (Exception e){
             throw MainException.errorSave();
         }
+    }
+
+    public List<User> fileAll(){
+        return repository.findAll();
+    }
+    public void deleteByUser(User user){
+        repository.delete(user);
     }
 }
