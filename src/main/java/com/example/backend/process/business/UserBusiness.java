@@ -230,8 +230,8 @@ public class UserBusiness {
     public Object editUserById(String id, UserEditReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid2()) throw MainException.requestInvalid();
-        if (req.isBlank2()) throw MainException.requestIsBlank();
+        if (!req.isValid()) throw MainException.requestInvalid();
+        if (req.isBlank()) throw MainException.requestIsBlank();
 
         User user = service.findById(id);
         service.saveEditByUser(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getFacebook(), req.getLine());

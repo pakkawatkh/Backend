@@ -76,7 +76,6 @@ public class ShopBusiness {
         userService.updateRole(shop.getUser(), user);
 
         return new Response().success("chang status success");
-
     }
 
     public Object profile() throws BaseException {

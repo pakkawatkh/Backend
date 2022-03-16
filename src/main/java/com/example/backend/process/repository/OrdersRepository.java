@@ -23,6 +23,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT * FROM Orders WHERE Orders.status =:status ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<Orders> randomByStatusLimit(@Param("status") String status, @Param("limit") Integer limit);
 
+    @Query(value = "SELECT * FROM Orders WHERE Orders.status =:status AND Orders.id !=:id ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+    List<Orders> recommendByStatusLimitNotIdAndType(@Param("id") Integer id,@Param("status") String status, @Param("limit") Integer limit);
+
     @Query(value = "SELECT o.picture FROM Orders as o")
     String[] getAllPicture();
 

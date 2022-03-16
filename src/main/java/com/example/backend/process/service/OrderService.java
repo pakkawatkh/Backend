@@ -10,6 +10,7 @@ import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.orderModel.OrderBuyFillerReq;
 import com.example.backend.model.orderModel.OrderRes;
 import com.example.backend.model.orderModel.OrderSearchResponse;
+import com.example.backend.model.userModel.UserInOrderResponse;
 import com.example.backend.process.repository.OrdersRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -150,11 +151,16 @@ public class OrderService {
         else orderRes.setStatusTh(statusTh.CANCEL);
         BaseUrlFile urlFile = new BaseUrlFile();
         orderRes.setPictureUrl(urlFile.getDomain() + urlFile.getImageOrderUrl() + orderRes.getPicture());
+
+        UserInOrderResponse user = orderRes.getUser();
+        user.setPicture(urlFile.getDomain() + urlFile.getImageProfileUrl() + user.getPicture());
+
+        orderRes.setUser(user);
         return orderRes;
     }
 
-    public List<OrderSearchResponse> updateSearch(List<OrderSearchResponse> search){
-            BaseUrlFile urlFile = new BaseUrlFile();
+    public List<OrderSearchResponse> updateSearch(List<OrderSearchResponse> search) {
+        BaseUrlFile urlFile = new BaseUrlFile();
         for (OrderSearchResponse order : search) {
             order.setPicture(urlFile.getDomain() + urlFile.getImageOrderUrl() + order.getPicture());
         }
@@ -199,7 +205,7 @@ public class OrderService {
         }
     }
 
-    public List<Object>  getByType(Type type, Orders.Status status) {
+    public List<Object> getByType(Type type, Orders.Status status) {
         return repository.getByType(type, status);
 
     }
@@ -229,7 +235,7 @@ public class OrderService {
         return repository.getAllTypeByProvince(province, status);
     }
 
-    public List<Object>  getByProvince(String province, Orders.Status status) {
+    public List<Object> getByProvince(String province, Orders.Status status) {
         return repository.getByProvince(province, status);
     }
 
@@ -249,12 +255,14 @@ public class OrderService {
         }
     }
 
-    public List<Object>  getTypeByTypeAndProvince(Type type, String province, Orders.Status status) {
+    public List<Object> getTypeByTypeAndProvince(Type type, String province, Orders.Status status) {
         return repository.getTypeByTypeAndProvince(type, province, status);
     }
-    public List<Object>  getProvinceByTypeAndProvince(Type type, String province, Orders.Status status) {
+
+    public List<Object> getProvinceByTypeAndProvince(Type type, String province, Orders.Status status) {
         return repository.getProvinceByTypeAndProvince(type, province, status);
     }
+
     public Long countAllByProvinceAndType(Type type, String province, Orders.Status status) {
         return repository.countAllByTypeAndProvince(type, province, status);
     }
@@ -265,14 +273,18 @@ public class OrderService {
         return repository.randomByStatusLimit(status, limit);
     }
 
-    public List<Orders> searchName(String name,Orders.Status status){
-       return repository.getSearchName(name,status);
+    public List<Orders> searchName(String name, Orders.Status status) {
+        return repository.getSearchName(name, status);
     }
 
     public Orders findById(Integer id) throws BaseException {
         Optional<Orders> order = repository.findById(id);
         if (order.isEmpty()) throw OrderException.orderNotFound();
         return order.get();
+    }
+
+    public List<Orders> recommend(Integer id, Integer limit, String status) {
+        return repository.recommendByStatusLimitNotIdAndType(id, status, limit);
     }
 
 }

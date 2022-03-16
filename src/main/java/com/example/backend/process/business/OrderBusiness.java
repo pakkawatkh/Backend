@@ -98,7 +98,7 @@ public class OrderBusiness {
         OrderRes orderRes = mapper.toOrderRes(order);
         orderRes = service.updateOrder(orderRes);
 
-        return new Response().ok(MS,"product",orderRes);
+        return new Response().ok(MS, "product", orderRes);
     }
 
 
@@ -196,6 +196,14 @@ public class OrderBusiness {
 
     public Object random() {
         List<Orders> orders = service.randomLimitAndStatus(8, Orders.Status.BUY.toString());
+        List<OrderRes> orderRes = mapper.toListOrderRes(orders);
+        orderRes = service.updateListOrder(orderRes);
+
+        return new Response().ok(MS, "order", orderRes);
+    }
+
+    public Object recommend(Integer id) {
+        List<Orders> orders = service.recommend(id,6, "BUY");
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);
         orderRes = service.updateListOrder(orderRes);
 

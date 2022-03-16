@@ -28,14 +28,4 @@ public class UserEditReq {
         return firstname.isBlank() || lastname.isBlank();
     }
 
-    //validate is not null
-    public boolean isValid2() {
-        return firstname != null && lastname != null;
-    }
-
-    //validate is blank
-    public boolean isBlank2() {
-        return firstname.isBlank() || lastname.isBlank();
-    }
-
 }

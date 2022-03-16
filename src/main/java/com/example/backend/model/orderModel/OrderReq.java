@@ -21,8 +21,6 @@ public class OrderReq {
 
     private String detail;
 
-//    private List<>
-
     //validate is not null
     public boolean isValid() {
         return typeId != null && picture != null && province != null && district != null && detail != null && name != null&& price != null&& weight != null ;

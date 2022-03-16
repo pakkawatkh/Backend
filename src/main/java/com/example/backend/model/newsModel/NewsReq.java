@@ -18,12 +18,4 @@ public class NewsReq {
         return paragraph.isBlank() || title.isBlank();
     }
 
-    public boolean isValidPicture() {
-        return picture != null ;
-    }
-
-    public boolean isBlankPicture() {
-        return picture.isBlank();
-    }
-
 }

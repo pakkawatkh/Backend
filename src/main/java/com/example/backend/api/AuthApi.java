@@ -61,6 +61,11 @@ public class AuthApi {
         Object res = orderBusiness.random();
         return ResponseEntity.ok(res);
     }
+    @GetMapping("/order-recommend/{id}")
+    public ResponseEntity<Object> orderRecommend(@PathVariable("id") Integer id){
+        Object res = orderBusiness.recommend(id);
+        return ResponseEntity.ok(res);
+    }
 
     @GetMapping("/search/{name}")
     public Object searchOrder(@PathVariable("name") String name) {
@@ -96,7 +101,7 @@ public class AuthApi {
 
     //SHOP
     @GetMapping("/shop-list")
-    public ResponseEntity<Object> listShop() throws BaseException {
+    public ResponseEntity<Object> listShop() {
         Object list = shopBusiness.listActive();
         return ResponseEntity.ok(list);
     }

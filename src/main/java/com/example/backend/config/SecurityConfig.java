@@ -19,14 +19,8 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String[] PUBLIC = {
             "/auth/**",
-            "/admin/login",
             "/uploads/**",
-//            "/upload/**",
-            "/news/**",
-            "/swagger-ui.html/**",
-            "/api/**",
             "/test/**",
-            "/loginSocial/getToken",
     };
     private final TokenService tokenService;
 
