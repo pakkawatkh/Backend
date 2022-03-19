@@ -20,6 +20,9 @@ public class MainException extends BaseException {
     public static MainException expires() {
         return new MainException("expires");
     }
+    public static MainException confirmAccountExpires() {
+        return new MainException("เซสชั่นหมดอายุ");
+    }
 
     public static MainException errorSave() {
         return new MainException("บันทึกข้อมูลไม่สำเร็จ");
