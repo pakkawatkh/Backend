@@ -85,11 +85,16 @@ public class UserService {
         }
     }
 
-    public void editUserById(User user, String firstName, String lastName, String facebook, String line) throws BaseException {
+    public void editUserById(User user, String firstName, String lastName, String facebook, String line,String address,Long lat,Long lng,String province,String district) throws BaseException {
         user.setFirstname(firstName);
         user.setLastname(lastName);
         user.setFacebook(facebook);
         user.setLine(line);
+        user.setLat(lat);
+        user.setLng(lng);
+        user.setAddress(address);
+        user.setDistrict(district);
+        user.setProvince(province);
         try {
             repository.save(user);
         } catch (Exception e) {

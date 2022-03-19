@@ -55,6 +55,18 @@ public class User extends RandomID {
     private String address;
 
     @Column(length = 50)
+    private String province;
+
+    @Column(length = 30)
+    private String district;
+
+    @Column()
+    private Long lat;
+
+    @Column()
+    private Long lng;
+
+    @Column(length = 50)
     private String socialId;
 
     @Column(nullable = false)

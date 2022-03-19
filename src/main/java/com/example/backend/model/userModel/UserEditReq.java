@@ -17,6 +17,15 @@ public class UserEditReq {
 
     private String shopName;
 
+    private String phone;
+
+    private Long lat;
+
+    private Long lng;
+
+    private String province;
+
+    private String district;
 
     //validate is not null
     public boolean isValid() {

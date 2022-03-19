@@ -129,7 +129,7 @@ public class UserBusiness {
     //Token Verify
     public Object confirmAccount() throws BaseException {
         User user = tokenService.getUserByTokenRegister();
-        if (user.getRegister()) throw MainException.expires();
+        if (user.getRegister()) throw MainException.confirmAccountExpires();
 
         service.RegisterActive(user);
         String token = tokenService.tokenizeLogin(user);
@@ -152,7 +152,7 @@ public class UserBusiness {
             shopService.updateShop(shop);
         }
 
-        service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine());
+        service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine(),req.getAddress(),req.getLat(),req.getLng(),req.getProvince(),req.getDistrict());
 
         return new Response().success("edit profile success");
     }

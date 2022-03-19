@@ -29,6 +29,10 @@ public class UserResponse {
 
     private String address;
 
+    private Long lat;
+
+    private Long lng;
+
     private Boolean active;
 
     private String picture;
