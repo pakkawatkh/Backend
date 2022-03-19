@@ -21,13 +21,19 @@ public class OrderReq {
 
     private String detail;
 
+    private Long lat;
+
+    private Long lng;
+
+    private String address;
+
     //validate is not null
     public boolean isValid() {
-        return typeId != null && picture != null && province != null && district != null && detail != null && name != null&& price != null&& weight != null ;
+        return typeId != null && picture != null && province != null && district != null && detail != null && name != null && price != null && weight != null && lat != null && lng != null && address != null;
     }
 
     //validate is blank
     public boolean isBlank() {
-        return picture.isBlank() || province.isBlank() || district.isBlank() || detail.isBlank() || name.isBlank()|| price.isBlank() || weight.isBlank();
+        return picture.isBlank() || province.isBlank() || district.isBlank() || detail.isBlank() || name.isBlank() || price.isBlank() || weight.isBlank()|| address.isBlank();
     }
 }

@@ -218,7 +218,7 @@ public class OrderService {
         return repository.countAllByType(type, status);
     }
 
-    //--------------type null, province not null--------------//
+    //--------------type null, province not null, district null--------------//
 
     public List<Orders> findAllByPageAndProvince(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 16);
@@ -229,7 +229,6 @@ public class OrderService {
             return repository.findAllByStatusAndProvinceOrderByDateAsc(status, province, limit);
         }
     }
-
 
     public List<Object> getAllTypeByProvince(String province, Orders.Status status) {
         return repository.getAllTypeByProvince(province, status);
@@ -243,7 +242,41 @@ public class OrderService {
         return repository.countAllByProvince(province, status);
     }
 
-    //-------------type not null, province not null---------------//
+    public List<Object> getDistrictByProvince(String province, Orders.Status status) {
+        return repository.getDistrictByProvince(province, status);
+    }
+
+
+    //-------------type null, province not null, district not null---------------//
+
+    public List<Orders> findAllByPageAndProvinceAndDistrict(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 16);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusAndProvinceAndDistrictOrderByDateDesc(status, province, district, limit);
+        } else {
+            return repository.findAllByStatusAndProvinceAndDistrictOrderByDateAsc(status, province, district, limit);
+        }
+    }
+
+    public List<Object> getAllTypeByProvinceAndDistrict(String province, String district, Orders.Status status) {
+        return repository.getAllTypeByProvinceAndDistrict(province, district, status);
+    }
+
+    public List<Object> getByProvinceAndDistrict(String province, String district, Orders.Status status) {
+        return repository.getByProvinceAndDistrict(province, district, status);
+    }
+
+    public Long countAllByProvinceAndDistrict(String province, String district, Orders.Status status) {
+        return repository.countAllByProvinceAndDistrict(province, district, status);
+    }
+
+    public List<Object> getDistrictByProvinceAndDistrict(String province, String district, Orders.Status status) {
+        return repository.getDistrictByProvinceAndDistrict(province, district, status);
+    }
+
+
+    //-------------type not null, province not null,district null---------------//
 
     public List<Orders> findAllByPageAndProvinceAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
         PageRequest limit = PageRequest.of(page, 16);
@@ -266,6 +299,38 @@ public class OrderService {
     public Long countAllByProvinceAndType(Type type, String province, Orders.Status status) {
         return repository.countAllByTypeAndProvince(type, province, status);
     }
+
+    public List<Object> getDistrictByProvinceAndType(Type type, String province, Orders.Status status) {
+        return repository.getDistrictByProvinceAndType(type, province, status);
+    }
+
+    //-------------type not null, province not null,district not null---------------//
+
+    public List<Orders> findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, 16);
+
+        if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
+            return repository.findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(status, type, province, district, limit);
+        } else {
+            return repository.findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateAsc(status, type, province, district, limit);
+        }
+    }
+
+    public List<Object> getTypeByTypeAndProvinceAndDistrict(Type type, String province, String district, Orders.Status status) {
+        return repository.getTypeByTypeAndProvinceAndDistrict(type, province, district, status);
+    }
+    public List<Object> getProvinceByTypeAndProvinceAndDistrict(Type type, String province, String district, Orders.Status status){
+        return repository.getProvinceByTypeAndProvinceAndDistrict(type, province, district, status);
+    }
+    public Long countAllByTypeAndProvinceAndDistrict(Type type, String province, String district, Orders.Status status){
+        return repository.countAllByTypeAndProvinceAndDistrict(type, province, district, status);
+    }
+
+    public List<Object> getDistrictByProvinceAndDistrictAndType(Type type, String province, String district, Orders.Status status){
+        return repository.getDistrictByProvinceAndDistrictAndType(type, province, district, status);
+    }
+
+
     //------------------Filter end---------------------//
 
 

@@ -24,7 +24,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> randomByStatusLimit(@Param("status") String status, @Param("limit") Integer limit);
 
     @Query(value = "SELECT * FROM Orders WHERE Orders.status =:status AND Orders.id !=:id ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<Orders> recommendByStatusLimitNotIdAndType(@Param("id") Integer id,@Param("status") String status, @Param("limit") Integer limit);
+    List<Orders> recommendByStatusLimitNotIdAndType(@Param("id") Integer id, @Param("status") String status, @Param("limit") Integer limit);
 
     @Query(value = "SELECT o.picture FROM Orders as o")
     String[] getAllPicture();
@@ -66,7 +66,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     Long countAllBuy(@Param("status") Orders.Status status);
 
 
-    //--------------province null, type not null--------------//
+    //--------------type not null, province null, --------------//
 
     List<Orders> findAllByStatusAndTypeOrderByDateDesc(Orders.Status status, Type type, Pageable pageable);
 
@@ -82,7 +82,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     Long countAllByType(@Param("type") Type type, @Param("status") Orders.Status status);
 
 
-    //--------------type null, province not null--------------//
+    //--------------type null, province not null, district null--------------//
 
     List<Orders> findAllByStatusAndProvinceOrderByDateDesc(Orders.Status status, String province, Pageable pageable);
 
@@ -97,8 +97,27 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.status = :status")
     Long countAllByProvince(@Param("province") String province, @Param("status") Orders.Status status);
 
+    @Query(value = "SELECT o.district ,count(o) FROM Orders as o where o.status = :status and o.province = :province GROUP BY o.district")
+    List<Object> getDistrictByProvince(@Param("province") String province, @Param("status") Orders.Status status);
 
-    //-------------type not null, province not null---------------//
+    //--------------type null, province not null,  district not null--------------//
+    List<Orders> findAllByStatusAndProvinceAndDistrictOrderByDateDesc(Orders.Status status, String province,String district, Pageable pageable);
+
+    List<Orders> findAllByStatusAndProvinceAndDistrictOrderByDateAsc(Orders.Status status, String province,String district, Pageable pageable);
+
+    @Query(value = "SELECT o.type ,count(o) FROM Orders as o where  o.status = :status and o.province = :province and o.district =:district GROUP BY o.type ORDER BY o.type.id asc ")
+    List<Object> getAllTypeByProvinceAndDistrict(@Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT o.province ,count(o) FROM Orders as o where o.status = :status and o.province = :province and o.district =:district GROUP BY o.province")
+    List<Object> getByProvinceAndDistrict(@Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.status = :status and o.district =:district")
+    Long countAllByProvinceAndDistrict(@Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT o.district ,count(o) FROM Orders as o where o.status = :status and o.province = :province and o.district =:district GROUP BY o.district")
+    List<Object> getDistrictByProvinceAndDistrict(@Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    //-------------type not null, province not null,  district null---------------//
 
     List<Orders> findAllByStatusAndTypeAndProvinceOrderByDateDesc(Orders.Status status, Type type, String province, Pageable pageable);
 
@@ -112,4 +131,25 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.type = :type and o.status = :status")
     Long countAllByTypeAndProvince(@Param("type") Type type, @Param("province") String province, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT o.district ,count(o) FROM Orders as o where o.status = :status and o.province = :province and o.type = :type GROUP BY o.district")
+    List<Object> getDistrictByProvinceAndType(@Param("type") Type type,@Param("province") String province ,@Param("status") Orders.Status status);
+
+    //-------------type not null, province not null,  district not null---------------//
+
+    List<Orders> findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(Orders.Status status, Type type, String province,String district, Pageable pageable);
+
+    List<Orders> findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateAsc(Orders.Status status, Type type, String province,String district, Pageable pageable);
+
+    @Query(value = "SELECT o.type ,count(o) FROM Orders as o  where o.province = :province and o.district =:district  and o.type = :type and o.status = :status GROUP BY o.type")
+    List<Object> getTypeByTypeAndProvinceAndDistrict(@Param("type") Type type, @Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT o.province ,count(o) FROM Orders as o  where o.province = :province and o.district =:district and o.type = :type and o.status = :status GROUP BY o.province")
+    List<Object> getProvinceByTypeAndProvinceAndDistrict(@Param("type") Type type, @Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT count(o) FROM Orders as o where o.province = :province and o.district =:district and o.type = :type and o.status = :status")
+    Long countAllByTypeAndProvinceAndDistrict(@Param("type") Type type, @Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
+
+    @Query(value = "SELECT o.district ,count(o) FROM Orders as o where o.status = :status and o.province = :province and o.district =:district and o.type = :type GROUP BY o.district")
+    List<Object> getDistrictByProvinceAndDistrictAndType(@Param("type") Type type,@Param("province") String province, @Param("district") String district, @Param("status") Orders.Status status);
 }

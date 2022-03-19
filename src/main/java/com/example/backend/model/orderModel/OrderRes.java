@@ -41,4 +41,10 @@ public class OrderRes {
     private String detail;
 
     private UserInOrderResponse user;
+
+    private Long lat;
+
+    private Long lng;
+
+    private String address;
 }

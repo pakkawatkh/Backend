@@ -11,6 +11,7 @@ public class OrderBuyFillerReq {
     public Integer page = 0;
     public OrderBy orderBy = OrderBy.NEW;
     public Orders.Status status = Orders.Status.BUY;
+    public String district;
 
     public enum OrderBy {
         OLD, NEW
