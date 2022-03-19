@@ -5,7 +5,6 @@ import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.typeModel.TypeReq;
-import com.example.backend.model.userModel.LoginReq;
 import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.process.business.*;
 import org.springframework.http.ResponseEntity;
@@ -91,13 +90,7 @@ class AdminNews {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createNews(
-            @RequestParam(value = "file") MultipartFile[] file,
-            @RequestParam(value = "paragraph") String[] paragraph,
-            @RequestParam(value = "reference") String reference,
-            @RequestParam(value = "linkRef") String linkRef,
-            @RequestParam(value = "title") String title
-    ) throws BaseException {
+    public ResponseEntity<Object> createNews(@RequestParam(value = "file") MultipartFile[] file, @RequestParam(value = "paragraph") String[] paragraph, @RequestParam(value = "reference") String reference, @RequestParam(value = "linkRef") String linkRef, @RequestParam(value = "title") String title) throws BaseException {
 
         Object res = business.create(file, paragraph, reference, linkRef, title);
 
