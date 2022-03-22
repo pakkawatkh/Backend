@@ -171,8 +171,8 @@ public class OrderService {
     //Filter
     //---------------type null , province null-------------//
 
-    public List<Orders> findAllByPage(Integer page, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByPage(Integer page,Integer lim, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusOrderByDateDesc(status, limit);
@@ -195,8 +195,8 @@ public class OrderService {
 
     //--------------province null, type not null--------------//
 
-    public List<Orders> findAllByPageAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByPageAndType(Integer page,Integer lim,  Type type, OrderBuyFillerReq.OrderBy orderBy, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndTypeOrderByDateDesc(status, type, limit);
@@ -220,8 +220,8 @@ public class OrderService {
 
     //--------------type null, province not null, district null--------------//
 
-    public List<Orders> findAllByPageAndProvince(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByPageAndProvince(Integer page,Integer lim,  OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndProvinceOrderByDateDesc(status, province, limit);
@@ -249,8 +249,8 @@ public class OrderService {
 
     //-------------type null, province not null, district not null---------------//
 
-    public List<Orders> findAllByPageAndProvinceAndDistrict(Integer page, OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByPageAndProvinceAndDistrict(Integer page,Integer lim,  OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndProvinceAndDistrictOrderByDateDesc(status, province, district, limit);
@@ -278,8 +278,8 @@ public class OrderService {
 
     //-------------type not null, province not null,district null---------------//
 
-    public List<Orders> findAllByPageAndProvinceAndType(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByPageAndProvinceAndType(Integer page,Integer lim,  Type type, OrderBuyFillerReq.OrderBy orderBy, String province, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndTypeAndProvinceOrderByDateDesc(status, type, province, limit);
@@ -306,8 +306,8 @@ public class OrderService {
 
     //-------------type not null, province not null,district not null---------------//
 
-    public List<Orders> findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(Integer page, Type type, OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
-        PageRequest limit = PageRequest.of(page, 16);
+    public List<Orders> findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(Integer page,Integer lim,  Type type, OrderBuyFillerReq.OrderBy orderBy, String province, String district, Orders.Status status) {
+        PageRequest limit = PageRequest.of(page, lim);
 
         if (orderBy.equals(OrderBuyFillerReq.OrderBy.NEW)) {
             return repository.findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(status, type, province, district, limit);
