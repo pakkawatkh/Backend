@@ -34,10 +34,10 @@ public class Orders extends AutoID {
     private String detail;
 
     @Column(nullable = false)
-    private Float lat;
+    private String lat;
 
     @Column(nullable = false)
-    private Float lng;
+    private String lng;
 
     @Column(length = 200, nullable = false)
     private String address;

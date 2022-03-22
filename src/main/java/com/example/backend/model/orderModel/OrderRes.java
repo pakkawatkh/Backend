@@ -42,9 +42,9 @@ public class OrderRes {
 
     private UserInOrderResponse user;
 
-    private Float lat;
+    private String lat;
 
-    private Float lng;
+    private String lng;
 
     private String address;
 }
