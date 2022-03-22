@@ -1,5 +1,7 @@
 package com.example.backend.model.TypeBuyingModel;
 
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -8,12 +10,15 @@ public class BuyingReq {
     private String name;
 
     //validate is not null
-    public boolean isValid() {
-        return name != null;
+    public void isValid() throws BaseException {
+        boolean valid =  name == null;
+        if (valid) throw MainException.requestInvalid();
+
     }
 
     //validate is blank
-    public boolean isBlank() {
-        return name.isBlank();
+    public void isBlank() throws BaseException {
+        boolean valid =  name.isBlank();
+        if (valid) throw MainException.requestIsBlank();
     }
 }

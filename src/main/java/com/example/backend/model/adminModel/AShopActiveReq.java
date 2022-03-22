@@ -5,7 +5,7 @@ import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
-public class AUserActiveReq {
+public class AShopActiveReq {
 
     private Boolean active;
 

@@ -85,16 +85,15 @@ public class UserService {
         }
     }
 
-    public void editUserById(User user, String firstName, String lastName, String facebook, String line,String address,Long lat,Long lng,String province,String district) throws BaseException {
+    public void editUserById(User user, String firstName, String lastName,String address,Long lat,Long lng,String province,String district,String picture) throws BaseException {
         user.setFirstname(firstName);
         user.setLastname(lastName);
-        user.setFacebook(facebook);
-        user.setLine(line);
         user.setLat(lat);
         user.setLng(lng);
         user.setAddress(address);
         user.setDistrict(district);
         user.setProvince(province);
+        user.setPicture(picture);
         try {
             repository.save(user);
         } catch (Exception e) {
@@ -154,12 +153,10 @@ public class UserService {
         return repository.findAllByRoleIsNot(User.Role.ADMIN);
     }
 
-    public void saveEditByUser(User user, String firstname, String lastname, String address, String facebook, String line) throws BaseException {
+    public void saveEditByUser(User user, String firstname, String lastname, String address) throws BaseException {
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setAddress(address);
-        user.setFacebook(facebook);
-        user.setLine(line);
         user.setRegister(true);
         try {
             repository.save(user);

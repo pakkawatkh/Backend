@@ -1,6 +1,8 @@
 package com.example.backend.model.userModel;
 
 import com.example.backend.entity.User;
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -12,12 +14,14 @@ public class LoginSocialRequest {
     private User.Login login;
 
     //validate is not null
-    public boolean isValid() {
-        return firstname != null && id != null&& login != null;
+    public void isValid() throws BaseException {
+        boolean valid =  firstname == null || id == null|| login == null;
+        if (valid) throw MainException.requestInvalid();
     }
 
     //validate is blank
-    public boolean isBlank() {
-        return firstname.isBlank() || id.isBlank();
+    public void isBlank() throws BaseException {
+        boolean valid =  firstname.isBlank() || id.isBlank();
+        if (valid) throw MainException.requestIsBlank();
     }
 }

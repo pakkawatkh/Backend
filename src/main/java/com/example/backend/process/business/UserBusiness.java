@@ -37,8 +37,8 @@ public class UserBusiness {
 
     // not Verify
     public Object register(RegisterReq req) throws BaseException {
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         User user = service.createUser(req.getFirstname(), req.getLastname(), req.getPassword(), req.getEmail());
 
@@ -74,8 +74,8 @@ public class UserBusiness {
     }
 
     public User login(LoginReq req) throws BaseException {
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         User user = service.findByEmail(req.getEmail());
         if (service.matchPassword(req.getPassword(), user.getPassword())) throw UserException.notFound();
@@ -91,8 +91,8 @@ public class UserBusiness {
 
     public Object loginSocial(LoginSocialRequest req) throws BaseException {
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         User user = service.saveLoginSocial(req.getFirstname(), req.getLastname(), req.getId(), req.getLogin());
         String token = tokenService.tokenizeLogin(user);
@@ -105,8 +105,8 @@ public class UserBusiness {
 
     public Object forgetPassword(UserForgetPasswordReq req) throws BaseException {
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         User user = service.findByEmail(req.getEmail());
         String token = tokenService.tokenizeRegister(user);
@@ -143,8 +143,8 @@ public class UserBusiness {
     public Object editProfile(UserEditReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         if (user.getRole().equals(User.Role.SHOP)) {
             Shop shop = user.getShop();
@@ -152,7 +152,7 @@ public class UserBusiness {
             shopService.updateShop(shop);
         }
 
-        service.editUserById(user, req.getFirstname(), req.getLastname(), req.getFacebook(), req.getLine(),req.getAddress(),req.getLat(),req.getLng(),req.getProvince(),req.getDistrict());
+        service.editUserById(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getLat(), req.getLng(), req.getProvince(), req.getDistrict(), req.getPicture());
 
         return new Response().success("edit profile success");
     }
@@ -169,8 +169,8 @@ public class UserBusiness {
     public Object changPassword(UserPasswordReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         if (service.matchPassword(req.getPasswordOld(), user.getPassword())) throw UserException.passwordIncorrect();
 
@@ -192,7 +192,7 @@ public class UserBusiness {
     public Object updateUserActive(String id, AUserActiveReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
+        req.isValid();
 
         User user = service.findById(id);
         if (user.getRole() == User.Role.ADMIN) throw MainException.accessDenied();
@@ -230,11 +230,11 @@ public class UserBusiness {
     public Object editUserById(String id, UserEditReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         User user = service.findById(id);
-        service.saveEditByUser(user, req.getFirstname(), req.getLastname(), req.getAddress(), req.getFacebook(), req.getLine());
+        service.saveEditByUser(user, req.getFirstname(), req.getLastname(), req.getAddress());
 
         return new Response().success("Edit Profile Success");
     }
@@ -245,6 +245,7 @@ public class UserBusiness {
             response.setPictureUrl(file.getDomain() + file.getImageProfileUrl() + response.getPicture());
         return response;
     }
+
     public LoginResponse updateUserLoginResponse(LoginResponse response) {
         BaseUrlFile file = new BaseUrlFile();
         if (response.getPicture() != null)

@@ -49,8 +49,8 @@ public class NewsBusiness {
     public Object save(NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         service.save(req.getTitle(), req.getParagraph(), req.getPicture(), req.getReference(), req.getLinkRef());
 
@@ -60,8 +60,8 @@ public class NewsBusiness {
     public Object edit(Integer id, NewsReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         service.edit(id, req.getTitle(), req.getParagraph(), req.getPicture(), req.getReference(), req.getLinkRef());
 
@@ -108,8 +108,8 @@ public class NewsBusiness {
         req.setTitle(title);
 
         //verify
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         //save img
         ArrayList<String> picture = new ArrayList<>();

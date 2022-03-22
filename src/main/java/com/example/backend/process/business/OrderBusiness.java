@@ -50,8 +50,8 @@ public class OrderBusiness {
     public Object create(OrderReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         Type type = typeService.findById(req.getTypeId());
 

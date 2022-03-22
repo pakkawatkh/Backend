@@ -1,5 +1,7 @@
 package com.example.backend.model.shopModel;
 
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -9,22 +11,15 @@ public class ShopReq {
 
     private Boolean active;
 
-    private Long latitude;
-
-    private Long longitude;
-
     //validate is not null
-    public boolean isValid() {
-        return name != null && latitude != null&& longitude != null;
+    public void isValid() throws BaseException {
+        boolean valid = name == null;
+        if (valid) throw MainException.requestInvalid();
     }
 
     //validate is blank
-    public boolean isBlank() {
-        return name.isBlank();
-    }
-
-    //validate is not null
-    public boolean isValid2() {
-        return active != null;
+    public void isBlank() throws BaseException {
+        boolean valid =  name.isBlank();
+        if (valid) throw MainException.requestIsBlank();
     }
 }

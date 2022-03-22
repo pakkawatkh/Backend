@@ -1,5 +1,7 @@
 package com.example.backend.model.userModel;
 
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -8,10 +10,6 @@ public class UserEditReq {
     private String firstname;
 
     private String lastname;
-
-    private String facebook;
-
-    private String line;
 
     private String address;
 
@@ -27,14 +25,19 @@ public class UserEditReq {
 
     private String district;
 
+    private String picture;
+
     //validate is not null
-    public boolean isValid() {
-        return firstname != null && lastname != null;
+    public void isValid() throws BaseException {
+        boolean valid = firstname == null || lastname == null || address == null || phone == null || lat == null || lng == null || province == null || district == null;
+
+        if (valid) throw MainException.requestInvalid();
     }
 
     //validate is blank
-    public boolean isBlank() {
-        return firstname.isBlank() || lastname.isBlank();
-    }
+    public void isBlank() throws BaseException {
+        boolean valid = firstname.isBlank() || lastname.isBlank() || address.isBlank() || phone.isBlank() || province.isBlank() || district.isBlank();
 
+        if (valid) throw MainException.requestIsBlank();
+    }
 }

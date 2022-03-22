@@ -7,6 +7,7 @@ import com.example.backend.exception.MainException;
 import com.example.backend.mapper.ShopMapper;
 import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.Response;
+import com.example.backend.model.adminModel.AShopActiveReq;
 import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.shopModel.ShopResponse;
 import com.example.backend.model.userModel.UserInOrderResponse;
@@ -39,12 +40,12 @@ public class ShopBusiness {
     public Object register(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         service.existsByUser(user);
         service.existsByName(req.getName());
-        service.saveShop(user, req.getName(), req.getLatitude(), req.getLongitude());
+        service.saveShop(user, req.getName());
         userService.updateRole(user, User.Role.SHOP);
 
         return new Response().success("create success");
@@ -54,18 +55,18 @@ public class ShopBusiness {
     public Object edit(ShopReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
-        service.edit(user, req.getName(), req.getLatitude(), req.getLongitude());
+        service.edit(user, req.getName());
 
         return new Response().success("edit success");
     }
 
-    public Object changStatus(Integer id, ShopReq req) throws BaseException {
+    public Object changStatus(Integer id, AShopActiveReq req) throws BaseException {
         tokenService.checkAdminByToken();
 
-        if (!req.isValid2()) throw MainException.requestInvalid();
+        req.isValid();
 
         Shop shop = service.findById(id);
         service.changStatus(shop, req.getActive());

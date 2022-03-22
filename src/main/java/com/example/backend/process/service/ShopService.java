@@ -22,14 +22,12 @@ public class ShopService {
         this.repository = repository;
     }
 
-    public void saveShop(User user, String name, Long latitude, Long longitude) throws BaseException {
+    public void saveShop(User user, String name) throws BaseException {
         String randomString = new RandomString().number();
-        if (repository.existsByNumber(randomString)) this.saveShop(user, name, latitude, longitude);
+        if (repository.existsByNumber(randomString)) this.saveShop(user, name);
 
         Shop entity = new Shop();
         entity.setUser(user);
-        entity.setLongitude(longitude);
-        entity.setLatitude(latitude);
         entity.setActive(true);
         entity.setDate(new Date());
         entity.setNumber("#" + randomString);
@@ -41,15 +39,13 @@ public class ShopService {
         }
     }
 
-    public void edit(User user, String name, Long latitude, Long longitude) throws BaseException {
+    public void edit(User user, String name) throws BaseException {
         Optional<Shop> entity = repository.findByUser(user);
 
         if (entity.isEmpty()) throw ShopException.notId();
 
         Shop shop = entity.get();
         shop.setNumber(name);
-        shop.setLatitude(latitude);
-        shop.setLongitude(longitude);
         try {
             repository.save(shop);
         } catch (Exception e) {

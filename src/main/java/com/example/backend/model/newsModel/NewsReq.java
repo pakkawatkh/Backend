@@ -1,5 +1,7 @@
 package com.example.backend.model.newsModel;
 
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -10,12 +12,14 @@ public class NewsReq {
     private String picture;
     private String linkRef;
 
-    public boolean isValid() {
-        return paragraph != null && title != null;
+    public void isValid() throws BaseException {
+        boolean valid = paragraph == null || title == null;
+        if (valid) throw MainException.requestInvalid();
     }
 
-    public boolean isBlank() {
-        return paragraph.isBlank() || title.isBlank();
+    public void isBlank() throws BaseException {
+        boolean valid =  paragraph.isBlank() || title.isBlank();
+        if (valid) throw MainException.requestIsBlank();
     }
 
 }

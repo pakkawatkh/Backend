@@ -1,5 +1,7 @@
 package com.example.backend.model.TypeBuyingModel;
 
+import com.example.backend.exception.BaseException;
+import com.example.backend.exception.MainException;
 import lombok.Data;
 
 @Data
@@ -11,12 +13,16 @@ public class BuyingListReq {
 
     private Integer buyingId;
 
-    public boolean isValid() {
-        return name != null && price != null && buyingId != null;
+    public void isValid() throws BaseException {
+        boolean valid = name == null || price == null || buyingId == null;
+        if (valid) throw MainException.requestInvalid();
+
     }
 
     //validate is blank
-    public boolean isBlank() {
-        return name.isBlank();
+    public void isBlank() throws BaseException {
+        boolean valid = name.isBlank();
+        if (valid) throw MainException.requestIsBlank();
+
     }
 }

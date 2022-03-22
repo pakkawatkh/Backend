@@ -1,6 +1,7 @@
 package com.example.backend.api;
 
 import com.example.backend.exception.BaseException;
+import com.example.backend.model.adminModel.AShopActiveReq;
 import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.newsModel.NewsReq;
 import com.example.backend.model.shopModel.ShopReq;
@@ -133,7 +134,7 @@ class AdminShop {
     }
 
     @PutMapping("/active/{id}")
-    public ResponseEntity<Object> updateStatus(@PathVariable("id") Integer id, @RequestBody ShopReq req) throws BaseException {
+    public ResponseEntity<Object> updateStatus(@PathVariable("id") Integer id, @RequestBody AShopActiveReq req) throws BaseException {
         Object res = business.changStatus(id, req);
 
         return ResponseEntity.ok(res);

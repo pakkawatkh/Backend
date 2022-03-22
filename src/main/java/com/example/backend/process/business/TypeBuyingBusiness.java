@@ -43,8 +43,8 @@ public class TypeBuyingBusiness {
         Shop shop = user.getShop();
         if (!shop.getActive()) throw MainException.accessDenied();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         service.saveCreate(shop, req.getName());
 
@@ -55,8 +55,8 @@ public class TypeBuyingBusiness {
         User user = tokenService.getUserByToken();
         if (!user.getRole().equals(User.Role.SHOP)) throw MainException.accessDenied();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         TypeBuying buying = service.findByIdAndShop(id, user.getShop());
 
@@ -108,8 +108,8 @@ public class TypeBuyingBusiness {
 
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+        req.isValid();
+        req.isBlank();
 
         TypeBuying typeBuying = this.getBuyingByShop(user, req.getBuyingId());
 
@@ -133,8 +133,8 @@ public class TypeBuyingBusiness {
     public Object editChild(Integer id,BuyingListReq req) throws BaseException {
         User user = tokenService.getUserByToken();
 
-        if (!req.isValid()) throw MainException.requestInvalid();
-        if (req.isBlank()) throw MainException.requestIsBlank();
+       req.isValid();
+       req.isBlank();
 
         TypeBuying buying = this.getBuyingByShop(user, req.getBuyingId());
 
@@ -159,9 +159,7 @@ public class TypeBuyingBusiness {
     public TypeBuying getBuyingByShop(User user,Integer buyingId) throws BaseException {
         if (!user.getRole().equals(User.Role.SHOP)) throw MainException.accessDenied();
 
-        TypeBuying buying = service.findByIdAndShop(buyingId,user.getShop());
-
-        return buying;
+        return service.findByIdAndShop(buyingId,user.getShop());
     }
 
     public Object getAllByShop(Integer shopId) throws BaseException {
