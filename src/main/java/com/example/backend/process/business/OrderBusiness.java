@@ -129,6 +129,8 @@ public class OrderBusiness {
     }
 
     public Object getListFilter(OrderBuyFillerReq req) throws BaseException {
+        Orders.Status status = Orders.Status.BUY;
+
         long count;
         List<Orders> orders;
         Object getType;
@@ -136,8 +138,8 @@ public class OrderBusiness {
         Object getDistrict = null ;
 
         if (req.getTypeId() == null && req.getProvince() == null) {
-            orders = service.findAllByPage(req.getPage(), req.getOrderBy(), req.getStatus());
-            count = service.countAll(req.getStatus());
+            orders = service.findAllByPage(req.getPage(), req.getOrderBy(), status);
+            count = service.countAll(status);
 
             //COUNT TYPE ALL []
             getType = service.getAllType();
@@ -148,61 +150,61 @@ public class OrderBusiness {
         } else if (req.getTypeId() != null && req.getProvince() == null) {
             Type type = typeService.findById(req.getTypeId());
 
-            orders = service.findAllByPageAndType(req.getPage(), type, req.getOrderBy(), req.getStatus());
-            count = service.countAllByType(type, req.getStatus());
+            orders = service.findAllByPageAndType(req.getPage(), type, req.getOrderBy(),status);
+            count = service.countAllByType(type, status);
             //COUNT TYPE
-            getType = service.getByType(type, req.getStatus());
+            getType = service.getByType(type, status);
             //COUNT PROVINCE ALL []
-            getProvince = service.getAllProvinceByType(type, req.getStatus());
+            getProvince = service.getAllProvinceByType(type, status);
         } else if (req.getTypeId() == null && req.getProvince() != null && req.getDistrict() == null) {
 
-            orders = service.findAllByPageAndProvince(req.getPage(), req.getOrderBy(), req.getProvince(), req.getStatus());
-            count = service.countAllByProvince(req.getProvince(), req.getStatus());
+            orders = service.findAllByPageAndProvince(req.getPage(), req.getOrderBy(), req.getProvince(), status);
+            count = service.countAllByProvince(req.getProvince(), status);
 
             //COUNT TYPE ALL []
-            getType = service.getAllTypeByProvince(req.getProvince(), req.getStatus());
+            getType = service.getAllTypeByProvince(req.getProvince(), status);
             //COUNT PROVINCE
-            getProvince = service.getByProvince(req.getProvince(), req.getStatus());
+            getProvince = service.getByProvince(req.getProvince(), status);
 
-            getDistrict = service.getDistrictByProvince(req.getProvince(), req.getStatus());
+            getDistrict = service.getDistrictByProvince(req.getProvince(), status);
 
         } else if (req.getTypeId() == null && req.getProvince() != null && req.getDistrict() != null) {
             //TODO : District
-            orders = service.findAllByPageAndProvinceAndDistrict(req.getPage(), req.getOrderBy(), req.getProvince(),req.getDistrict(), req.getStatus());
-            count = service.countAllByProvinceAndDistrict(req.getProvince(),req.getDistrict(), req.getStatus());
+            orders = service.findAllByPageAndProvinceAndDistrict(req.getPage(), req.getOrderBy(), req.getProvince(),req.getDistrict(), status);
+            count = service.countAllByProvinceAndDistrict(req.getProvince(),req.getDistrict(), status);
 
             //COUNT TYPE ALL []
-            getType = service.getAllTypeByProvinceAndDistrict(req.getProvince(),req.getDistrict(), req.getStatus());
+            getType = service.getAllTypeByProvinceAndDistrict(req.getProvince(),req.getDistrict(),status);
             //COUNT PROVINCE
-            getProvince = service.getByProvinceAndDistrict(req.getProvince(),req.getDistrict(), req.getStatus());
+            getProvince = service.getByProvinceAndDistrict(req.getProvince(),req.getDistrict(), status);
 
-            getDistrict = service.getDistrictByProvinceAndDistrict(req.getProvince(), req.getDistrict(),req.getStatus());
+            getDistrict = service.getDistrictByProvinceAndDistrict(req.getProvince(), req.getDistrict(),status);
 
 
         } else if (req.getTypeId() != null && req.getProvince() != null && req.getDistrict() != null) {
             //TODO : District
             Type type = typeService.findById(req.typeId);
 
-            orders = service.findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(req.getPage(),type, req.getOrderBy(), req.getProvince(),req.getDistrict(), req.getStatus());
-            count = service.countAllByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(), req.getStatus());
+            orders = service.findAllByStatusAndTypeAndProvinceAndDistrictOrderByDateDesc(req.getPage(),type, req.getOrderBy(), req.getProvince(),req.getDistrict(), status);
+            count = service.countAllByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(), status);
 
             //COUNT TYPE ALL []
-            getType = service.getTypeByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(),req.getStatus());
+            getType = service.getTypeByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(),status);
             //COUNT PROVINCE
-            getProvince = service.getProvinceByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(), req.getStatus());
+            getProvince = service.getProvinceByTypeAndProvinceAndDistrict(type,req.getProvince(),req.getDistrict(), status);
 
-            getDistrict = service.getDistrictByProvinceAndDistrictAndType(type,req.getProvince(), req.getDistrict(), req.getStatus());
+            getDistrict = service.getDistrictByProvinceAndDistrictAndType(type,req.getProvince(), req.getDistrict(), status);
         } else {
             Type type = typeService.findById(req.typeId);
 
-            orders = service.findAllByPageAndProvinceAndType(req.getPage(), type, req.getOrderBy(), req.getProvince(), req.getStatus());
-            count = service.countAllByProvinceAndType(type, req.getProvince(), req.getStatus());
+            orders = service.findAllByPageAndProvinceAndType(req.getPage(), type, req.getOrderBy(), req.getProvince(), status);
+            count = service.countAllByProvinceAndType(type, req.getProvince(),status);
             //COUNT TYPE
-            getType = service.getTypeByTypeAndProvince(type, req.getProvince(), req.getStatus());
+            getType = service.getTypeByTypeAndProvince(type, req.getProvince(), status);
             //COUNT PROVINCE
-            getProvince = service.getProvinceByTypeAndProvince(type, req.getProvince(), req.getStatus());
+            getProvince = service.getProvinceByTypeAndProvince(type, req.getProvince(), status);
 
-            getDistrict = service.getDistrictByProvinceAndType(type,req.getProvince(),req.getStatus());
+            getDistrict = service.getDistrictByProvinceAndType(type,req.getProvince(),status);
         }
 
         List<OrderRes> orderRes = mapper.toListOrderRes(orders);

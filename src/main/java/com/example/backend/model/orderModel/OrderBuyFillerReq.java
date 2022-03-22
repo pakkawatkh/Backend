@@ -10,7 +10,6 @@ public class OrderBuyFillerReq {
     public String province;
     public Integer page = 0;
     public OrderBy orderBy = OrderBy.NEW;
-    public Orders.Status status = Orders.Status.BUY;
     public String district;
 
     public enum OrderBy {
