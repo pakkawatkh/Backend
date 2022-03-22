@@ -55,7 +55,7 @@ public class OrderBusiness {
 
         Type type = typeService.findById(req.getTypeId());
 
-        service.createOrder(user, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
+        service.createOrder(user, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice(),req.getLat(),req.getLng());
 
         return new Response().success("create " + MS);
 
@@ -88,7 +88,7 @@ public class OrderBusiness {
         Orders order = service.findByIdAndUser(id, user);
         Type type = typeService.findById(req.getTypeId());
 
-        service.update(order, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice());
+        service.update(order, type, req.getWeight(), req.getPicture(), req.getProvince(), req.getDistrict(), req.getName(), req.getDetail(), req.getPrice(),req.getLat(),req.getLng());
 
         return new Response().success("update success");
     }
@@ -131,7 +131,7 @@ public class OrderBusiness {
     public Object getListFilter(OrderBuyFillerReq req) throws BaseException {
         Orders.Status status = Orders.Status.BUY;
 
-        int limit;
+        Integer limit;
         long count;
         List<Orders> orders;
         Object getType;

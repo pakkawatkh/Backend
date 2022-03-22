@@ -33,7 +33,7 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public void createOrder(User user, Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws BaseException {
+    public void createOrder(User user, Type type, String weight, String picture, String province, String district, String name, String detail, String price,Float lat,Float lng) throws BaseException {
         Orders entity = new Orders();
         entity.setStatus(Orders.Status.BUY);
         entity.setUser(user);
@@ -45,6 +45,8 @@ public class OrderService {
         entity.setName(name);
         entity.setDetail(detail);
         entity.setPrice(price);
+        entity.setLat(lat);
+        entity.setLng(lng);
         try {
             repository.save(entity);
         } catch (Exception e) {
@@ -52,7 +54,7 @@ public class OrderService {
         }
     }
 
-    public void update(Orders orders, Type type, String weight, String picture, String province, String district, String name, String detail, String price) throws MainException {
+    public void update(Orders orders, Type type, String weight, String picture, String province, String district, String name, String detail, String price,Float lat,Float lng) throws MainException {
 
         orders.setStatus(Orders.Status.BUY);
         orders.setType(type);
@@ -63,6 +65,8 @@ public class OrderService {
         orders.setName(name);
         orders.setDetail(detail);
         orders.setPrice(price);
+        orders.setLat(lat);
+        orders.setLng(lng);
         try {
             repository.save(orders);
         } catch (Exception e) {

@@ -23,9 +23,9 @@ public class OrderReq {
 
     private String detail;
 
-    private Long lat;
+    private Float lat;
 
-    private Long lng;
+    private Float lng;
 
     private String address;
 
