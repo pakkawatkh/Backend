@@ -23,9 +23,9 @@ public class UserSchedule {
     // 3 => hour
     // 4 => day
     // 5 => month
-    // 6 => year
+    // 6 => day of week
 
-    @Scheduled(cron = "0 0 0 7 * *", zone = "Asia/Bangkok") //run every all 7 day Time => 00:00
+    @Scheduled(cron = "0 0 0 * * MON", zone = "Asia/Bangkok") //run every monday Time => 00:00
     public void deleteUser() {
         List<User> user = userService.fileAll();
         for (User u : user) {

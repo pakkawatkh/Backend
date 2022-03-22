@@ -1,12 +1,10 @@
 package com.example.backend.model.userModel;
 
 import com.example.backend.entity.User;
-import com.example.backend.model.orderModel.OrderRes;
-import com.example.backend.model.shopModel.ShopResponse;
+import com.example.backend.process.shopModel.ShopResponse;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class UserResponse {

@@ -4,7 +4,7 @@ import com.example.backend.model.TypeBuyingModel.BuyingListReq;
 import com.example.backend.model.TypeBuyingModel.BuyingReq;
 import com.example.backend.process.business.ShopBusiness;
 import com.example.backend.exception.BaseException;
-import com.example.backend.model.shopModel.ShopReq;
+import com.example.backend.process.shopModel.ShopReq;
 import com.example.backend.process.business.TypeBuyingBusiness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

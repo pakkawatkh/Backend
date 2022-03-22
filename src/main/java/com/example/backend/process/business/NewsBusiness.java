@@ -2,7 +2,7 @@ package com.example.backend.process.business;
 
 import com.example.backend.entity.News;
 import com.example.backend.exception.BaseException;
-import com.example.backend.exception.MainException;
+import com.example.backend.exception.FileException;
 import com.example.backend.mapper.NewsMapper;
 import com.example.backend.model.BaseUrlFile;
 import com.example.backend.model.Response;
@@ -85,7 +85,7 @@ public class NewsBusiness {
     }
 
     public Object getRecommend(Integer id) {
-        List<News> news = service.getRandomLimitByStatus(4, true,id);
+        List<News> news = service.getRandomLimitByStatus(4, true, id);
         List<NewsListResponse> res = mapper.toNewsListResponse(news);
         List<NewsListResponse> newsListResponses = updateListNews(res);
 
@@ -135,8 +135,8 @@ public class NewsBusiness {
         return paragraph.split(", ");
     }
 
-    public List<NewsListResponse> updateListNews(List<NewsListResponse> data){
-        for (NewsListResponse response:data){
+    public List<NewsListResponse> updateListNews(List<NewsListResponse> data) {
+        for (NewsListResponse response : data) {
 
             String[] paragraph = updateParagraph((String) response.getParagraph());
             response.setParagraph(paragraph[0]);

@@ -1,4 +1,4 @@
-package com.example.backend.model.shopModel;
+package com.example.backend.process.shopModel;
 
 import com.example.backend.exception.BaseException;
 import com.example.backend.exception.MainException;

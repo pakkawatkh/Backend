@@ -4,7 +4,6 @@ import com.example.backend.exception.BaseException;
 import com.example.backend.model.adminModel.AShopActiveReq;
 import com.example.backend.model.adminModel.AUserActiveReq;
 import com.example.backend.model.newsModel.NewsReq;
-import com.example.backend.model.shopModel.ShopReq;
 import com.example.backend.model.typeModel.TypeReq;
 import com.example.backend.model.userModel.UserEditReq;
 import com.example.backend.process.business.*;
