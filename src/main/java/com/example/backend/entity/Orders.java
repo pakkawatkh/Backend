@@ -1,7 +1,6 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.AutoID;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,19 +14,19 @@ public class Orders extends AutoID {
     @Enumerated(EnumType.STRING)
     private Status status = Status.BUY;
 
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String name;
 
     @Column(nullable = false)
     private Date date = new Date();
 
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String weight;
 
-    @Column(length = 100,nullable = false)
+    @Column(length = 100, nullable = false)
     private String picture;
 
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String price;
 
     @Column(nullable = false)
@@ -35,18 +34,18 @@ public class Orders extends AutoID {
     private String detail;
 
     @Column(nullable = false)
-    private Long lat;
+    private Float lat;
 
     @Column(nullable = false)
-    private Long lng;
+    private Float lng;
 
-    @Column(length = 200,nullable = false)
+    @Column(length = 200, nullable = false)
     private String address;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String province;
 
-    @Column(length = 30,nullable = false)
+    @Column(length = 30, nullable = false)
     private String district;
 
     @ManyToOne
