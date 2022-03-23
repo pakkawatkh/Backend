@@ -1,7 +1,6 @@
 package com.example.backend.entity;
 
 import com.example.backend.entity.Base.RandomID;
-import com.example.backend.entity.Base.RandomString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -84,7 +83,7 @@ public class User extends RandomID {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Orders> order;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Shop shop;
 
